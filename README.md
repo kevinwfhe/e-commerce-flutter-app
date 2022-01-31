@@ -1,5 +1,7 @@
 # csi5112_group1_project
 
+### [Group Doc](https://docs.google.com/document/d/1YwB-PHlbd27hZOde_DL-oTCQZFE-k5KsEJ-befittBk/edit)
+
 
 |    Name   |Student # | Email
 |-------    |----------|------
