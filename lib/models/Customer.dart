@@ -1,23 +1,23 @@
-import 'package:csi5112group1project/models/Product.dart';
-import 'package:flutter/material.dart';
+import 'package:csi5112group1project/models/Client.dart';
 
-class User {
+//merchant
+class Customer {
   final String userId, username, password, firstName, lastName;
-  final List<Product>? orderHistory;
-  User({
+  final List<Client>? clients;
+  Customer({
     required this.userId,
     required this.username,
     required this.password,
     required this.firstName,
     required this.lastName,
-    this.orderHistory,
+    this.clients,
   });
 }
 
-User mockUser = User(
+Customer mockSeller = Customer(
     userId: "test123",
-    username: "group1",
+    username: "admin",
     password: "123123",
     firstName: "firstname",
     lastName: "lastname",
-    orderHistory: products.sublist(0, 4));
+    clients: [mockClient]);
