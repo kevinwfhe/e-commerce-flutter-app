@@ -7,7 +7,7 @@ class category extends StatefulWidget {
 }
 
 class _categoryState extends State<category> {
-  List<String> categories = ["Shoes", "Clothes", "Electronics", "Toys", "Food"];
+  List<String> categories = ["All","Shoes", "Clothes", "Electronics", "Toys", "Food"];
 
   // The default category is Shoes
   int selectedCategory = 0;

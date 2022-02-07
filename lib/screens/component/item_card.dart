@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:csi5112group1project/constants.dart';
 import 'package:csi5112group1project/models/Product.dart';
-
+import 'package:csi5112group1project/screens/products_details_screen.dart';
 
 class ItemCard extends StatelessWidget {
   final Product product;
@@ -18,6 +18,16 @@ class ItemCard extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: (){
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Details_product(
+            title: product.title,
+            price: product.price,
+            description: product.description,
+            image: product.image,
+          )
+        ));
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
