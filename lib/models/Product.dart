@@ -18,7 +18,7 @@ class Product {
 
 // Manually add 15 items, 3 categories and 5 for each.
 
-String des = "BEST SHOES EVER";
+String des = "BEST SHOES EVER.\n A shoe is an item of footwear intended to protect and comfort the human foot. Shoes are also used as an item of decoration and fashion. ... Traditionally, shoes have been made from leather, wood or canvas, but are increasingly being made from rubber, plastics, and other petrochemical-derived materials.";
 List<Product> products = [
   Product(
       id: 1,
