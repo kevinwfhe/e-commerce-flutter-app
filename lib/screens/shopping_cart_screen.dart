@@ -1,31 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+
 import 'package:csi5112group1project/constants.dart';
+import 'package:csi5112group1project/models/cart.dart';
+
 
 class Shopping_cart extends StatelessWidget {
-  // final String title, image;
-  // final int price;
+  // final String name, image, id;
+  // final int price, quantity;
 
 
 
 
   // Shopping_cart({
-  //   required this.title,
+  //   required this.name,
   //   required this.price,
   //   required this.image,
+  //   required this.id,
+  //   required this.quantity,
   // });
 
   @override
   Widget build(BuildContext context){
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Shopping cart"),
       ),
+      // body: Column(
+      //   children: <Widget>[
+      //     Expanded(
+      //       child: ListView.builder(
+      //           itemCount: cart.items.length,
+      //           itemBuilder: (ctx, i) => CartPdt(
+      //               cart.items.values.toList()[i].id,
+      //               cart.items.keys.toList()[i],
+      //               cart.items.values.toList()[i].price,
+      //               cart.items.values.toList()[i].quantity,
+      //               cart.items.values.toList()[i].name)),
+      //     ),
 
-      // should able to display everything that was being added to the cart and calculate the total for checkout
-      // idea: a linked list to add take everything
-      // would it be able to delete few orders, linked list is not a good idea
+        // ],
+      // ),
+
+
 
       floatingActionButton: FloatingActionButton(
         onPressed: (){}, // idea for click the checkout button, move to the summary page and could download a specific invoice.
