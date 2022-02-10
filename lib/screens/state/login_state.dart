@@ -2,8 +2,8 @@ import 'package:csi5112group1project/constants.dart';
 import 'package:flutter/material.dart';
 import '../../models/users.dart';
 import '../admin_screen.dart';
+import '../buyer_main_screen.dart';
 import '../login_screen.dart';
-import '../products_screen.dart';
 
 class LoginState extends State<LoginScreen> {
   final emailController = TextEditingController();
@@ -17,7 +17,7 @@ class LoginState extends State<LoginScreen> {
         user.password == pass &&
         user.role == clientRole)) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (_) => products_screen()));
+          context, MaterialPageRoute(builder: (_) => Buyer_screen()));
     }
 
     if (users.any((user) =>
@@ -39,7 +39,6 @@ class LoginState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
