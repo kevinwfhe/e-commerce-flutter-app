@@ -1,13 +1,7 @@
-# csi5112_group1_project
+# E-commerce Flutter App
 
-### [Group Doc](https://docs.google.com/document/d/1YwB-PHlbd27hZOde_DL-oTCQZFE-k5KsEJ-befittBk/edit)
+An e-commerce frontend app built with Dart and Flutter.  
 
+Featuring a CD pipeline consists of GitHub Actions -> AWS S3 -> AWS CloudFront.  
 
-|    Name   |Student # | Email
-|-------    |----------|------
-|Jinrong Guo|8809970|g1024893531@gmail.com
-|Manlin Guo |6602848|mguo053@uottawa.ca
-|Yaqing Zhu |101133219|yaqingzhu@cmail.carleton.ca
-|Wenfeng He |300258355|whe060@uottawa.ca|
-|Feier Zhang|8589976|fzhan081@uottawa.ca
-
+For the backend service built with C#, .Net and MongoDB, see [repo](https://github.com/kevinwfhe/e-commerce-service)  
