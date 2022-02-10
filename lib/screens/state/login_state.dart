@@ -1,6 +1,4 @@
-import 'package:csi5112group1project/constants.dart';
 import 'package:flutter/material.dart';
-import '../../models/users.dart';
 import '../admin_screen.dart';
 import '../buyer_main_screen.dart';
 import '../login_screen.dart';
@@ -9,23 +7,12 @@ class LoginState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  validUserAndRedirect() {
-    final email = emailController.text;
-    final pass = passwordController.text;
-    if (users.any((user) =>
-        user.email == email &&
-        user.password == pass &&
-        user.role == clientRole)) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (_) => Buyer_screen()));
-    }
+  redirectAdmin() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => AdminScreen()));
+  }
 
-    if (users.any((user) =>
-        user.email == email &&
-        user.password == pass &&
-        user.role == adminRole)) {
-      Navigator.push(context, MaterialPageRoute(builder: (_) => AdminScreen()));
-    }
+  redirectClient() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => Buyer_screen()));
   }
 
   @override
@@ -52,27 +39,24 @@ class LoginState extends State<LoginScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 750),
-              child: TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                    hintText: 'Enter valid email id as abc@def.com'),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10.0),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 750),
-              child: TextField(
-                obscureText: true,
-                controller: passwordController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'Enter password'),
+              padding: const EdgeInsets.only(top: 60.0, bottom: 20),
+              child: Center(
+                child: Container(
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: TextButton(
+                    onPressed: () {
+                      redirectAdmin();
+                    },
+                    child: const Text(
+                      'Login as Admin',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                ),
               ),
             ),
             Padding(
@@ -86,11 +70,11 @@ class LoginState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(20)),
                   child: TextButton(
                     onPressed: () {
-                      validUserAndRedirect();
+                      redirectClient();
                     },
                     child: const Text(
-                      'Login',
-                      style: TextStyle(color: Colors.white, fontSize: 25),
+                      'Login as Client(buyer)',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
                     ),
                   ),
                 ),
