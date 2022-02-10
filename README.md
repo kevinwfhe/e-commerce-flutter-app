@@ -4,8 +4,8 @@
 fake login accounts:
 
 admin: 
--email: admin@test.com
--password: 123
+* email: admin@test.com
+* password: 123
 
 client(buyer): 
 -email: client@test.com
