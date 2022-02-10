@@ -7,9 +7,6 @@ class Details_product extends StatelessWidget {
   final String title, description, image;
   final int price;
 
-
-
-
   Details_product({
     required this.title,
     required this.description,
