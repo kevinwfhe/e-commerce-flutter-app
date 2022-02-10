@@ -21,6 +21,7 @@ class ItemCard extends StatelessWidget {
       onTap: (){
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Details_product(
+            product: product,
             title: product.title,
             price: product.price,
             description: product.description,

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'package:csi5112group1project/models/Product.dart';
 import 'package:csi5112group1project/constants.dart';
 import 'package:csi5112group1project/screens/shopping_cart_screen.dart';
+import 'package:csi5112group1project/models/Cart.dart';
 class Details_product extends StatelessWidget {
   final String title, description, image;
   final int price;
+  final Product product;
 
   Details_product({
+    required this.product,
     required this.title,
     required this.description,
     required this.price,
@@ -72,7 +76,9 @@ class Details_product extends StatelessWidget {
       ),
       // add to shopping cart -button-
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          demoCarts.add(Cart(product: product, numOfItem:1));
+          },
         tooltip: 'Add to shopping cart',
         child: const Icon(Icons.add),
       ),
