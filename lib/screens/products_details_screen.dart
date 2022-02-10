@@ -10,9 +10,6 @@ class Details_product extends StatelessWidget {
   final int price;
   final Product product;
 
-
-
-
   Details_product({
     required this.product,
     required this.title,
