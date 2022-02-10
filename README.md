@@ -1,5 +1,16 @@
 # csi5112_group1_project
 
+
+fake login accounts:
+
+admin: 
+-email: admin@test.com
+-password: 123
+
+client(buyer): 
+-email: client@test.com
+-password: 321
+
 ### [Group Doc](https://docs.google.com/document/d/1YwB-PHlbd27hZOde_DL-oTCQZFE-k5KsEJ-befittBk/edit)
 
 
