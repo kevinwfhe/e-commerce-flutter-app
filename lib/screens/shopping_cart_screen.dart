@@ -9,7 +9,9 @@ import 'package:csi5112group1project/screens/component/body_cart.dart';
 class Shopping_cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ChangeNotifierProvider(
+      create: (context) => CartContext(),
+      child: Scaffold(
         appBar: AppBar(
           title: Column(
             children: const [
@@ -72,6 +74,8 @@ class Shopping_cart extends StatelessWidget {
               ),
             )
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
