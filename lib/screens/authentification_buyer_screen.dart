@@ -1,14 +1,14 @@
-import 'package:csi5112group1project/screens/authentification_admin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:csi5112group1project/constants.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'component/admin_body.dart';
-// flutter pub add flutter_svg
+import 'login_screen.dart';
+import 'component/authentification_buyer_body.dart';
 
-class AdminScreen extends StatelessWidget {
+class AuthentificationBuyerScreen extends StatelessWidget{
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -17,12 +17,12 @@ class AdminScreen extends StatelessWidget {
           icon: SvgPicture.asset("icons/back.svg", color: Colors.black),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (_) => AuthentificationAdminScreen()));
+                context, MaterialPageRoute(builder: (_) => LoginScreen()));
           },
         ), // icon - - back
         actions: <Widget>[SizedBox(width: kDefaultPadding / 2)],
       ),
-      body: AdminBody(),
+      body: AuthentificationBuyerBody(),
     );
   }
 }

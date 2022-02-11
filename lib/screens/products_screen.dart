@@ -1,3 +1,4 @@
+import 'package:csi5112group1project/screens/authentification_buyer_screen.dart';
 import 'package:csi5112group1project/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,7 +19,7 @@ class products_screen extends StatelessWidget {
           icon: SvgPicture.asset("icons/back.svg", color: Colors.black),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (_) => LoginScreen()));
+                context, MaterialPageRoute(builder: (_) => AuthentificationBuyerScreen()));
           },
         ), // icon - - back
 

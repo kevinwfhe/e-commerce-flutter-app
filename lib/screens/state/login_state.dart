@@ -1,18 +1,20 @@
+import 'package:csi5112group1project/screens/authentification_buyer_screen.dart';
 import 'package:flutter/material.dart';
 import '../admin_screen.dart';
 import '../buyer_main_screen.dart';
 import '../login_screen.dart';
+import '../authentification_admin_screen.dart';
 
 class LoginState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   redirectAdmin() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => AdminScreen()));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => AuthentificationAdminScreen()));
   }
 
   redirectClient() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => Buyer_screen()));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => AuthentificationBuyerScreen()));
   }
 
   @override
