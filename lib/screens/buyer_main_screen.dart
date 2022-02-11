@@ -1,7 +1,9 @@
+import 'package:csi5112group1project/context/cart_context.dart';
 import 'package:flutter/material.dart';
 import 'package:csi5112group1project/screens/order_screen.dart';
 import 'package:csi5112group1project/screens/shopping_cart_screen.dart';
 import 'package:csi5112group1project/screens/products_screen.dart';
+import 'package:provider/provider.dart';
 
 class Buyer_screen extends StatelessWidget {
   const Buyer_screen({Key? key}) : super(key: key);
@@ -27,11 +29,11 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     products_screen(),
     Shopping_cart(),
-    order_screen(),
+    OrderScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -43,8 +45,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: ChangeNotifierProvider(
+        create: (context) => CartContext(),
+        child: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
