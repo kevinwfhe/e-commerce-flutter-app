@@ -36,44 +36,112 @@ class Details_product extends StatelessWidget {
           SizedBox(width: kDefaultPadding / 2)
         ],
       ),
-      // detail info for the product that the user has selected
-      body: Center(
-        child:
-          Column(
-            children: [
-              // product image
-              Expanded(
-                child: Container(
-                    padding: EdgeInsets.all(kDefaultPadding),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child:  Image.asset(
-                      image,
-                      height: 10,
-                      width: 200,
-                      fit: BoxFit.fitWidth,
-                    )
-                ),
-              ),
-              // product price
-              Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    children:[
-                      TextSpan(text: "Price\n"),
-                      TextSpan(
-                        text: "\$${price}\n",
-                        style: TextStyle(fontSize: 30 ,color: Colors.blue, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container (
+            width: MediaQuery.of(context).size.width* .5,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                image: DecorationImage(
+
+                    scale: .5,
+                    image: AssetImage(image),
+                    fit: BoxFit.contain)),
           ),
+          SizedBox(
+            width: 440,
+            child: Container(
+              padding: EdgeInsets.all(kDefaultPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(product.category.toUpperCase(),
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'Roboto',
+                        letterSpacing: 0.5,
+                        fontSize: 18,
+                        )),
+                  Text(title,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'Roboto',
+                        letterSpacing: 0.5,
+                        fontSize: 30,
+                        )
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.star, color: Colors.yellow[500]),
+                            Icon(Icons.star, color: Colors.yellow[500]),
+                            Icon(Icons.star, color: Colors.yellow[500]),
+                            Icon(Icons.star, color: Colors.yellow[500]),
+                            const Icon(Icons.star, color: Colors.grey),
+                          ],
+                        ),
+                        Text(
+                          '4.1 (170 Reviews)',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Roboto',
+                            letterSpacing: 0.5,
+                            fontSize: 15,
+                          ),
+                        ),], // end reviews
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Text("\n\nPrice: \n\n", style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: 'Roboto',
+                          letterSpacing: 0.5,
+                          fontSize: 15,
+                        )),
+                        Text(
+                          "\$${price}",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontFamily: 'Roboto',
+                            letterSpacing: 0.5,
+                            fontSize: 16,
+                          ),
+                        ),], // end reviews
+                    ),
+                  ),
+                  Text("Product Description", style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w800,
+                    fontFamily: 'Roboto',
+                    letterSpacing: 0.5,
+                    fontSize: 15,
+                  )),
+                  Text(description, style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Roboto',
+                    letterSpacing: 0.5,
+                    fontSize: 13,
+                  )),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
+
+
+
       // add to shopping cart -button-
       floatingActionButton: FloatingActionButton(
         onPressed: (){
