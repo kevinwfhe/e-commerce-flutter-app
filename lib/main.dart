@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:csi5112group1project/constants.dart';
-
-
-import 'screens/login_screen.dart';
-
-import 'package:csi5112group1project/screens/products_screen.dart';
-import 'package:csi5112group1project/screens/buyer_main_screen.dart';
-
+import '../../constants.dart';
+import './screens/common/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +18,6 @@ class MyApp extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
         primarySwatch: Colors.blue,
       ),
-
       home: LoginScreen(),
     );
   }

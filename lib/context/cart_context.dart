@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/Cart.dart';
+import '../models/cart.dart';
 
 class CartContext extends ChangeNotifier {
   final List<Cart> _cart = demoCarts;
