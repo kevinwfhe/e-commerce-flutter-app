@@ -1,4 +1,4 @@
-import 'package:csi5112group1project/models/Product.dart';
+import './product.dart';
 
 class Client {
   final String userId, username, password, firstName, lastName;

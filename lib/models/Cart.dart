@@ -68,9 +68,7 @@
 // }
 //
 
-import 'package:flutter/material.dart';
-
-import 'Product.dart';
+import 'product.dart';
 
 class Cart {
   final Product product;

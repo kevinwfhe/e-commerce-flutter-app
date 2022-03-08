@@ -1,4 +1,4 @@
-import 'package:csi5112group1project/models/Client.dart';
+import 'package:csi5112group1project/models/client.dart';
 
 //merchant
 class Customer {

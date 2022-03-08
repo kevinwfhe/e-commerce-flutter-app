@@ -1,8 +1,7 @@
-import 'package:advanced_datatable/advanced_datatable_source.dart';
-import 'package:csi5112group1project/models/Product.dart';
 import 'package:flutter/material.dart';
-
-import '../screens/product_detail_manage_screen.dart';
+import 'package:advanced_datatable/advanced_datatable_source.dart';
+import './product.dart';
+import '../screens/admin/product_detail_manage_screen.dart';
 
 class ProductTableSource extends AdvancedDataTableSource<Product> {
   final data = products;

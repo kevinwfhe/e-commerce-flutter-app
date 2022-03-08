@@ -1,5 +1,4 @@
-import 'package:csi5112group1project/models/Product.dart';
-import 'package:csi5112group1project/utils/sharedEnum.dart';
+import '../utils/shared_enum.dart';
 import 'shipping_address.dart';
 
 class Order {
