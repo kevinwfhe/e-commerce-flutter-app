@@ -1,9 +1,10 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:csi5112group1project/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import '../../utils/shared_enum.dart';
 import '../../utils/order_status_map.dart';
 import '../../models/order.dart';
 import '../../models/shipping_address.dart';
-import './order_detail_screen.dart';
 
 List<Order> mockOrders = [
   Order(
@@ -138,14 +139,10 @@ class OrderTable extends StatelessWidget {
                   DataCell(Text(item.totalPrice.toString())),
                   DataCell(
                     TextButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => OrderDetailScreen(
-                            orderId: item.orderId,
-                          ),
-                        ),
-                      ),
+                      onPressed: () =>
+                          context.router.navigate(OrderDetailScreen(
+                            orderId: item.orderId
+                          )),
                       child: const Text('Details'),
                     ),
                   ),

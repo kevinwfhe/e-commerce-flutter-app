@@ -40,6 +40,9 @@ dependencies:
   advanced_datatable: ^0.0.7+hotfix
   image_picker_web: any
   provider: ^6.0.2
+  auto_route: ^3.2.4
+  flutter_web_plugins:
+    sdk: flutter
 
 
 dev_dependencies:
@@ -52,6 +55,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  auto_route_generator: ^3.2.3
+  build_runner: ^2.1.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

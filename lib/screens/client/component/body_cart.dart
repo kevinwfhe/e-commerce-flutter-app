@@ -16,11 +16,11 @@ class _BodyState extends State<Body> {
         padding: const EdgeInsets.only(top: 40, bottom: 100),
         // EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: ListView.builder(
-          itemCount: demoCarts.length,
+          itemCount: mockCart.items.length,
           itemBuilder: (context, index) => Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Dismissible(
-              key: Key(demoCarts[index].product.id.toString()),
+              key: Key(mockCart.items[index].product.id.toString()),
               direction: DismissDirection.endToStart,
               onDismissed: (direction) => cart.remove(index),
               background: Container(
@@ -30,7 +30,7 @@ class _BodyState extends State<Body> {
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              child: CartCard(cart: demoCarts[index]),
+              child: CartCard(item: mockCart.items[index]),
             ),
           ),
         ),

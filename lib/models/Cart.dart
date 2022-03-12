@@ -70,19 +70,30 @@
 
 import 'product.dart';
 
-class Cart {
+class CartItem {
   final Product product;
-  final int numOfItem;
+  int numOfItem;
+  bool selected;
+  CartItem({
+    required this.product,
+    required this.numOfItem,
+    this.selected = true,
+  });
+}
 
-  Cart({required this.product, required this.numOfItem});
+class Cart {
+  final List<CartItem> items;
+  Cart({required this.items});
 }
 
 // Demo data for our cart
 
-List<Cart> demoCarts = [
-  Cart(product: products[0], numOfItem: 2),
-  Cart(product: products[1], numOfItem: 1),
-  Cart(product: products[5], numOfItem: 1),
-  Cart(product: products[8], numOfItem: 1),
-  Cart(product: products[12], numOfItem: 1),
+List<CartItem> mockCartItems = [
+  CartItem(product: products[0], numOfItem: 2, selected: true),
+  CartItem(product: products[1], numOfItem: 1, selected: true),
+  CartItem(product: products[5], numOfItem: 1, selected: true),
+  CartItem(product: products[8], numOfItem: 1, selected: true),
+  CartItem(product: products[12], numOfItem: 1, selected: true),
 ];
+
+Cart mockCart = Cart(items: mockCartItems);

@@ -1,5 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import './order_screen.dart';
+import '../../routes/router.gr.dart';
 
 class OrderPlacedScreen extends StatelessWidget {
   const OrderPlacedScreen({Key? key}) : super(key: key);
@@ -20,18 +21,28 @@ class OrderPlacedScreen extends StatelessWidget {
                 color: Colors.green,
                 size: 128,
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const OrderScreen(),
+              const SizedBox(height: 40),
+              SizedBox(
+                width: 200,
+                height: 60,
+                child: ElevatedButton(
+                  // navigate to order screen while poping the underlying routes back to CartRoute,
+                  // to prevent another CartRoute stacking on top of the original one
+                  onPressed: () => context.router.pushAndPopUntil(
+                    const ClientMainRoute(
+                      children: [
+                        OrderRouter(
+                          children: [
+                            OrderScreen(),
+                          ],
+                        ),
+                      ],
                     ),
-                  )
-                },
-                child: const Text('Check your orders'),
-              ),
+                    predicate: (route) => route.settings.name == 'CartRoute',
+                  ),
+                  child: const Text('Check your orders', style: TextStyle(fontSize: 20)),
+                ),
+              )
             ],
           ),
         ),

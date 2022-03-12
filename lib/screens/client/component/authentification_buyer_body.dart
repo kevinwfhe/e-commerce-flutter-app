@@ -1,7 +1,12 @@
+import 'package:auto_route/auto_route.dart';
+import '../../../routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import '../buyer_main_screen.dart';
 
 class AuthentificationBuyerBody extends StatelessWidget {
+  const AuthentificationBuyerBody({Key? key}) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
@@ -74,27 +79,44 @@ class AuthentificationBuyerBody extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 60.0, bottom: 20),
-            child: Center(
-              child: Container(
-                height: 50,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => Buyer_screen()));
-                  },
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+              padding: const EdgeInsets.only(top: 60.0, bottom: 20),
+              child: Column(
+                children: [
+                  Center(
+                    child: Container(
+                      height: 50,
+                      width: 250,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => Buyer_screen()));
+                        },
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
+                  // Center(
+                  //   child: Container(
+                  //     width: double.infinity,
+                  //     child: Row(
+                  //       children: [
+                  //         TextButton(
+                  //             onPressed: () => context.router.push(AdminEntry()),
+                  //             child: Text('Login as Admin Account'))
+                  //       ],
+                  //     ),
+                  //   ),
+                  // )
+                ],
+              )),
         ],
       ),
     );

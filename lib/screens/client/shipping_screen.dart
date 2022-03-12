@@ -82,3 +82,23 @@ class _ShippingScreenState extends State<ShippingScreen> {
     );
   }
 }
+
+class EditAddressModal extends StatefulWidget {
+  final String name;
+  const EditAddressModal({Key? key, required this.name}) : super(key: key);
+
+  @override
+  _EditAddressModalState createState() => _EditAddressModalState();
+}
+
+class _EditAddressModalState extends State<EditAddressModal> {
+  final addressController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        child: TextField(controller: addressController),
+      ),
+    );
+  }
+}

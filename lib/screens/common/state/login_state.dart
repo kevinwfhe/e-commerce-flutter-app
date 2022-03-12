@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:csi5112group1project/routes/router.gr.dart';
 import 'package:flutter/material.dart';
-import '../../common/login_screen.dart';
+import '../../common/login_screen.dart' as LoginScreenType;
 import '../../admin/authentification_admin_screen.dart';
 import '../../client/authentification_buyer_screen.dart';
 
-class LoginState extends State<LoginScreen> {
+class LoginState extends State<LoginScreenType.LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -13,8 +15,9 @@ class LoginState extends State<LoginScreen> {
   }
 
   redirectClient() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (_) => AuthentificationBuyerScreen()));
+    context.router.push(ClientMainRoute());
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: (_) => AuthentificationBuyerScreen()));
   }
 
   @override

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:auto_route/auto_route.dart';
 import '../../constants.dart';
-import './authentification_buyer_screen.dart';
 import './component/body.dart';
-import './shopping_cart_screen.dart';
+import '../../routes/router.gr.dart';
 // flutter pub add flutter_svg
 
-class products_screen extends StatelessWidget {
+class ProductsScreen extends StatelessWidget {
+  const ProductsScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,26 +18,36 @@ class products_screen extends StatelessWidget {
         leading: IconButton(
           icon: SvgPicture.asset("icons/back.svg", color: Colors.black),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => AuthentificationBuyerScreen()));
+            // print(context.router.stack);
+            context.router.pushNamed('/');
           },
         ), // icon - - back
 
         actions: <Widget>[
           IconButton(
-            icon: SvgPicture.asset("icons/search.svg", color: Colors.black),
+            icon: const Icon(
+              Icons.search_outlined,
+              color: Colors.black,
+            ),
             onPressed: () {},
           ),
           IconButton(
-            icon: SvgPicture.asset("icons/cart.svg", color: Colors.black),
+            icon: const Icon(
+              Icons.account_circle_outlined,
+              color: Colors.black,
+            ),
+            onPressed: () => context.router.push(const LoginRoute()),
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.shopping_cart_outlined,
+              color: Colors.black,
+            ),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => Shopping_cart()));
+              context.router.navigate(const StandAloneCartRoute());
             },
           ),
-          SizedBox(width: kDefaultPadding / 2)
+          const SizedBox(width: kDefaultPadding / 2)
         ],
       ),
       body: Body(),
