@@ -2,7 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../../context/cart_context.dart';
 import './order_screen.dart';
-import './shopping_cart_screen.dart';
+import 'cart_screen.dart';
 import './products_screen.dart';
 
 class Buyer_screen extends StatelessWidget {
@@ -31,8 +31,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
-    products_screen(),
-    Shopping_cart(),
+    ProductsScreen(),
+    CartScreen(),
     OrderScreen(),
   ];
 

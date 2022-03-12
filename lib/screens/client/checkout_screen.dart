@@ -1,120 +1,128 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../routes/router.gr.dart';
+import '../../context/cart_context.dart';
 import '../../models/cart.dart';
 import '../../models/shipping_address.dart';
 import './component/shipping_address.dart';
-import './order_placed_screen.dart';
-import './shipping_screen.dart';
 
 class CheckoutScreen extends StatelessWidget {
-  const CheckoutScreen({required this.cart, Key? key}) : super(key: key);
-  final List<Cart> cart;
+  const CheckoutScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Place Your Order'),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(64),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 16, top: 16),
-                      child: const Text(
-                        '1  Shipping Address',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                ),
-                Card(
-                  child: ShippingAddressSection(
-                    onTapCallback: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const ShippingScreen(),
-                      ),
-                    ),
-                    shippingAddress: ShippingAddress(
-                      fullName: 'Kevin He',
-                      phoneNumber: '4001234321',
-                      address: '75 Laurier Ave. East',
-                      city: 'Ottawa',
-                      province: 'Ontario',
-                      postalCode: 'K1N 6N5',
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 16, top: 16),
-                      child: const Text(
-                        '2  Review Items',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                ),
-                Card(
-                  child: SizedBox(
-                    width: double.maxFinite,
-                    child: CheckoutTable(cart: cart),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Order Total:  \$${cart.map((e) => e.product.price * e.numOfItem).reduce((value, element) => value + element).toString()}',
-                          style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFFA12B16)),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 64,
-                      width: 192,
-                      margin: const EdgeInsets.all(20),
-                      child: ElevatedButton(
-                        onPressed: () => {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const OrderPlacedScreen(),
-                            ),
-                          ),
-                        },
-                        child: const Text(
-                          'Place your order',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              ],
+    return ChangeNotifierProvider(
+      create: (context) => CartContext(),
+      child: CartConsumer(
+        builder: (context, cart, child) => Scaffold(
+          appBar: AppBar(
+            title: const Text('Place Your Order'),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                // print(context.router.stack);
+                context.router.pop();
+              },
             ),
           ),
-        ));
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(64),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 16, top: 16),
+                        child: const Text(
+                          '1  Shipping Address',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                  Card(
+                    child: ShippingAddressSection(
+                      onTapCallback: () => context.router.push(AddressRoute()),
+                      shippingAddress: ShippingAddress(
+                        fullName: 'Lester Lockney',
+                        phoneNumber: '4001234321',
+                        address: '75 Laurier Ave. East',
+                        city: 'Ottawa',
+                        province: 'Ontario',
+                        postalCode: 'K1N 6N5',
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 16, top: 16),
+                        child: const Text(
+                          '2  Review Items',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                  Card(
+                    child: SizedBox(
+                      width: double.maxFinite,
+                      child: CheckoutTable(
+                          // checkout the selected items in the cart
+                          items: cart.items.where((i) => i.selected).toList()),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Order Total:  \$${cart.totalPrice}',
+                            style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFA12B16)),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: 64,
+                        width: 192,
+                        margin: const EdgeInsets.all(20),
+                        child: ElevatedButton(
+                          onPressed: () => {
+                            cart.clear(),
+                            context.router
+                                .replace(const CheckoutSuccessScreen())
+                          },
+                          child: const Text(
+                            'Place your order',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
 class CheckoutTable extends StatelessWidget {
-  const CheckoutTable({required this.cart, Key? key}) : super(key: key);
-  final List<Cart> cart;
+  const CheckoutTable({required this.items, Key? key}) : super(key: key);
+  final List<CartItem> items;
   @override
   Widget build(BuildContext context) {
     return DataTable(
@@ -125,7 +133,7 @@ class CheckoutTable extends StatelessWidget {
         DataColumn(label: Text('Quantity')),
         DataColumn(label: Text('Subtotal')),
       ],
-      rows: cart
+      rows: items
           .map((prod) => DataRow(
                 cells: [
                   DataCell(

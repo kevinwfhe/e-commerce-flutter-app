@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import '../../utils/order_status_map.dart';
 import '../../utils/shared_enum.dart';
 import '../../models/cart.dart';
 import '../../models/order.dart';
 import '../../models/shipping_address.dart';
+import '../../models/product.dart';
 import './component/shipping_address.dart';
 
 Order mockOrder = Order(
@@ -11,7 +13,7 @@ Order mockOrder = Order(
   orderDetails: <int, int>{1: 1},
   orderTimeStamp: DateTime(2022, 2, 1),
   orderStatus: ORDER_STATUS.pending,
-  totalPrice: 32,
+  totalPrice: 966,
   shippingAddress: ShippingAddress(
     fullName: 'Constancia Doerffer',
     phoneNumber: '9151881041',
@@ -22,8 +24,27 @@ Order mockOrder = Order(
   ),
 );
 
+var mockPurchasedItems = <CartItem>[
+  CartItem(product: products[2], numOfItem: 1),
+  CartItem(product: products[1], numOfItem: 1),
+  CartItem(product: products[0], numOfItem: 1),
+  CartItem(product: products[5], numOfItem: 1),
+].toList();
+
+const printInvoiceSnackBar = SnackBar(
+    content: Text(
+  'Invoice Printed!',
+  textAlign: TextAlign.center,
+));
+const emailInvoiceSnackBar = SnackBar(
+    content: Text(
+  'Invoice Emailed!',
+  textAlign: TextAlign.center,
+));
+
 class OrderDetailScreen extends StatelessWidget {
-  const OrderDetailScreen({required this.orderId, Key? key}) : super(key: key);
+  const OrderDetailScreen({@PathParam() required this.orderId, Key? key})
+      : super(key: key);
   final String orderId;
   @override
   Widget build(BuildContext context) {
@@ -126,9 +147,46 @@ class OrderDetailScreen extends StatelessWidget {
                 Card(
                   child: SizedBox(
                     width: double.maxFinite,
-                    child: OrderDetailTable(orderDetails: demoCarts),
+                    child: OrderDetailTable(purchasedItems: mockPurchasedItems),
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      height: 64,
+                      width: 192,
+                      margin: const EdgeInsets.all(20),
+                      child: ElevatedButton(
+                        onPressed: () => ScaffoldMessenger.of(context)
+                            .showSnackBar(printInvoiceSnackBar),
+                        child: const Text(
+                          'Print Invoice',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 64,
+                      width: 192,
+                      margin: const EdgeInsets.all(20),
+                      child: ElevatedButton(
+                        onPressed: () => ScaffoldMessenger.of(context)
+                            .showSnackBar(emailInvoiceSnackBar),
+                        child: const Text(
+                          'Email Invoice',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )
               ],
             ),
           ),
@@ -137,9 +195,9 @@ class OrderDetailScreen extends StatelessWidget {
 }
 
 class OrderDetailTable extends StatelessWidget {
-  const OrderDetailTable({required this.orderDetails, Key? key})
+  const OrderDetailTable({required this.purchasedItems, Key? key})
       : super(key: key);
-  final List<Cart> orderDetails;
+  final List<CartItem> purchasedItems;
   @override
   Widget build(BuildContext context) {
     return DataTable(
@@ -150,7 +208,7 @@ class OrderDetailTable extends StatelessWidget {
         DataColumn(label: Text('Quantity')),
         DataColumn(label: Text('Subtotal')),
       ],
-      rows: orderDetails
+      rows: purchasedItems
           .map((prod) => DataRow(
                 cells: [
                   DataCell(

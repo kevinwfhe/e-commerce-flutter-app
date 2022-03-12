@@ -1,35 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
+import '../../../routes/router.gr.dart';
 import '../../../constants.dart';
 import '../../../models/product.dart';
-import '../products_details_screen.dart';
 
 class ItemCard extends StatelessWidget {
   final Product product;
   final Function press;
 
   const ItemCard({
+    Key? key,
     required this.product,
     required this.press,
-  });
+  }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Details_product(
-                  product: product,
-                  title: product.title,
-                  price: product.price,
-                  description: product.description,
-                  image: product.image,
-                )));
+        context.router.navigate(
+          ProductDetailRoute(
+            productId: product.id,
+            product: product,
+            title: product.title,
+            price: product.price,
+            description: product.description,
+            image: product.image,
+          ),
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(kDefaultPadding),
+              padding: const EdgeInsets.all(kDefaultPadding),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
@@ -45,12 +50,12 @@ class ItemCard extends StatelessWidget {
             child: Text(
               // products is out demo list
               product.title,
-              style: TextStyle(color: kTextLightColor),
+              style: const TextStyle(color: kTextLightColor),
             ),
           ),
           Text(
             "\$${product.price}",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           )
         ],
       ),
