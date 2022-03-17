@@ -43,6 +43,7 @@ dependencies:
   auto_route: ^3.2.4
   flutter_web_plugins:
     sdk: flutter
+  http: ^0.13.4
 
 
 dev_dependencies:
