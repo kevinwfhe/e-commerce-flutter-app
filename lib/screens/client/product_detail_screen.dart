@@ -18,8 +18,8 @@ class ProductDetailScreen extends StatelessWidget {
     required this.price,
     required this.product,
   }) : super(key: key);
-  final String title, description, image;
-  final int price, productId;
+  final String productId, title, description, image;
+  final double price;
   final Product product;
 
   @override

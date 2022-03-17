@@ -10,7 +10,7 @@ class CartContext extends ChangeNotifier {
   List<CartItem> get items => _cart.items;
   bool get allSelected => _cart.items.every((i) => i.selected);
 
-  int get totalPrice {
+  double get totalPrice {
     var selectedItems = _cart.items.where((item) => item.selected);
     if (selectedItems.isNotEmpty) {
       return selectedItems

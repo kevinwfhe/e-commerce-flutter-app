@@ -167,11 +167,11 @@ class CheckoutRouter extends _i3.PageRouteInfo<void> {
 class ProductDetailRoute extends _i3.PageRouteInfo<ProductDetailRouteArgs> {
   ProductDetailRoute(
       {_i13.Key? key,
-      required int productId,
+      required String productId,
       required String title,
       required String description,
       required String image,
-      required int price,
+      required double price,
       required _i14.Product product})
       : super(ProductDetailRoute.name,
             path: '/item/:productId',
@@ -200,7 +200,7 @@ class ProductDetailRouteArgs {
 
   final _i13.Key? key;
 
-  final int productId;
+  final String productId;
 
   final String title;
 
@@ -208,7 +208,7 @@ class ProductDetailRouteArgs {
 
   final String image;
 
-  final int price;
+  final double price;
 
   final _i14.Product product;
 
