@@ -14,7 +14,7 @@ class Product {
     this.size,
   });
 
-  Product.fromJson(Map<String, dynamic> json)
+  Product.fromJson(Map<dynamic, dynamic> json)
       : id = json['id'],
         image = json['image'],
         title = json['title'],

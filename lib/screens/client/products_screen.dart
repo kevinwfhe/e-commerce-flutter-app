@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:http/http.dart' as http;
+import '../../routes/router.gr.dart';
+import '../../apis/request.dart';
 import '../../models/product.dart';
 import '../../constants.dart';
 import './component/body.dart';
-import '../../routes/router.gr.dart';
 // flutter pub add flutter_svg
 
 class ProductsScreen extends StatefulWidget {
@@ -17,20 +17,18 @@ class ProductsScreen extends StatefulWidget {
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
-  late Future<List<Product>> products;
+  late Future<List<Product>> fProducts;
 
-  Future<List<Product>> apitest() async {
-    var url = Uri.parse('http://3.99.187.201/api/Product');
-    var response = await http.get(url);
-    // print('Response status: ${response.statusCode}');
-    var jsonResponse = jsonDecode(response.body) as List;
-    return jsonResponse.map<Product>((p) => Product.fromJson(p)).toList();
+  Future<List<Product>> getProducts() async {
+    var response = await Request.get('/Product');
+    final List list = jsonDecode(response.body);
+    return list.map<Product>((p) => Product.fromJson(p)).toList();
   }
 
   @override
   void initState() {
     super.initState();
-    products = apitest();
+    fProducts = getProducts();
   }
 
   @override
@@ -42,7 +40,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
         leading: IconButton(
           icon: SvgPicture.asset("icons/back.svg", color: Colors.black),
           onPressed: () {
-            // print(context.router.stack);
             context.router.pushNamed('/');
           },
         ), // icon - - back
@@ -74,7 +71,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           const SizedBox(width: kDefaultPadding / 2)
         ],
       ),
-      body: Body(products: products),
+      body: Body(fProducts: fProducts),
     );
   }
 }
