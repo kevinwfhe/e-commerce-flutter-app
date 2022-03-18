@@ -8,6 +8,14 @@ Map<int, ORDER_STATUS> INT_TO_ORDER_STATUS = {
   4: ORDER_STATUS.shipped
 };
 
+Map<ORDER_STATUS, int> ORDER_STATUS_TO_INT = {
+  ORDER_STATUS.placed: 0,
+  ORDER_STATUS.pending: 1,
+  ORDER_STATUS.paid: 2,
+  ORDER_STATUS.shipping: 3,
+  ORDER_STATUS.shipped: 4
+};
+
 Map<ORDER_STATUS, String> ORDER_STATUS_TO_STRING = {
   ORDER_STATUS.placed: 'Placed',
   ORDER_STATUS.pending: 'Pending',

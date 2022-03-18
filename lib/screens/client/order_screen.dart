@@ -16,7 +16,9 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   late Future<List<Order>> fOrders;
   Future<List<Order>> getOrders() async {
-    var response = await Request.get('/Order');
+    // var response = await Request.get('/Order');
+    var response =
+        await Request.base('get', 'https://localhost:7098/api/Order');
     final List list = jsonDecode(response.body);
     return list.map((o) => Order.fromJson(o)).toList();
   }

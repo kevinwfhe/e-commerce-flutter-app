@@ -1,13 +1,10 @@
 import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import '../../apis/request.dart';
 import '../../utils/order_status_map.dart';
 import '../../models/order.dart';
-import '../../models/shipping_address.dart';
-import '../../models/product.dart';
-import './component/shipping_address.dart';
+import './component/shipping_address/shipping_address_section.dart';
 
 const printInvoiceSnackBar = SnackBar(
     content: Text(
@@ -145,9 +142,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ],
                         ),
                         Card(
-                          child: ShippingAddressSection(
-                            shippingAddress: order.shippingAddress,
-                            tailingIcon: const Spacer(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: ShippingAddressSection(
+                                shippingAddress: order.shippingAddress,
+                                readOnly: true),
                           ),
                         ),
                         Row(
@@ -222,7 +221,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 class OrderDetailTable extends StatelessWidget {
   const OrderDetailTable({required this.purchasedProducts, Key? key})
       : super(key: key);
-  final Map<Product, int> purchasedProducts;
+  final List<PurchasedProduct> purchasedProducts;
   @override
   Widget build(BuildContext context) {
     return DataTable(
@@ -233,9 +232,9 @@ class OrderDetailTable extends StatelessWidget {
           DataColumn(label: Text('Quantity')),
           DataColumn(label: Text('Subtotal')),
         ],
-        rows: purchasedProducts.entries
+        rows: purchasedProducts
             .map(
-              (entry) => DataRow(
+              (item) => DataRow(
                 cells: [
                   DataCell(
                     Row(
@@ -250,19 +249,19 @@ class OrderDetailTable extends StatelessWidget {
                                 color: Color(0xFFF5F6F9),
                               ),
                               child: Image.asset(
-                                entry.key.image,
+                                item.product.image,
                                 height: 100,
                               ),
                             ),
                           ),
                         ),
-                        Text(entry.key.title)
+                        Text(item.product.title)
                       ],
                     ),
                   ),
-                  DataCell(Text(entry.key.price.toString())),
-                  DataCell(Text(entry.value.toString())),
-                  DataCell(Text('${entry.value * entry.key.price}'))
+                  DataCell(Text(item.product.price.toString())),
+                  DataCell(Text(item.quantity.toString())),
+                  DataCell(Text('${item.quantity * item.product.price}'))
                 ],
               ),
             )
