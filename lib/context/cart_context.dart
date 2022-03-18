@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/cart.dart';
 
 Cart initCart = Cart(items: <CartItem>[]);
+
 class CartContext extends ChangeNotifier {
   final Cart _cart = initCart;
 
@@ -20,6 +21,11 @@ class CartContext extends ChangeNotifier {
     } else {
       return 0;
     }
+  }
+
+  Map<String, int> get itemsToCheckout {
+    var selectedItems = _cart.items.where((item) => item.selected);
+    return {for (var item in selectedItems) item.product.id: item.numOfItem};
   }
 
   void add(Product product) {

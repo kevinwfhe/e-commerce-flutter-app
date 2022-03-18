@@ -1,7 +1,6 @@
 import "package:auto_route/auto_route.dart";
 import 'package:csi5112group1project/screens/common/login_screen.dart';
 import '../screens/client/checkout_screen.dart';
-import '../screens/client/shipping_screen.dart';
 import '../screens/client/product_detail_screen.dart';
 import '../screens/client/products_screen.dart';
 import '../screens/client/order_placed_screen.dart';
@@ -84,11 +83,6 @@ import '../screens/client/client_main_page.dart';
       path: '/login',
       name: 'LoginRoute',
       page: AuthentificationBuyerScreen
-    ),
-    AutoRoute(
-      path: '/address',
-      name: 'AddressRoute',
-      page: ShippingScreen
     ),
   ],
 )
