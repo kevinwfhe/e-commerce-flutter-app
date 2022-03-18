@@ -85,15 +85,3 @@ class Cart {
   final List<CartItem> items;
   Cart({required this.items});
 }
-
-// Demo data for our cart
-
-List<CartItem> mockCartItems = [
-  CartItem(product: products[0], numOfItem: 2, selected: true),
-  CartItem(product: products[1], numOfItem: 1, selected: true),
-  CartItem(product: products[5], numOfItem: 1, selected: true),
-  CartItem(product: products[8], numOfItem: 1, selected: true),
-  CartItem(product: products[12], numOfItem: 1, selected: true),
-];
-
-Cart mockCart = Cart(items: mockCartItems);

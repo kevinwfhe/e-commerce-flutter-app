@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cart.dart';
 
+Cart initCart = Cart(items: <CartItem>[]);
 class CartContext extends ChangeNotifier {
-  final Cart _cart = mockCart;
+  final Cart _cart = initCart;
 
   Cart get instance => _cart;
   List<CartItem> get items => _cart.items;
@@ -36,20 +37,20 @@ class CartContext extends ChangeNotifier {
     notifyListeners();
   }
 
-  void subtract(int productId) {
+  void subtract(String productId) {
     var itemToSubtract =
         _cart.items.firstWhere((i) => i.product.id == productId);
     itemToSubtract.numOfItem -= 1;
     notifyListeners();
   }
 
-  void remove(int productId) {
+  void remove(String productId) {
     var itemToRemove = _cart.items.firstWhere((i) => i.product.id == productId);
     _cart.items.remove(itemToRemove);
     notifyListeners();
   }
 
-  void select(int productId) {
+  void select(String productId) {
     var itemToSelect = _cart.items.firstWhere((i) => i.product.id == productId);
     itemToSelect.selected = !itemToSelect.selected;
     notifyListeners();

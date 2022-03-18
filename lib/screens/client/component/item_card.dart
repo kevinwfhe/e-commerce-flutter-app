@@ -6,29 +6,18 @@ import '../../../models/product.dart';
 
 class ItemCard extends StatelessWidget {
   final Product product;
-  final Function press;
+  final Function onTap;
 
   const ItemCard({
     Key? key,
     required this.product,
-    required this.press,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.router.navigate(
-          ProductDetailRoute(
-            productId: product.id,
-            product: product,
-            title: product.title,
-            price: product.price,
-            description: product.description,
-            image: product.image,
-          ),
-        );
-      },
+      onTap: () => onTap(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

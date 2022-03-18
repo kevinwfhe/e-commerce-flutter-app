@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../context/cart_context.dart';
-import '../../../models/cart.dart';
 import './cart_item.dart';
 
 class Body extends StatefulWidget {
@@ -16,13 +15,14 @@ class _BodyState extends State<Body> {
         padding: const EdgeInsets.only(top: 40, bottom: 100),
         // EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: ListView.builder(
-          itemCount: mockCart.items.length,
+          itemCount: cart.items.length,
           itemBuilder: (context, index) => Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Dismissible(
-              key: Key(mockCart.items[index].product.id.toString()),
+              key: Key(cart.items[index].product.id.toString()),
               direction: DismissDirection.endToStart,
-              onDismissed: (direction) => cart.remove(index),
+              onDismissed: (direction) =>
+                  cart.remove(cart.items[index].product.id),
               background: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
@@ -30,7 +30,7 @@ class _BodyState extends State<Body> {
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              child: CartCard(item: mockCart.items[index]),
+              child: CartCard(item: cart.items[index]),
             ),
           ),
         ),
