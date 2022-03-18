@@ -13,7 +13,6 @@
 import 'package:auto_route/auto_route.dart' as _i3;
 import 'package:flutter/material.dart' as _i13;
 
-import '../models/product.dart' as _i14;
 import '../screens/client/authentification_buyer_screen.dart' as _i6;
 import '../screens/client/cart_screen.dart' as _i5;
 import '../screens/client/checkout_screen.dart' as _i11;
@@ -45,17 +44,14 @@ class AppRouter extends _i3.RootStackRouter {
           routeData: routeData, child: const _i3.EmptyRouterPage());
     },
     ProductDetailRoute.name: (routeData) {
-      final args = routeData.argsAs<ProductDetailRouteArgs>();
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ProductDetailRouteArgs>(
+          orElse: () => ProductDetailRouteArgs(
+              productId: pathParams.getString('productId')));
       return _i3.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i4.ProductDetailScreen(
-              key: args.key,
-              productId: args.productId,
-              title: args.title,
-              description: args.description,
-              image: args.image,
-              price: args.price,
-              product: args.product));
+              key: args.key, productId: args.productId));
     },
     StandAloneCartRoute.name: (routeData) {
       return _i3.MaterialPageX<dynamic>(
@@ -165,56 +161,25 @@ class CheckoutRouter extends _i3.PageRouteInfo<void> {
 /// generated route for
 /// [_i4.ProductDetailScreen]
 class ProductDetailRoute extends _i3.PageRouteInfo<ProductDetailRouteArgs> {
-  ProductDetailRoute(
-      {_i13.Key? key,
-      required String productId,
-      required String title,
-      required String description,
-      required String image,
-      required double price,
-      required _i14.Product product})
+  ProductDetailRoute({_i13.Key? key, required String productId})
       : super(ProductDetailRoute.name,
             path: '/item/:productId',
-            args: ProductDetailRouteArgs(
-                key: key,
-                productId: productId,
-                title: title,
-                description: description,
-                image: image,
-                price: price,
-                product: product),
+            args: ProductDetailRouteArgs(key: key, productId: productId),
             rawPathParams: {'productId': productId});
 
   static const String name = 'ProductDetailRoute';
 }
 
 class ProductDetailRouteArgs {
-  const ProductDetailRouteArgs(
-      {this.key,
-      required this.productId,
-      required this.title,
-      required this.description,
-      required this.image,
-      required this.price,
-      required this.product});
+  const ProductDetailRouteArgs({this.key, required this.productId});
 
   final _i13.Key? key;
 
   final String productId;
 
-  final String title;
-
-  final String description;
-
-  final String image;
-
-  final double price;
-
-  final _i14.Product product;
-
   @override
   String toString() {
-    return 'ProductDetailRouteArgs{key: $key, productId: $productId, title: $title, description: $description, image: $image, price: $price, product: $product}';
+    return 'ProductDetailRouteArgs{key: $key, productId: $productId}';
   }
 }
 
