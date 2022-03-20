@@ -42,7 +42,7 @@ class _SignUpBodyState extends State<SignUpBody> {
     );
     Request.post('/Authentication', jsonEncode(newClient)).then((response) {
       if (response.statusCode == 200) {
-        context.router.replace(const ClientMainRoute());
+        context.navigateTo(const ClientMainRoute());
       }
     }).catchError((error) {
       print(error);

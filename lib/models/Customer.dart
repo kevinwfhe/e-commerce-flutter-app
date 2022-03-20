@@ -13,11 +13,3 @@ class Customer {
     this.clients,
   });
 }
-
-Customer mockSeller = Customer(
-    userId: "test123",
-    username: "admin",
-    password: "123123",
-    firstName: "firstname",
-    lastName: "lastname",
-    clients: [mockClient]);
