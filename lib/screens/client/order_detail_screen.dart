@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
+import 'package:csi5112group1project/utils/base64.dart';
 import 'package:flutter/material.dart';
 import '../../apis/request.dart';
 import '../../utils/order_status_map.dart';
@@ -248,8 +249,8 @@ class OrderDetailTable extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 color: Color(0xFFF5F6F9),
                               ),
-                              child: Image.asset(
-                                item.product.image,
+                              child: Image.memory(
+                                base64ImageToUint8List(item.product.image),
                                 height: 100,
                               ),
                             ),

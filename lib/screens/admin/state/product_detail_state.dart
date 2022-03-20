@@ -6,6 +6,7 @@ import 'package:image_picker_web/image_picker_web.dart';
 import '../../../constants.dart';
 import '../../../models/product.dart';
 import '../component/product_detail_manage_body.dart';
+import '../../../utils/base64.dart';
 
 class ProductDetailTableState extends State<ProductDetailManageBody> {
   final productTitleController = TextEditingController();
@@ -16,12 +17,6 @@ class ProductDetailTableState extends State<ProductDetailManageBody> {
 
   String dropdownValue = 'electronic';
   Uint8List? pickedImage;
-
-  Uint8List base64ImageToUint8List(String base64Image) {
-    String header = "data:image/png;base64,";
-    String base64String = base64Image.substring(header.length);
-    return base64Decode(base64String);
-  }
 
   @override
   void initState() {

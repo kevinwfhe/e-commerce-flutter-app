@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:csi5112group1project/utils/base64.dart';
 import 'package:flutter/material.dart';
 import '../../../models/cart.dart';
 
@@ -22,7 +25,7 @@ class CartCard extends StatelessWidget {
                 color: const Color(0xFFF5F6F9),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Image.asset(item.product.image),
+              child: Image.memory(base64ImageToUint8List(item.product.image)),
             ),
           ),
         ),

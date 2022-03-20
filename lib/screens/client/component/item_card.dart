@@ -1,6 +1,5 @@
+import 'package:csi5112group1project/utils/base64.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
-import '../../../routes/router.gr.dart';
 import '../../../constants.dart';
 import '../../../models/product.dart';
 
@@ -23,6 +22,7 @@ class ItemCard extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Container(
+              height: 50,
               padding: const EdgeInsets.all(kDefaultPadding),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -30,7 +30,7 @@ class ItemCard extends StatelessWidget {
               ),
               child: Hero(
                 tag: "${product.id}",
-                child: Image.asset(product.image),
+                child: Image.memory(base64ImageToUint8List(product.image)),
               ),
             ),
           ),

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import '../../apis/request.dart';
 import '../../constants.dart';
+import '../../utils/base64.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({Key? key}) : super(key: key);
@@ -37,12 +38,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
       '/Product',
       jsonEncode(product),
     );
-  }
-
-  String uint8ListToBase64Image(Uint8List uint8list) {
-    String base64String = base64Encode(uint8list);
-    String header = "data:image/png;base64,";
-    return header + base64String;
   }
 
   void addProduct() async {

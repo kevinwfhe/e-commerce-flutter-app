@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:csi5112group1project/models/order.dart';
+import 'package:csi5112group1project/utils/base64.dart';
 import 'package:csi5112group1project/utils/shared_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -100,7 +101,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       orderStatus: ORDER_STATUS.placed,
       totalPrice: CartContext().totalPrice,
       shippingAddressId: selectedAddressId,
-      // convert Map<String(productId), int(quantity)> 
+      // convert Map<String(productId), int(quantity)>
       // to List<PurchasedItem> to comply with api services
       purchasedItems: CartContext()
           .itemsToCheckout
@@ -359,8 +360,8 @@ class CheckoutTable extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 color: Color(0xFFF5F6F9),
                               ),
-                              child: Image.asset(
-                                prod.product.image,
+                              child: Image.memory(
+                                base64ImageToUint8List(prod.product.image),
                                 height: 100,
                               ),
                             ),
