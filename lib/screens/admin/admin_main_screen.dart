@@ -23,8 +23,8 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               const AdminUserInfoSection(
-                username: 'Sandra Adams',
-                emailAddress: 'sandra_a88@gmail.com',
+                username: 'Julina Ellum',
+                emailAddress: 'jellum0@netlog.com',
               ),
               const Divider(
                 height: 1,
@@ -129,20 +129,20 @@ class AdminUserInfoSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50)),
             height: 80,
             width: 80,
-            child: Icon(Icons.people),
+            child: const Icon(Icons.people),
           ),
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
           Text(
             username,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Text(
             emailAddress,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               color: Colors.grey,
             ),

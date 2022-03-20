@@ -1,10 +1,26 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:csi5112group1project/screens/client/sign_up_screen.dart';
+import '../../../apis/request.dart';
 import '../../../routes/router.gr.dart';
 import 'package:flutter/material.dart';
 
-class AuthentificationBuyerBody extends StatelessWidget {
+class AuthentificationBuyerBody extends StatefulWidget {
   const AuthentificationBuyerBody({Key? key}) : super(key: key);
+
+  @override
+  _AuthentificationBuyerBodyState createState() =>
+      _AuthentificationBuyerBodyState();
+}
+
+class _AuthentificationBuyerBodyState extends State<AuthentificationBuyerBody> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    usernameController.text = 'dilchenko1@jiathis.com';
+    passwordController.text = 'doI6vF';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +32,16 @@ class AuthentificationBuyerBody extends StatelessWidget {
             child: SizedBox(
               width: 300,
               height: 200,
-              child: Image(image: AssetImage('assets/images/logo.jpg')),
+              child: Image(
+                image: AssetImage('assets/images/logo.jpg'),
+              ),
             ),
           ),
           const SizedBox(height: 30),
           SizedBox(
             width: 300,
             child: TextFormField(
+              controller: usernameController,
               decoration: const InputDecoration(
                 labelText: 'Email Address',
                 labelStyle: TextStyle(
@@ -38,6 +57,7 @@ class AuthentificationBuyerBody extends StatelessWidget {
           SizedBox(
             width: 300,
             child: TextFormField(
+              controller: passwordController,
               decoration: const InputDecoration(
                 labelText: 'Password',
                 labelStyle: TextStyle(
@@ -61,9 +81,21 @@ class AuthentificationBuyerBody extends StatelessWidget {
               style: TextButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
-              onPressed: () => context.navigateTo(
-                const ClientMainRoute(),
-              ),
+              onPressed: () => {
+                Request.get(
+                  '/Authentication/client/${usernameController.text}/${passwordController.text}',
+                ).then((response) {
+                  if (response.statusCode == 200) {
+                    context.navigateTo(
+                      const ClientMainRoute(),
+                    );
+                  }
+                }).catchError((error) {
+                  print(error);
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(loginFailedSnackBar);
+                })
+              },
               child: const Text(
                 'Sign In',
                 style: TextStyle(
@@ -108,3 +140,9 @@ class AuthentificationBuyerBody extends StatelessWidget {
     );
   }
 }
+
+const loginFailedSnackBar = SnackBar(
+    content: Text(
+  'Your authentication information is incorrect. Please try again.',
+  textAlign: TextAlign.center,
+));

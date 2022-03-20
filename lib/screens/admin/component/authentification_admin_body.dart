@@ -1,9 +1,25 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import '../../../apis/request.dart';
 import '../../../routes/router.gr.dart';
 
-class AuthentificationAdminBody extends StatelessWidget {
+class AuthentificationAdminBody extends StatefulWidget {
   const AuthentificationAdminBody({Key? key}) : super(key: key);
+
+  @override
+  _AuthentificationAdminBodyState createState() =>
+      _AuthentificationAdminBodyState();
+}
+
+class _AuthentificationAdminBodyState extends State<AuthentificationAdminBody> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    usernameController.text = 'jellum0@netlog.com';
+    passwordController.text = 'Hlua5QW';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +38,7 @@ class AuthentificationAdminBody extends StatelessWidget {
           SizedBox(
             width: 300,
             child: TextFormField(
+              controller: usernameController,
               decoration: const InputDecoration(
                 labelText: 'Username',
                 labelStyle: TextStyle(
@@ -37,6 +54,7 @@ class AuthentificationAdminBody extends StatelessWidget {
           SizedBox(
             width: 300,
             child: TextFormField(
+              controller: passwordController,
               decoration: const InputDecoration(
                 labelText: 'Password',
                 labelStyle: TextStyle(
@@ -56,9 +74,21 @@ class AuthentificationAdminBody extends StatelessWidget {
               style: TextButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
-              onPressed: () => context.navigateTo(
-                const AdminMainRoute(),
-              ),
+              onPressed: () {
+                Request.get(
+                  '/Authentication/admin/${usernameController.text}/${passwordController.text}',
+                ).then((response) {
+                  if (response.statusCode == 200) {
+                    context.navigateTo(
+                      const AdminMainRoute(),
+                    );
+                  }
+                }).catchError((error) {
+                  print(error);
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(loginFailedSnackBar);
+                });
+              },
               child: const Text(
                 'Login In',
                 style: TextStyle(
@@ -73,3 +103,9 @@ class AuthentificationAdminBody extends StatelessWidget {
     );
   }
 }
+
+const loginFailedSnackBar = SnackBar(
+    content: Text(
+  'Your authentication information is incorrect. Please try again.',
+  textAlign: TextAlign.center,
+));
