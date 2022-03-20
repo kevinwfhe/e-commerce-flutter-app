@@ -1,7 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../constants.dart';
-import '../common/login_screen.dart';
 import './component/authentification_admin_body.dart';
 
 class AuthentificationAdminScreen extends StatelessWidget {
@@ -13,12 +13,9 @@ class AuthentificationAdminScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: SvgPicture.asset("icons/back.svg", color: Colors.black),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => LoginScreen()));
-          },
+          onPressed: () => context.router.pop()
         ), // icon - - back
-        actions: <Widget>[SizedBox(width: kDefaultPadding / 2)],
+        actions: const <Widget>[SizedBox(width: kDefaultPadding / 2)],
       ),
       body: AuthentificationAdminBody(),
     );

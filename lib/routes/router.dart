@@ -1,5 +1,8 @@
 import "package:auto_route/auto_route.dart";
-import 'package:csi5112group1project/screens/common/login_screen.dart';
+import 'package:csi5112group1project/screens/admin/admin_main_screen.dart';
+import 'package:csi5112group1project/screens/admin/authentification_admin_screen.dart';
+import 'package:csi5112group1project/screens/admin/component/product_detail_manage_body.dart';
+import 'package:csi5112group1project/screens/admin/product_detail_manage_screen.dart';
 import '../screens/client/checkout_screen.dart';
 import '../screens/client/product_detail_screen.dart';
 import '../screens/client/products_screen.dart';
@@ -17,11 +20,6 @@ import '../screens/client/client_main_page.dart';
   routes: <AutoRoute>[
     AutoRoute(
       path: '/',
-      page: LoginScreen,
-      initial: true
-    ),
-    AutoRoute(
-      path: '/client',
       page: ClientMainPage,
       initial: true,
       children: [
@@ -84,6 +82,36 @@ import '../screens/client/client_main_page.dart';
       name: 'LoginRoute',
       page: AuthentificationBuyerScreen
     ),
+    AutoRoute(
+      path: '/admin',
+      name: 'AdminRouter',
+      page: EmptyRouterPage,
+      children: [
+        AutoRoute(
+          path: '',
+          name: 'AdminMainRoute',
+          page: AdminMainScreen
+        ),
+        AutoRoute(
+          path: 'login',
+          name: 'AdminLoginRoute',
+          page: AuthentificationAdminScreen
+        ),
+        AutoRoute(
+          path: 'product',
+          name: 'AdminProductRouter',
+          page: EmptyRouterPage,
+          children: [
+            AutoRoute(
+              path: ':productId',
+              name: 'AdminProductDetail',
+              page: ProductDetailManageScreen
+            )
+          ]
+        ),
+        // AutoRoute()
+      ]
+    )
   ],
 )
 class $AppRouter {}

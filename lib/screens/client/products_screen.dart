@@ -37,13 +37,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         elevation: 0,
-        leading: IconButton(
-          icon: SvgPicture.asset("icons/back.svg", color: Colors.black),
-          onPressed: () {
-            context.router.pushNamed('/');
-          },
-        ), // icon - - back
-
         actions: <Widget>[
           IconButton(
             icon: const Icon(

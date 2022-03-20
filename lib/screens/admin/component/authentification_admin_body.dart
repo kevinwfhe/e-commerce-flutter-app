@@ -1,96 +1,69 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import '../admin_screen.dart';
+import '../../../routes/router.gr.dart';
 
 class AuthentificationAdminBody extends StatelessWidget {
+  const AuthentificationAdminBody({Key? key}) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Padding(
+      padding: const EdgeInsets.only(top: 60),
       child: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 60.0, bottom: 20),
-            child: Center(
-              child: Container(
-                  width: 200,
-                  height: 150,
-                  child: Image.asset('images/logo.jpg')),
+          Center(
+            child: SizedBox(
+              width: 300,
+              height: 200,
+              child: Image.asset('images/logo.jpg'),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 10.0),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 60.0, bottom: 20),
-            child: Center(
-              child: Container(
-                width: 300,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                        color: Color.fromARGB(225, 240, 240, 240), width: 1.0),
-                  ),
+          const SizedBox(height: 30),
+          SizedBox(
+            width: 300,
+            child: TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Username',
+                labelStyle: TextStyle(
+                  fontSize: 15.0,
+                  color: Color.fromARGB(255, 93, 93, 93),
                 ),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Email Address',
-                    labelStyle: TextStyle(
-                        fontSize: 15.0, color: Color.fromARGB(255, 93, 93, 93)),
-                    border: InputBorder.none,
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
+                border: OutlineInputBorder(),
               ),
+              keyboardType: TextInputType.emailAddress,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30.0, bottom: 20),
-            child: Center(
-              child: Container(
-                width: 300,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                        color: Color.fromARGB(225, 240, 240, 240), width: 1.0),
-                  ),
+          const SizedBox(height: 15),
+          SizedBox(
+            width: 300,
+            child: TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                labelStyle: TextStyle(
+                  fontSize: 15.0,
+                  color: Color.fromARGB(255, 93, 93, 93),
                 ),
-                child: Row(
-                  textDirection: TextDirection.rtl,
-                  children: <Widget>[
-                    Expanded(
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: ' Authentification Code',
-                          labelStyle: TextStyle(
-                              fontSize: 15.0,
-                              color: Color.fromARGB(255, 93, 93, 93)),
-                          border: InputBorder.none,
-                        ),
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                    RaisedButton(child: Text("Send Code"), onPressed: () {}),
-                  ],
-                ),
+                border: OutlineInputBorder(),
               ),
+              keyboardType: TextInputType.visiblePassword,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 60.0, bottom: 20),
-            child: Center(
-              child: Container(
-                height: 50,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => AdminScreen()));
-                  },
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
+          const SizedBox(height: 30),
+          SizedBox(
+            height: 50,
+            width: 300,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              onPressed: () => context.navigateTo(
+                const AdminMainRoute(),
+              ),
+              child: const Text(
+                'Login In',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
                 ),
               ),
             ),
