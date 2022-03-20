@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import '../../../constants.dart';
 import './authentification_admin_screen.dart';
 import './component/admin_body.dart';
@@ -13,7 +12,7 @@ class AdminScreen extends StatelessWidget {
         backgroundColor: Colors.blue,
         elevation: 0,
         leading: IconButton(
-          icon: SvgPicture.asset("icons/back.svg", color: Colors.black),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.push(
                 context,
@@ -21,7 +20,7 @@ class AdminScreen extends StatelessWidget {
                     builder: (_) => AuthentificationAdminScreen()));
           },
         ), // icon - - back
-        actions: <Widget>[SizedBox(width: kDefaultPadding / 2)],
+        actions: const <Widget>[SizedBox(width: kDefaultPadding / 2)],
       ),
       body: AdminBody(),
     );

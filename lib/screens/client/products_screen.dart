@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:auto_route/auto_route.dart';
 import '../../routes/router.gr.dart';
 import '../../apis/request.dart';
 import '../../models/product.dart';
 import '../../constants.dart';
 import './component/body.dart';
-// flutter pub add flutter_svg
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({Key? key}) : super(key: key);
@@ -41,21 +39,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
           IconButton(
             icon: const Icon(
               Icons.search_outlined,
-              color: Colors.black,
             ),
             onPressed: () {},
           ),
           IconButton(
             icon: const Icon(
               Icons.account_circle_outlined,
-              color: Colors.black,
             ),
             onPressed: () => context.router.push(const LoginRoute()),
           ),
           IconButton(
             icon: const Icon(
               Icons.shopping_cart_outlined,
-              color: Colors.black,
             ),
             onPressed: () {
               context.router.navigate(const StandAloneCartRoute());

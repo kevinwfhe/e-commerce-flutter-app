@@ -54,10 +54,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                   actions: <Widget>[
                     IconButton(
-                      icon: SvgPicture.asset(
-                        "icons/cart.svg",
-                        color: Colors.black,
-                      ),
+                      icon: const Icon(Icons.shopping_cart_outlined),
                       onPressed: () =>
                           context.router.push(const StandAloneCartRoute()),
                     ),

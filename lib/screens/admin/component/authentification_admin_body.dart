@@ -11,11 +11,11 @@ class AuthentificationAdminBody extends StatelessWidget {
       padding: const EdgeInsets.only(top: 60),
       child: Column(
         children: <Widget>[
-          Center(
+          const Center(
             child: SizedBox(
               width: 300,
               height: 200,
-              child: Image.asset('images/logo.jpg'),
+              child: Image(image: AssetImage('assets/images/logo.jpg')),
             ),
           ),
           const SizedBox(height: 30),
