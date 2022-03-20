@@ -1,0 +1,36 @@
+name: S3 Deploy
+
+on:
+  release:
+    types:
+      - created
+      
+  workflow_dispatch:
+
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable' # or: 'beta' or 'master'
+    - run: flutter --version
+    - run: flutter pub get
+    #- run: flutter test
+    - run: flutter build web
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: AKIA6MFAD3FF22DLXIHF
+        aws-secret-access-key: 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
+        aws-region: ca-central-1
+        
+    - name: Sync to S3
+      run: aws s3 sync . s3://csi5112project-frontend-bucket --delete --cache-control maxage=0 --acl public-read
+      working-directory: ./build/web
+
+
