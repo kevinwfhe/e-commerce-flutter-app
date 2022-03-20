@@ -1,13 +1,18 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:csi5112group1project/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import './product.dart';
 import '../screens/admin/product_detail_manage_screen.dart';
 
 class ProductTableSource extends AdvancedDataTableSource<Product> {
-  final data = products;
-
   final BuildContext context;
-  ProductTableSource({required this.context});
+  final List<Product> data;
+  ProductTableSource({
+    Key? key,
+    required this.context,
+    required this.data,
+  });
 
   String formatText(String text) {
     if (text.length > 120) {
@@ -18,11 +23,17 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
     return text;
   }
 
-  showDetailPage(Product product) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => ProductDetailManageScreen(product: product)));
+  showDetailPage(String productId, Product product) {
+    context.router.push(
+      AdminProductRouter(
+        children: [
+          AdminProductDetail(
+            productId: productId,
+            product: product,
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -35,25 +46,31 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
       DataCell(
         Text(currentRowData.title),
       ),
-      DataCell(
-        Text(formatText(currentRowData.description)),
-      ),
+      // DataCell(
+      //   Text(formatText(currentRowData.description)),
+      // ),
       DataCell(
         Text(currentRowData.category),
       ),
       DataCell(
         Text(currentRowData.price.toString()),
       ),
-      DataCell(
-        Text(currentRowData.size.toString()),
-      ),
-      DataCell(Container(
-          width: 200, height: 150, child: Image.asset(currentRowData.image))),
+      // DataCell(
+      //   Text(currentRowData.size.toString()),
+      // ),
+      // DataCell(
+      //   Container(
+      //     width: 200,
+      //     height: 150,
+      //     child: Image.asset(currentRowData.image),
+      //   ),
+      // ),
       DataCell(
         TextButton(
           onPressed: () {
             final product = currentRowData;
-            showDetailPage(product);
+            final productId = currentRowData.id;
+            showDetailPage(productId, product);
           },
           child: const Text(
             'View',

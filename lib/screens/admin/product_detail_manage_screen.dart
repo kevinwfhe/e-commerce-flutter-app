@@ -1,30 +1,53 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:auto_route/auto_route.dart';
+import '../../apis/request.dart';
 import '../../models/product.dart';
 import './component/product_detail_manage_body.dart';
-import './product_manage_screen.dart';
 
-class ProductDetailManageScreen extends StatelessWidget {
-  final Product? product;
+class ProductDetailManageScreen extends StatefulWidget {
+  final Product product;
+  final String productId;
+  const ProductDetailManageScreen({
+    Key? key,
+    @PathParam() required this.productId,
+    required this.product,
+  }) : super(key: key);
 
-  ProductDetailManageScreen({this.product});
+  @override
+  _ProductDetailManageScreenState createState() =>
+      _ProductDetailManageScreenState();
+}
+
+class _ProductDetailManageScreenState extends State<ProductDetailManageScreen> {
+  late Future<Product> fProduct;
+  Future<Product> getProduct() async {
+    var response = await Request.get('/Product/${widget.productId}');
+    var product = Product.fromJson(jsonDecode(response.body));
+    return product;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fProduct = getProduct();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text("Product manage"),
-          leading: IconButton(
-            icon: SvgPicture.asset("icons/back.svg", color: Colors.black),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => ProductManageScreen()));
-            },
-          ),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text("Product manage"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.popRoute(),
         ),
-        body: ProductDetailManageBody(
-          product: product,
-        ));
+      ),
+      body: ProductDetailManageBody(
+        fProduct: fProduct,
+      ),
+    );
   }
 }

@@ -22,6 +22,18 @@ class Product {
         description = json['description'],
         size = json['size'],
         category = json['category'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'image': image,
+      'title': title,
+      'price': price,
+      'description': description,
+      'category': category,
+      'size': size ?? '',
+    };
+  }
 }
 
 // Manually add 15 items, 3 categories and 5 for each.
