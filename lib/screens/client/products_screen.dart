@@ -38,15 +38,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.search_outlined,
-            ),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(
               Icons.account_circle_outlined,
             ),
-            onPressed: () => context.router.push(const LoginRoute()),
+            onPressed: () => {
+              ScaffoldMessenger.of(context).showSnackBar(printLogoutSnackBar),
+              context.router.push(const LoginRoute())
+            },
           ),
           IconButton(
             icon: const Icon(
@@ -63,3 +60,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 }
+
+const printLogoutSnackBar = SnackBar(
+    content: Text(
+  'You have logged out!',
+  textAlign: TextAlign.center,
+));

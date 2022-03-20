@@ -7,6 +7,11 @@ import '../../utils/order_status_map.dart';
 import '../../models/order.dart';
 import './component/shipping_address/shipping_address_section.dart';
 
+const printQuestionSnackBar = SnackBar(
+    content: Text(
+  'Question submitted!',
+  textAlign: TextAlign.center,
+));
 const printInvoiceSnackBar = SnackBar(
     content: Text(
   'Invoice Printed!',
@@ -171,8 +176,44 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ),
                         ),
                         Row(
+                          children: [
+                            Container(
+                              margin:
+                                  const EdgeInsets.only(bottom: 16, top: 16),
+                              child: const Text(
+                                '4  Ask any question',
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        ),
+                        Card(
+                          child: SizedBox(
+                            width: double.maxFinite,
+                            child: QuestionDetailTable(
+                                purchasedProducts: order.purchasedProducts),
+                          ),
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            Container(
+                              height: 64,
+                              width: 192,
+                              margin: const EdgeInsets.all(20),
+                              child: ElevatedButton(
+                                onPressed: () => ScaffoldMessenger.of(context)
+                                    .showSnackBar(printQuestionSnackBar),
+                                child: const Text(
+                                  'Submit a request',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
                             Container(
                               height: 64,
                               width: 192,
@@ -263,6 +304,33 @@ class OrderDetailTable extends StatelessWidget {
                   DataCell(Text(item.product.price.toString())),
                   DataCell(Text(item.quantity.toString())),
                   DataCell(Text('${item.quantity * item.product.price}'))
+                ],
+              ),
+            )
+            .toList());
+  }
+}
+
+class QuestionDetailTable extends StatelessWidget {
+  const QuestionDetailTable({required this.purchasedProducts, Key? key})
+      : super(key: key);
+  final List<PurchasedProduct> purchasedProducts;
+  @override
+  Widget build(BuildContext context) {
+    return DataTable(
+        dataRowHeight: 150,
+        columns: const <DataColumn>[
+          DataColumn(label: Text('Case Number')),
+          DataColumn(label: Text('Content')),
+          DataColumn(label: Text('Response')),
+        ],
+        rows: purchasedProducts
+            .map(
+              (item) => DataRow(
+                cells: [
+                  DataCell(Text(item.product.title.toString())),
+                  DataCell(Text("This product is not good")),
+                  DataCell(Text("Sorry")),
                 ],
               ),
             )

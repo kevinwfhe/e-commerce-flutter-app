@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+
 import '../../../constants.dart';
+import '../../../apis/request.dart';
+import '../../../models/category.dart' as cate;
 
 class Category extends StatefulWidget {
   @override
@@ -7,6 +11,19 @@ class Category extends StatefulWidget {
 }
 
 class _categoryState extends State<Category> {
+  // Future<List<cate.Category>> getCategories() async {
+  //   var response = await Request.get('/Category');
+  //   final List list = jsonDecode(response.body);
+  //   return list.map((c) => cate.Category.fromJson(c)).toList();
+  // }
+
+  // late List<cate.Category> list;
+
+  // void getAllCate() async {
+  //   late Future<List<cate.Category>> fCategories = getCategories();
+  //   list = await fCategories;
+  // }
+
   List<String> categories = [
     "All",
     "Shoes",
@@ -16,11 +33,12 @@ class _categoryState extends State<Category> {
     "Food"
   ];
 
-  // The default category is Shoes
+  // The default category is All
   int selectedCategory = 0;
 
   @override
   Widget build(BuildContext context) {
+    // getAllCate();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
       child: SizedBox(
