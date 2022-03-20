@@ -1,10 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:csi5112group1project/screens/client/sign_up_screen.dart';
-import '../../../routes/router.gr.dart';
 import 'package:flutter/material.dart';
 
-class AuthentificationBuyerBody extends StatelessWidget {
-  const AuthentificationBuyerBody({Key? key}) : super(key: key);
+import '../../routes/router.gr.dart';
+import 'authentification_buyer_screen.dart';
+
+class SignUpBody extends StatelessWidget {
+  const SignUpBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,21 @@ class AuthentificationBuyerBody extends StatelessWidget {
               width: 300,
               height: 200,
               child: Image(image: AssetImage('assets/images/logo.jpg')),
+            ),
+          ),
+          const SizedBox(height: 30),
+          SizedBox(
+            width: 300,
+            child: TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'UserName',
+                labelStyle: TextStyle(
+                  fontSize: 15.0,
+                  color: Color.fromARGB(255, 93, 93, 93),
+                ),
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.name,
             ),
           ),
           const SizedBox(height: 30),
@@ -53,6 +69,21 @@ class AuthentificationBuyerBody extends StatelessWidget {
             //   onPressed: () {},
             // ),
           ),
+          const SizedBox(height: 15),
+          SizedBox(
+            width: 300,
+            child: TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Confirm Password',
+                labelStyle: TextStyle(
+                  fontSize: 15.0,
+                  color: Color.fromARGB(255, 93, 93, 93),
+                ),
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.visiblePassword,
+            ),
+          ),
           const SizedBox(height: 30),
           SizedBox(
             height: 50,
@@ -61,47 +92,20 @@ class AuthentificationBuyerBody extends StatelessWidget {
               style: TextButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
-              onPressed: () => context.navigateTo(
-                const ClientMainRoute(),
-              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => AuthentificationBuyerScreen()));
+              },
               child: const Text(
-                'Sign In',
+                'Sign Up',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  const Text('New User?'),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => SignUpScreen()));
-                      print('create account');
-                    },
-                    child: const Text('Sign Up'),
-                  )
-                ],
-              ),
-              const Text('|'),
-              TextButton(
-                onPressed: () => context.navigateTo(
-                  const AdminRouter(
-                    children: [
-                      AdminLoginRoute(),
-                    ],
-                  ),
-                ),
-                child: const Text('Admin Login'),
-              )
-            ],
           ),
         ],
       ),
