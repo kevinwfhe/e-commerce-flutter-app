@@ -13,7 +13,6 @@
 import 'package:auto_route/auto_route.dart' as _i2;
 import 'package:flutter/material.dart' as _i14;
 
-import '../models/product.dart' as _i15;
 import '../screens/admin/admin_main_screen.dart' as _i11;
 import '../screens/admin/authentification_admin_screen.dart' as _i12;
 import '../screens/admin/product_detail_manage_screen.dart' as _i13;
@@ -109,11 +108,14 @@ class AppRouter extends _i2.RootStackRouter {
           routeData: routeData, child: const _i2.EmptyRouterPage());
     },
     AdminProductDetail.name: (routeData) {
-      final args = routeData.argsAs<AdminProductDetailArgs>();
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<AdminProductDetailArgs>(
+          orElse: () => AdminProductDetailArgs(
+              productId: pathParams.getString('productId')));
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i13.ProductDetailManageScreen(
-              key: args.key, productId: args.productId, product: args.product));
+              key: args.key, productId: args.productId));
     }
   };
 
@@ -332,29 +334,24 @@ class AdminProductRouter extends _i2.PageRouteInfo<void> {
 /// generated route for
 /// [_i13.ProductDetailManageScreen]
 class AdminProductDetail extends _i2.PageRouteInfo<AdminProductDetailArgs> {
-  AdminProductDetail(
-      {_i14.Key? key, required String productId, required _i15.Product product})
+  AdminProductDetail({_i14.Key? key, required String productId})
       : super(AdminProductDetail.name,
             path: ':productId',
-            args: AdminProductDetailArgs(
-                key: key, productId: productId, product: product),
+            args: AdminProductDetailArgs(key: key, productId: productId),
             rawPathParams: {'productId': productId});
 
   static const String name = 'AdminProductDetail';
 }
 
 class AdminProductDetailArgs {
-  const AdminProductDetailArgs(
-      {this.key, required this.productId, required this.product});
+  const AdminProductDetailArgs({this.key, required this.productId});
 
   final _i14.Key? key;
 
   final String productId;
 
-  final _i15.Product product;
-
   @override
   String toString() {
-    return 'AdminProductDetailArgs{key: $key, productId: $productId, product: $product}';
+    return 'AdminProductDetailArgs{key: $key, productId: $productId}';
   }
 }

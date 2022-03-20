@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Product {
   final String id, image, title, description, category;
   final double price;
-  final int? size;
+  double? size;
   Product({
     required this.id,
     required this.image,
@@ -24,15 +24,18 @@ class Product {
         category = json['category'];
 
   Map<String, dynamic> toJson() {
-    return {
+    var res = {
       'id': id,
       'image': image,
       'title': title,
       'price': price,
       'description': description,
       'category': category,
-      'size': size ?? '',
     };
+    if (size != null) {
+      res['size'] = size!;
+    }
+    return res;
   }
 }
 

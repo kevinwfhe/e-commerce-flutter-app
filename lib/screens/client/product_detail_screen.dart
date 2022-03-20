@@ -48,6 +48,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               return Scaffold(
                 appBar: AppBar(
                   title: Text(product.title),
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => context.popRoute(),
+                  ),
                   actions: <Widget>[
                     IconButton(
                       icon: SvgPicture.asset(
@@ -64,7 +68,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 body: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width * .5,
                       height: MediaQuery.of(context).size.height,
                       child: Image.memory(
@@ -78,16 +82,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              product.category.toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w800,
-                                fontFamily: 'Roboto',
-                                letterSpacing: 0.5,
-                                fontSize: 18,
-                              ),
-                            ),
                             Text(
                               product.title,
                               style: const TextStyle(

@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import '../../../apis/request.dart';
+import '../../../models/category.dart';
 import '../../../models/product.dart';
 import '../../../models/product_table.dart';
 import '../component/product_manage_body.dart';
 
 class ProductTableState extends State<ProductManageBody> {
   late Future<List<Product>> fProducts;
+  late Future<List<Category>> fCategories;
   var rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
   var sortIndex = 0;
   var sortAsc = true;
@@ -21,9 +23,16 @@ class ProductTableState extends State<ProductManageBody> {
     return list.map((p) => Product.fromJson(p)).toList();
   }
 
+  Future<List<Category>> getCategories() async {
+    var response = await Request.get('/Category');
+    final List list = jsonDecode(response.body);
+    return list.map((c) => Category.fromJson(c)).toList();
+  }
+
   @override
   void initState() {
     super.initState();
+    fCategories = getCategories();
     fProducts = getProducts();
   }
 
@@ -57,9 +66,7 @@ class ProductTableState extends State<ProductManageBody> {
                 ),
                 IconButton(
                   onPressed: () {
-                    setState(() {
-                      searchController.text = '';
-                    });
+                    searchController.text = '';
                   },
                   icon: const Icon(Icons.clear),
                 ),
@@ -104,11 +111,11 @@ class ProductTableState extends State<ProductManageBody> {
                         onSort: setSort,
                       ),
                       DataColumn(
-                        label: const Text('category'),
+                        label: const Text('Category'),
                         onSort: setSort,
                       ),
                       DataColumn(
-                        label: const Text('price'),
+                        label: const Text('Price'),
                         onSort: setSort,
                       ),
                       // DataColumn(
@@ -120,7 +127,7 @@ class ProductTableState extends State<ProductManageBody> {
                       //   onSort: setSort,
                       // ),
                       DataColumn(
-                        label: const Text('view detail'),
+                        label: const Text(''),
                         onSort: setSort,
                       ),
                     ],

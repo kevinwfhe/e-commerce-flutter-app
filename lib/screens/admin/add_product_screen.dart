@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:csi5112group1project/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
+import '../../models/category.dart';
 import '../../apis/request.dart';
-import '../../constants.dart';
 import '../../utils/base64.dart';
 
 class AddProductScreen extends StatefulWidget {
@@ -22,15 +22,28 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final priceController = TextEditingController();
   final sizeController = TextEditingController();
   final newCategoryController = TextEditingController();
-  late Future<List<String>> fCategories;
+  late Future<List<Category>> fCategories;
 
-  String seletedCategory = 'Electronic';
-  bool _isVisible = false;
+  String? seletedCategoryId;
   Uint8List? pickedImage;
 
-  Future<List<String>> getCategories() async {
-    List<String> categories = ['Shoe', 'Clothes', 'Toy', 'Food', 'Electronic'];
-    return Future(() => categories);
+  Future<List<Category>> getCategories() async {
+    var response = await Request.get('/Category');
+    final List list = jsonDecode(response.body);
+    return list.map((c) => Category.fromJson(c)).toList();
+  }
+
+  void addNewCategory(categoryName) async {
+    Category newCategory = Category(id: '', name: categoryName);
+    var response = await Request.post('/Category', jsonEncode(newCategory));
+    if (response.statusCode == 201) {
+      String newCategoryId = Category.fromJson(jsonDecode(response.body)).id;
+      setState(() {
+        fCategories = getCategories();
+        // select the newly created category
+        fCategories.then((categories) => seletedCategoryId = newCategoryId);
+      });
+    }
   }
 
   Future<http.Response> createProduct(Product product) async {
@@ -41,17 +54,22 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   void addProduct() async {
+    // TODO: input validation
     var newProduct = Product(
-        id: '',
-        image: pickedImage != null ? uint8ListToBase64Image(pickedImage!) : '',
-        title: titleController.text,
-        price: double.parse(priceController.text),
-        description: descriptionController.text,
-        category: seletedCategory,
-        size: int.parse(sizeController.text));
+      id: '',
+      image: pickedImage != null ? uint8ListToBase64Image(pickedImage!) : '',
+      title: titleController.text,
+      price: double.parse(priceController.text),
+      description: descriptionController.text,
+      category: seletedCategoryId!,
+    );
+    // since Product.size is not a required property
+    // we should set it conditionally
+    if (sizeController.text != '') {
+      newProduct.size = double.parse(sizeController.text);
+    }
     var response = await createProduct(newProduct);
     if (response.statusCode == 201) {
-      context.popRoute();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -63,17 +81,41 @@ class _AddProductScreenState extends State<AddProductScreen> {
     }
   }
 
+  void reset() {
+    titleController.text = '';
+    descriptionController.text = '';
+    priceController.text = '';
+    sizeController.text = '';
+    newCategoryController.text = '';
+    fCategories.then((categories) {
+      if (categories.isNotEmpty) {
+        seletedCategoryId = categories[0].id;
+      } else {
+        seletedCategoryId = '';
+      }
+    });
+    setState(() {
+      pickedImage = null;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     fCategories = getCategories();
+    fCategories.then((categories) {
+      if (categories.isNotEmpty) {
+        seletedCategoryId = categories[0].id;
+      } else {
+        seletedCategoryId = '';
+      }
+    });
     titleController.text = '';
     descriptionController.text = '';
     priceController.text = '';
     sizeController.text = '';
     newCategoryController.text = '';
     pickedImage = null;
-    _isVisible = false;
   }
 
   @override
@@ -83,134 +125,107 @@ class _AddProductScreenState extends State<AddProductScreen> {
       appBar: AppBar(
         title: const Text("Add Product"),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: <Widget>[
-          SizedBox(
-              height: 50,
-              child: Row(
+      body: Padding(
+        padding: const EdgeInsets.all(32),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Row(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding * 5,
-                    ),
-                    child: Text('Product Title'),
-                  ),
+                  const SizedBox(width: 130, child: Text('Product name')),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding * 5,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: SizedBox(
-                      width: 250,
+                      width: 300,
                       child: TextField(
                         controller: titleController,
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Enter product title/name'),
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter product name',
+                        ),
                       ),
                     ),
                   )
                 ],
-              )),
-          SizedBox(
-            height: 150,
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: kDefaultPadding * 5,
-                  ),
-                  child: Text('Product Description'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 155),
-                  child: SizedBox(
-                      width: 250,
-                      child: TextField(
-                        maxLines: null,
-                        controller: descriptionController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Enter product Description',
-                        ),
-                      )),
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 50,
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: kDefaultPadding * 5,
-                  ),
-                  child: Text('Product Price'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 196),
-                  child: SizedBox(
-                      width: 250,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: priceController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Enter product price',
-                        ),
-                      )),
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 150,
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: kDefaultPadding * 5,
-                  ),
-                  child: Text('Product Size'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 200),
-                  child: SizedBox(
-                      width: 250,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: sizeController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Enter product size',
-                        ),
-                      )),
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-              height: 100,
-              child: Row(
+              ),
+              const SizedBox(height: 20),
+              Row(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding * 5,
-                    ),
-                    child: Text('Product Category'),
+                  const SizedBox(
+                    width: 130,
+                    child: Text('Product description'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: SizedBox(
+                        width: 600,
+                        child: TextField(
+                          maxLines: null,
+                          controller: descriptionController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter product description',
+                          ),
+                        )),
+                  )
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  const SizedBox(width: 130, child: Text('Product price')),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: SizedBox(
+                        width: 300,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: priceController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter product price (per unit)',
+                          ),
+                        )),
+                  )
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  const SizedBox(width: 130, child: Text('Product size')),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: SizedBox(
+                        width: 300,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: sizeController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter product size',
+                          ),
+                        )),
+                  )
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 130,
+                    child: Text('Product category'),
                   ),
                   FutureBuilder(
                     future: fCategories,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        var categories = snapshot.data as List<String>;
+                        var categories = snapshot.data as List<Category>;
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 170),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: SizedBox(
-                              width: 250,
+                              width: 300,
                               child: DropdownButton<String>(
-                                value: seletedCategory,
+                                value: seletedCategoryId,
                                 icon: const Icon(Icons.arrow_downward),
                                 elevation: 16,
                                 style: const TextStyle(
@@ -222,23 +237,26 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 ),
                                 onChanged: (newValue) {
                                   setState(() {
-                                    seletedCategory = newValue as String;
+                                    seletedCategoryId = newValue as String;
                                   });
                                 },
                                 items: categories
-                                    .map((String value) =>
+                                    .map((Category category) =>
                                         DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
+                                          value: category.id,
+                                          child: SizedBox(
+                                            width: 270,
+                                            child: Text(category.name),
+                                          ),
                                         ))
                                     .toList(),
                               )),
                         );
                       } else if (snapshot.hasError) {
                         print(snapshot.error);
-                        return Text('Error');
+                        return const Text('Error');
                       }
-                      return Text('Loading');
+                      return const Text('Loading');
                     },
                   ),
                   Padding(
@@ -247,7 +265,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       onPressed: () => showDialog<String>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
-                          title: const Text('New Category Name'),
+                          title: const Text('Category Name'),
                           content: TextField(
                             controller: newCategoryController,
                           ),
@@ -257,7 +275,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               child: const Text('Cancel'),
                             ),
                             TextButton(
-                              onPressed: () => Navigator.pop(context, 'OK'),
+                              onPressed: () => {
+                                addNewCategory(newCategoryController.text),
+                                Navigator.pop(context)
+                              },
                               child: const Text('OK'),
                             ),
                           ],
@@ -273,36 +294,39 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     ),
                   ),
                 ],
-              )),
-          SizedBox(
-            height: 150,
-            child: Row(
-              children: [
-                const Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: kDefaultPadding * 5),
-                  child: Text('Product Picture'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: kDefaultPadding * 5,
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 130,
+                    height: 150,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text('Product picture'),
+                      ],
+                    ),
                   ),
-                  child: Visibility(
-                    // visible: _isVisible,
-                    child: _isVisible
-                        ? Image.memory(pickedImage!)
+                  Container(
+                    height: 150,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: pickedImage != null
+                        ? Image.memory(
+                            pickedImage!,
+                            height: 150,
+                          )
                         : TextButton(
                             onPressed: () async {
                               Uint8List? fromPicker =
                                   await ImagePickerWeb.getImageAsBytes();
-
                               setState(() {
                                 pickedImage = fromPicker;
-                                _isVisible = true;
                               });
                             },
                             child: const Text(
-                              'Pick new image',
+                              'Upload image (.png only)',
                               style: TextStyle(
                                 color: Colors.blue,
                                 fontSize: 15,
@@ -310,15 +334,33 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             ),
                           ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  SizedBox(
+                    height: 50,
+                    width: 200,
+                    child: ElevatedButton(
+                      onPressed: () => addProduct(),
+                      child: const Text('Add product'),
+                    ),
+                  ),
+                  const SizedBox(width: 50),
+                  SizedBox(
+                    height: 50,
+                    width: 200,
+                    child: ElevatedButton(
+                      onPressed: () => reset(),
+                      child: const Text('Reset'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => addProduct(),
-            child: const Text('Add product'),
-          )
-        ],
+        ),
       ),
     );
   }

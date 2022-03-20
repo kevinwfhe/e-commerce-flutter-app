@@ -23,13 +23,12 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
     return text;
   }
 
-  showDetailPage(String productId, Product product) {
+  showDetailPage(String productId) {
     context.router.push(
       AdminProductRouter(
         children: [
           AdminProductDetail(
             productId: productId,
-            product: product,
           ),
         ],
       ),
@@ -68,12 +67,11 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
       DataCell(
         TextButton(
           onPressed: () {
-            final product = currentRowData;
             final productId = currentRowData.id;
-            showDetailPage(productId, product);
+            showDetailPage(productId);
           },
           child: const Text(
-            'View',
+            'Details',
             style: TextStyle(color: Colors.blue, fontSize: 15),
           ),
         ),
