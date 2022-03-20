@@ -6,6 +6,12 @@ import '../../../apis/request.dart';
 import '../../../models/category.dart' as cate;
 
 class Category extends StatefulWidget {
+  final Function onCategoryChanged;
+  const Category({
+    Key? key,
+    required this.onCategoryChanged,
+  }) : super(key: key);
+
   @override
   _categoryState createState() => _categoryState();
 }
@@ -57,6 +63,7 @@ class _categoryState extends State<Category> {
       onTap: () {
         setState(() {
           selectedCategory = index;
+          widget.onCategoryChanged(selectedCategory.toString());
         });
       },
       child: Padding(

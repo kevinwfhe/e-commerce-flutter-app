@@ -90,6 +90,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     if (response.statusCode == 204) {
       setState(() {
         fAddress = getAddress();
+        fAddress.then((addresses) {
+          if (addresses.isEmpty || id == selectedAddressId) {
+            selectedAddressId = '';
+          }
+        });
       });
     }
   }

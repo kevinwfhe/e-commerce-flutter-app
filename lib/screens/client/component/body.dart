@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:csi5112group1project/models/page_data.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
 import '../../../models/product.dart';
@@ -7,26 +8,32 @@ import './category.dart';
 import './item_card.dart';
 
 class Body extends StatelessWidget {
-  final Future<List<Product>> fProducts;
-  const Body({Key? key, required this.fProducts}) : super(key: key);
+  final Function onCategoryChange;
+  Future<PageData<Product>> fProducts;
+  Body({
+    Key? key,
+    required this.fProducts,
+    required this.onCategoryChange,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Category(),
-        FutureBuilder<List>(
+        Category(onCategoryChanged: onCategoryChange),
+        FutureBuilder(
             future: fProducts,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                final products = snapshot.data as PageData<Product>;
                 return Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: kDefaultPadding,
                     ),
                     child: GridView.builder(
-                      itemCount: snapshot.data!.length,
+                      itemCount: products.rows.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4,
@@ -35,7 +42,7 @@ class Body extends StatelessWidget {
                         childAspectRatio: 0.75,
                       ),
                       itemBuilder: (context, index) {
-                        final Product product = snapshot.data![index];
+                        final Product product = products.rows[index];
                         return ItemCard(
                           key: ValueKey(product.id),
                           product: product,

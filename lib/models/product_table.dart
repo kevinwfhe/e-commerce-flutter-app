@@ -1,38 +1,36 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:csi5112group1project/routes/router.gr.dart';
+import 'dart:convert';
+import 'package:csi5112group1project/apis/request.dart';
 import 'package:flutter/material.dart';
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import './product.dart';
-import '../screens/admin/product_detail_manage_screen.dart';
 
 class ProductTableSource extends AdvancedDataTableSource<Product> {
-  final BuildContext context;
-  final List<Product> data;
+  List<String> selectedIds = [];
+  String lastSearchTerm = '';
+  final Function onClickDetails;
   ProductTableSource({
     Key? key,
-    required this.context,
-    required this.data,
+    required this.onClickDetails,
   });
 
-  String formatText(String text) {
-    if (text.length > 120) {
-      final subStrings = text.substring(0, 120);
-      return subStrings + '...';
-    }
+  showDetailPage(String productId) => onClickDetails(productId);
 
-    return text;
+  void filterServerSide(String filterQuery) {
+    lastSearchTerm = filterQuery.trim();
+    setNextView();
   }
 
-  showDetailPage(String productId) {
-    context.router.push(
-      AdminProductRouter(
-        children: [
-          AdminProductDetail(
-            productId: productId,
-          ),
-        ],
-      ),
-    );
+  @override
+  int get selectedRowCount => selectedIds.length;
+
+  // ignore: avoid_positional_boolean_parameters
+  void selectedRow(String id, bool newSelectState) {
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
+    } else {
+      selectedIds.add(id);
+    }
+    notifyListeners();
   }
 
   @override
@@ -45,25 +43,12 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
       DataCell(
         Text(currentRowData.title),
       ),
-      // DataCell(
-      //   Text(formatText(currentRowData.description)),
-      // ),
       DataCell(
         Text(currentRowData.category),
       ),
       DataCell(
         Text(currentRowData.price.toString()),
       ),
-      // DataCell(
-      //   Text(currentRowData.size.toString()),
-      // ),
-      // DataCell(
-      //   Container(
-      //     width: 200,
-      //     height: 150,
-      //     child: Image.asset(currentRowData.image),
-      //   ),
-      // ),
       DataCell(
         TextButton(
           onPressed: () {
@@ -80,17 +65,41 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
   }
 
   @override
-  int get selectedRowCount => 0;
-
-  @override
   Future<RemoteDataSourceDetails<Product>> getNextPage(
-      NextPageRequest pageRequest) async {
-    return RemoteDataSourceDetails(
-      data.length,
-      data
-          .skip(pageRequest.offset)
-          .take(pageRequest.pageSize)
-          .toList(), //again in a real world example you would only get the right amount of rows
-    );
+    NextPageRequest pageRequest,
+  ) async {
+    //the remote data source has to support the pagaing and sorting
+    final queryParameter = <String, dynamic>{
+      'offset': pageRequest.offset.toString(),
+      'pageSize': pageRequest.pageSize.toString(),
+      'sortIndex': ((pageRequest.columnSortIndex ?? 0)).toString(),
+      'sortAsc': ((pageRequest.sortAscending ?? true) ? 1 : 0).toString(),
+      if (lastSearchTerm.isNotEmpty) 'keyword': lastSearchTerm,
+    };
+
+    final requestUri = Uri.https(
+      // 'csi5112group1project-service.kevinhe.dev',
+      'localhost:7098',
+      '/api/Product',
+      queryParameter,
+    ).toString();
+
+    final response = await Request.base('get', requestUri);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return RemoteDataSourceDetails(
+        int.parse(data['totalRows'].toString()),
+        (data['rows'] as List)
+            .map(
+              (json) => Product.fromJson(json),
+            )
+            .toList(),
+        filteredRows: lastSearchTerm.isNotEmpty
+            ? (data['rows'] as List<dynamic>).length
+            : null,
+      );
+    } else {
+      throw Exception('Unable to query remote server');
+    }
   }
 }

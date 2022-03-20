@@ -44,6 +44,7 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   http: ^0.13.4
+  easy_debounce: ^2.0.2+1
 
 
 dev_dependencies:
