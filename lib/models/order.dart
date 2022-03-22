@@ -44,7 +44,7 @@ class Order {
         totalPrice = json['totalPrice'],
         shippingAddressId = json['shippingAddressId'],
         orderTimeStamp =
-            DateTime.fromMillisecondsSinceEpoch(json['createTime'] * 1000);
+            DateTime.fromMillisecondsSinceEpoch(json['createTime']);
 
   Map<String, dynamic> toJson() {
     var res = {
@@ -104,7 +104,7 @@ class DetailedOrder extends Order {
       orderId: json['id'],
       totalPrice: json['totalPrice'],
       orderTimeStamp:
-          DateTime.fromMillisecondsSinceEpoch(json['createTime'] * 1000),
+          DateTime.fromMillisecondsSinceEpoch(json['createTime']),
       orderStatus: INT_TO_ORDER_STATUS[json['status']] as ORDER_STATUS,
       purchasedProducts: productsList,
       shippingAddress: ShippingAddress.fromJson(json['shippingAddress']),

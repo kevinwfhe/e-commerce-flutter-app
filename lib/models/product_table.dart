@@ -3,15 +3,20 @@ import 'package:csi5112group1project/apis/request.dart';
 import 'package:flutter/material.dart';
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import './product.dart';
+import 'category.dart';
 
 class ProductTableSource extends AdvancedDataTableSource<Product> {
+  final Map<String, String> categories;
   List<String> selectedIds = [];
   String lastSearchTerm = '';
   final Function onClickDetails;
   ProductTableSource({
     Key? key,
     required this.onClickDetails,
+    required this.categories,
   });
+
+  String getCategory(categoryId) => categories[categoryId]!;
 
   showDetailPage(String productId) => onClickDetails(productId);
 
@@ -44,7 +49,7 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
         Text(currentRowData.title),
       ),
       DataCell(
-        Text(currentRowData.category),
+        Text(getCategory(currentRowData.category)),
       ),
       DataCell(
         Text(currentRowData.price.toString()),

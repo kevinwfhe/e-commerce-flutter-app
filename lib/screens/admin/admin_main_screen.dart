@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:csi5112group1project/screens/admin/add_product_screen.dart';
-import 'package:csi5112group1project/screens/admin/invoice_screen.dart';
-import 'package:csi5112group1project/screens/admin/product_manage_screen.dart';
+import 'package:csi5112group1project/screens/admin/add_product_screen/add_product_screen.dart';
+import './admin_order_screen/admin_order_screen.dart';
+import 'package:csi5112group1project/screens/admin/product_manage_screen/product_manage_screen.dart';
 
 class AdminMainScreen extends StatefulWidget {
   const AdminMainScreen({Key? key}) : super(key: key);
@@ -88,7 +88,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                 return const AddProductScreen();
               }
               if (_selectedDestination == 2) {
-                return const InvoiceScreen();
+                return const AdminOrderScreen();
               }
               return const Text('');
             }),

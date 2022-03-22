@@ -1,4 +1,5 @@
-import 'package:csi5112group1project/models/product.dart';
+import 'product.dart';
+import 'order.dart';
 
 class PageData<T> {
   final List<T> rows;
@@ -13,6 +14,8 @@ class PageData<T> {
     List tList = list;
     if (T == Product) {
       tList = list.map((p) => Product.fromJson(p)).toList();
+    } else if (T == Order) {
+      tList = list.map((o) => Order.fromJson(o)).toList();
     }
     return PageData(
       rows: tList as List<T>,
