@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
+import 'package:csi5112group1project/models/authentication_body.dart';
 import 'package:csi5112group1project/screens/client/sign_up_screen/sign_up_screen.dart';
 import '../../../../apis/request.dart';
 import '../../../../routes/router.gr.dart';
@@ -81,10 +84,13 @@ class _AuthentificationBuyerBodyState extends State<AuthentificationBuyerBody> {
               style: TextButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
-              onPressed: () => {
-                Request.get(
-                  '/Authentication/client/${usernameController.text}/${passwordController.text}',
-                ).then((response) {
+              onPressed: () {
+                final body = AuthenticationBody(
+                  username: usernameController.text,
+                  password: passwordController.text,
+                );
+                Request.post('/Authentication/client', jsonEncode(body))
+                    .then((response) {
                   if (response.statusCode == 200) {
                     context.navigateTo(
                       const ClientMainRoute(),
@@ -94,7 +100,7 @@ class _AuthentificationBuyerBodyState extends State<AuthentificationBuyerBody> {
                   print(error);
                   ScaffoldMessenger.of(context)
                       .showSnackBar(loginFailedSnackBar);
-                })
+                });
               },
               child: const Text(
                 'Sign In',
@@ -115,7 +121,7 @@ class _AuthentificationBuyerBodyState extends State<AuthentificationBuyerBody> {
                   TextButton(
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => SignUpScreen()));
+                          MaterialPageRoute(builder: (_) => const SignUpScreen()));
                       print('create account');
                     },
                     child: const Text('Sign Up'),
