@@ -26,10 +26,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   String? selectedAddressId;
   Future<List<ShippingAddress>> getAddress() async {
     // var response = await Request.get('/ShippingAddress');
-    var response = await Request.base(
-      'get',
-      'https://localhost:7098/api/ShippingAddress',
-    );
+    var response = await Request.get('/ShippingAddress');
     final List list = jsonDecode(response.body);
     var res = list.map((addr) => ShippingAddress.fromJson(addr)).toList();
     return res;
@@ -57,10 +54,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   void createAddress(address) async {
-    var response = await Request.base(
-      'post',
-      'https://localhost:7098/api/ShippingAddress',
-      body: jsonEncode(address),
+    var response = await Request.post(
+      '/ShippingAddress',
+      jsonEncode(address),
     );
     if (response.statusCode == 201) {
       String newAddressId =
@@ -74,9 +70,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   void updateAddress(address) async {
-    var response = await Request.base(
-        'put', 'https://localhost:7098/api/ShippingAddress/${address.id}',
-        body: jsonEncode(address));
+    var response = await Request.put(
+      '/ShippingAddress/${address.id}',
+      jsonEncode(address),
+    );
     if (response.statusCode == 204) {
       setState(() {
         fAddress = getAddress();
@@ -85,8 +82,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   void deleteAddress(id) async {
-    var response = await Request.base(
-        'delete', 'https://localhost:7098/api/ShippingAddress/${id}');
+    var response = await Request.delete('/ShippingAddress/${id}');
     if (response.statusCode == 204) {
       setState(() {
         fAddress = getAddress();
@@ -125,10 +121,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Future<http.Response> createOrder(Order order) async {
-    return Request.base(
-      'post',
-      'https://localhost:7098/api/Order',
-      body: jsonEncode(order),
+    return Request.post(
+      '/Order',
+      jsonEncode(order),
     );
   }
 

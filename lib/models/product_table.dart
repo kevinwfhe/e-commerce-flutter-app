@@ -82,14 +82,11 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
       if (lastSearchTerm.isNotEmpty) 'keyword': lastSearchTerm,
     };
 
-    final requestUri = Uri.https(
-      // 'csi5112group1project-service.kevinhe.dev',
-      'localhost:7098',
-      '/api/Product',
-      queryParameter,
-    ).toString();
+    final String requestQueryParams = Uri(
+        queryParameters: queryParameter.map(
+            (key, value) => MapEntry(key, value?.toString()))).query.toString();
 
-    final response = await Request.base('get', requestUri);
+    final response = await Request.get('/Product?$requestQueryParams');
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return RemoteDataSourceDetails(
