@@ -5,8 +5,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import '../../../../apis/request.dart';
 import '../../../../models/category.dart';
-import '../../../../models/product.dart';
-import '../../../../models/page_data.dart';
 import '../../../../models/product_table.dart';
 import '../../../../routes/router.gr.dart';
 import 'product_manage_body.dart';
@@ -123,7 +121,7 @@ class ProductTableState extends State<ProductManageBody> {
                           onSort: setSort,
                         ),
                         DataColumn(
-                          label: const Text('Category No.'),
+                          label: const Text('Category'),
                           onSort: setSort,
                         ),
                         DataColumn(

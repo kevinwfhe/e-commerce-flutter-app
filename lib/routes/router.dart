@@ -51,21 +51,22 @@ import '../screens/client/client_main_screen.dart';
       ],
     ),
     AutoRoute(
-        path: '/checkout',
-        name: 'CheckoutRouter',
-        page: EmptyRouterPage,
-        children: [
-          AutoRoute(
-            path: '',
-            name: 'CheckoutRoute',
-            page: CheckoutScreen,
-          ),
-          AutoRoute(
-            path: 'success',
-            name: 'CheckoutSuccessScreen',
-            page: OrderPlacedScreen,
-          )
-        ]),
+      path: '/checkout',
+      name: 'CheckoutRouter',
+      page: EmptyRouterPage,
+      children: [
+        AutoRoute(
+          path: '',
+          name: 'CheckoutRoute',
+          page: CheckoutScreen,
+        ),
+        AutoRoute(
+          path: 'success',
+          name: 'CheckoutSuccessScreen',
+          page: OrderPlacedScreen,
+        )
+      ],
+    ),
     AutoRoute(
       path: '/item/:productId',
       name: 'ProductDetailRoute',
@@ -82,6 +83,11 @@ import '../screens/client/client_main_screen.dart';
       page: AuthentificationClientScreen,
     ),
     AutoRoute(
+      path: '/signup',
+      name: 'SignUpRoute',
+      page: SignUpScreen,
+    ),
+    AutoRoute(
       path: '/admin',
       name: 'AdminRouter',
       page: EmptyRouterPage,
@@ -95,11 +101,6 @@ import '../screens/client/client_main_screen.dart';
           path: 'login',
           name: 'AdminLoginRoute',
           page: AuthentificationAdminScreen,
-        ),
-        AutoRoute(
-          path: '',
-          name: 'SignUpRoute',
-          page: SignUpScreen,
         ),
         AutoRoute(
           path: 'product',

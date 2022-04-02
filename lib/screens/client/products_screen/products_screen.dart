@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:csi5112group1project/models/category.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import '../../../models/page_data.dart';
@@ -18,38 +19,60 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   late Future<PageData<Product>> fProducts;
+  late Future<List<Category>> fCategories;
   String searchKeyword = '';
-  String selectedCategory = '';
+  String selectedCategoryId = '';
+
+  Future<List<Category>> getCategories() async {
+    var response = await Request.get('/Category');
+    List list = jsonDecode(response.body);
+    return list.map((cat) => Category.fromJson(cat)).toList();
+  }
+
   Future<PageData<Product>> getProducts() async {
-    var response = await Request.get('/Product');
+    final queryParameter = <String, dynamic>{
+      if (selectedCategoryId != '') 'category': selectedCategoryId,
+      if (searchKeyword.isNotEmpty) 'keyword': searchKeyword,
+    };
+
+    final String requestQueryParams = Uri(
+        queryParameters: queryParameter.map(
+            (key, value) => MapEntry(key, value?.toString()))).query.toString();
+
+    var url = requestQueryParams != null
+        ? '/Product?$requestQueryParams'
+        : '/Product';
+
+    var response = await Request.get(url);
     final jsonResponse = jsonDecode(response.body);
     return PageData<Product>.fromJson(jsonResponse);
   }
 
-  Future<PageData<Product>> getProductsByKeyword(keyword, category) async {
-    var response = await Request.get(
-        '/Product?${keyword == '' ? '' : 'keyword=$keyword'}${category == '0' ? '' : '&category=$category'}');
-    final jsonResponse = jsonDecode(response.body);
-    return PageData<Product>.fromJson(jsonResponse);
+  void onKeywordChange(keyword) {
+    setState(() {
+      searchKeyword = keyword;
+    });
+    searchProduct();
+  }
+
+  void onCategoryChange(categoryId) {
+    setState(() {
+      selectedCategoryId = categoryId;
+    });
+    searchProduct();
   }
 
   void searchProduct() {
-    if (searchKeyword != '' || selectedCategory != '') {
-      setState(() {
-        fProducts = getProductsByKeyword(searchKeyword, selectedCategory);
-      });
-    } else {
-      setState(() {
-        fProducts = getProducts();
-        searchKeyword = '';
-      });
-    }
+    setState(() {
+      fProducts = getProducts();
+    });
   }
 
   @override
   void initState() {
     super.initState();
     fProducts = getProducts();
+    fCategories = getCategories();
   }
 
   @override
@@ -59,34 +82,42 @@ class _ProductsScreenState extends State<ProductsScreen> {
         toolbarHeight: 70,
         backgroundColor: Colors.blue,
         elevation: 0,
+        leading: null,
         actions: <Widget>[
           Container(
             margin: EdgeInsets.only(
                 right: MediaQuery.of(context).size.width * 0.12),
             child: SearchBar(
-              onSearchKeywordChange: (keyword) {
-                searchKeyword = keyword;
-                searchProduct();
-              },
-              onSearchConfirm: (keyword) {
-                searchKeyword = keyword;
-                searchProduct();
-              },
+              onSearchKeywordChange: (keyword) => onKeywordChange(keyword),
+              onSearchConfirm: (keyword) => onKeywordChange(keyword),
               width: MediaQuery.of(context).size.width * 0.6,
             ),
           ),
-          IconButton(
-            icon: const Icon(
+          PopupMenuButton(
+            child: const Icon(
               Icons.account_circle_outlined,
+              size: 32,
             ),
-            onPressed: () => {
-              ScaffoldMessenger.of(context).showSnackBar(printLogoutSnackBar),
-              context.router.push(const LoginRoute())
-            },
+            itemBuilder: ((context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                    child: const Text('Your Account'),
+                    onTap: () => {print('Go to account page.')},
+                  ),
+                  PopupMenuItem(
+                    child: const Text('Sign Out'),
+                    onTap: () => {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(printLogoutSnackBar),
+                      context.navigateTo(const LoginRoute())
+                    },
+                  ),
+                ]),
           ),
+          const SizedBox(width: 15),
           IconButton(
             icon: const Icon(
               Icons.shopping_cart_outlined,
+              size: 32,
             ),
             onPressed: () {
               context.router.navigate(const StandAloneCartRoute());
@@ -95,12 +126,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
           const SizedBox(width: kDefaultPadding / 2)
         ],
       ),
-      body: Body(
+      body: ProductScreenBody(
+        fCategory: fCategories,
         fProducts: fProducts,
-        onCategoryChange: (category) => {
-          selectedCategory = category,
-          searchProduct(),
-        },
+        onCategoryChange: (categoryId) => onCategoryChange(categoryId),
       ),
     );
   }
@@ -108,6 +137,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
 const printLogoutSnackBar = SnackBar(
     content: Text(
-  'You have logged out!',
+  'You have sign out!',
   textAlign: TextAlign.center,
 ));

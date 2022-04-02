@@ -4,6 +4,7 @@ import 'package:csi5112group1project/utils/base64.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../apis/request.dart';
+import '../../../constants.dart';
 import '../../../utils/order_status_map.dart';
 import '../../../models/order.dart';
 import '../../common/component/shipping_address_section.dart';
@@ -221,8 +222,8 @@ class OrderDetailTable extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 color: Color(0xFFF5F6F9),
                               ),
-                              child: Image.memory(
-                                base64ImageToUint8List(item.product.image),
+                              child: Image.network(
+                                '$s3BaseUrl${item.product.image}',
                                 height: 100,
                               ),
                             ),

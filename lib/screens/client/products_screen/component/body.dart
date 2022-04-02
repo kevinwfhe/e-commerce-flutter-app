@@ -4,15 +4,18 @@ import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 import '../../../../models/product.dart';
 import '../../../../routes/router.gr.dart';
-import 'category.dart';
+import '../../../../models/category.dart';
 import 'item_card.dart';
+import 'category.dart';
 
-class Body extends StatelessWidget {
+class ProductScreenBody extends StatelessWidget {
   final Function onCategoryChange;
-  Future<PageData<Product>> fProducts;
-  Body({
+  late Future<PageData<Product>> fProducts;
+  late Future<List<Category>> fCategory;
+  ProductScreenBody({
     Key? key,
     required this.fProducts,
+    required this.fCategory,
     required this.onCategoryChange,
   }) : super(key: key);
 
@@ -21,12 +24,38 @@ class Body extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Category(onCategoryChanged: onCategoryChange),
+        CategorySelector(
+            fCategory: fCategory, onCategoryChanged: onCategoryChange),
         FutureBuilder(
             future: fProducts,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final products = snapshot.data as PageData<Product>;
+                if (products.totalRows == 0) {
+                  return Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(64),
+                    child: Center(
+                      child: Column(
+                        children: const [
+                          Icon(
+                            Icons.search_off_outlined,
+                            color: Colors.grey,
+                            size: 128,
+                          ),
+                          SizedBox(height: 40),
+                          Text(
+                            'Didn\'t find what you want? Search another keyword!',
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
                 return Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(

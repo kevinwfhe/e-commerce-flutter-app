@@ -7,6 +7,7 @@ class ShippingAddress {
       city,
       province,
       postalCode;
+  String? userId;
   ShippingAddress({
     required this.id,
     required this.fullname,
@@ -16,6 +17,7 @@ class ShippingAddress {
     required this.city,
     required this.province,
     required this.postalCode,
+    this.userId,
   });
 
   ShippingAddress.fromJson(Map<dynamic, dynamic> json)
@@ -26,11 +28,12 @@ class ShippingAddress {
         addressSecondLine = json['addressSecondLine'],
         city = json['city'],
         province = json['province'],
-        postalCode = json['postalCode'];
+        postalCode = json['postalCode'],
+        userId = json['userId'];
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': '',
       'fullname': fullname,
       'phoneNumber': phoneNumber,
       'addressFirstLine': addressFirstLine,
@@ -38,6 +41,7 @@ class ShippingAddress {
       'province': province,
       'postalCode': postalCode,
       'addressSecondLine': addressSecondLine,
+      'userId': '',
     };
   }
 }

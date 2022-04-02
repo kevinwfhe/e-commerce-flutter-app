@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:csi5112group1project/models/authentication_body.dart';
+import 'package:csi5112group1project/models/authentication.dart';
 import 'package:csi5112group1project/screens/client/sign_up_screen/sign_up_screen.dart';
 import '../../../../apis/request.dart';
 import '../../../../routes/router.gr.dart';
+import '../../../../storage/storage.dart';
 import 'package:flutter/material.dart';
 
 class AuthentificationBuyerBody extends StatefulWidget {
@@ -85,13 +85,15 @@ class _AuthentificationBuyerBodyState extends State<AuthentificationBuyerBody> {
                 backgroundColor: Colors.blue,
               ),
               onPressed: () {
-                final body = AuthenticationBody(
+                final body = AuthenticationRequestBody(
                   username: usernameController.text,
                   password: passwordController.text,
                 );
-                Request.post('/Authentication/client', jsonEncode(body))
-                    .then((response) {
+                Request.post('/login', jsonEncode(body)).then((response) {
                   if (response.statusCode == 200) {
+                    var res = AuthenticationResponseBody.fromJson(
+                        jsonDecode(response.body));
+                    storage.write(key: 'token', value: res.jwtToken);
                     context.navigateTo(
                       const ClientMainRoute(),
                     );
@@ -119,11 +121,7 @@ class _AuthentificationBuyerBodyState extends State<AuthentificationBuyerBody> {
                 children: [
                   const Text('New User?'),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => const SignUpScreen()));
-                      print('create account');
-                    },
+                    onPressed: () => context.navigateTo(const SignUpRoute()),
                     child: const Text('Sign Up'),
                   )
                 ],

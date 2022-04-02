@@ -1,7 +1,7 @@
-import 'package:csi5112group1project/utils/base64.dart';
 import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 import '../../../../models/product.dart';
+import '../../../../constants.dart';
 
 class ItemCard extends StatelessWidget {
   final Product product;
@@ -30,7 +30,10 @@ class ItemCard extends StatelessWidget {
               ),
               child: Hero(
                 tag: "${product.id}",
-                child: Image.memory(base64ImageToUint8List(product.image)),
+                child: Image.network(
+                  '$s3BaseUrl${product.image}',
+                  scale: 2,
+                ),
               ),
             ),
           ),

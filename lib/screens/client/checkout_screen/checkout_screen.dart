@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../../../apis/request.dart';
+import '../../../constants.dart';
 import '../../../routes/router.gr.dart';
 import '../../../context/cart_context.dart';
 import '../../../models/cart.dart';
@@ -360,8 +361,8 @@ class CheckoutTable extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 color: Color(0xFFF5F6F9),
                               ),
-                              child: Image.memory(
-                                base64ImageToUint8List(prod.product.image),
+                              child: Image.network(
+                                '$s3BaseUrl${prod.product.image}',
                                 height: 100,
                               ),
                             ),

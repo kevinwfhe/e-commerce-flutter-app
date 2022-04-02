@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
-import 'package:csi5112group1project/utils/base64.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../apis/request.dart';
+import '../../../constants.dart';
 import '../../../utils/order_status_map.dart';
 import '../../../models/order.dart';
 import '../../common/component/shipping_address_section.dart';
@@ -54,6 +54,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Order Details'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => context.popRoute(),
+          ),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -122,8 +126,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     const SizedBox(height: 10),
                                     Row(
                                       children: [
-                                        Text(
-                                            'Total: CAD\$ ${order.totalPrice}')
+                                        Text('Total: CAD\$ ${order.totalPrice}')
                                       ],
                                     ),
                                   ],
@@ -288,8 +291,8 @@ class OrderDetailTable extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 color: Color(0xFFF5F6F9),
                               ),
-                              child: Image.memory(
-                                base64ImageToUint8List(item.product.image),
+                              child: Image.network(
+                                '$s3BaseUrl${item.product.image}',
                                 height: 100,
                               ),
                             ),
@@ -327,8 +330,8 @@ class QuestionDetailTable extends StatelessWidget {
               (item) => DataRow(
                 cells: [
                   DataCell(Text(item.product.title.toString())),
-                  DataCell(Text("This product is not good")),
-                  DataCell(Text("Sorry")),
+                  const DataCell(Text("This product is not good")),
+                  const DataCell(Text("Sorry")),
                 ],
               ),
             )

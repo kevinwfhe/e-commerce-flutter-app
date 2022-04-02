@@ -16,12 +16,7 @@ class SignUpScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => AuthentificationClientScreen()));
-          },
+          onPressed: () => context.navigateBack(),
         ),
         actions: const <Widget>[SizedBox(width: kDefaultPadding / 2)],
       ),

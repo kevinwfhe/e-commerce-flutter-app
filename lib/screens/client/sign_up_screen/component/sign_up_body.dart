@@ -5,7 +5,7 @@ import 'package:csi5112group1project/screens/client/authentication_client_screen
 import 'package:flutter/material.dart';
 
 import '../../../../apis/request.dart';
-import '../../../../models/client.dart';
+import '../../../../models/user.dart';
 import '../../../../routes/router.gr.dart';
 import '../../authentication_client_screen/authentification_client_screen.dart';
 
@@ -34,15 +34,14 @@ class _SignUpBodyState extends State<SignUpBody> {
     if (passwordController.text != passwordCheckController.text) {
       return;
     }
-    Client newClient = Client(
-      userId: '',
+    var newUser = SignUpUser(
       username: usernameController.text,
       password: passwordController.text,
       emailAddress: emailAddressController.text,
     );
-    Request.post('/Authentication', jsonEncode(newClient)).then((response) {
-      if (response.statusCode == 200) {
-        context.navigateTo(const ClientMainRoute());
+    Request.post('/signup', jsonEncode(newUser)).then((response) {
+      if (response.statusCode == 201) {
+        context.navigateTo(const LoginRoute());
       }
     }).catchError((error) {
       print(error);
@@ -110,10 +109,6 @@ class _SignUpBodyState extends State<SignUpBody> {
               ),
               keyboardType: TextInputType.visiblePassword,
             ),
-            // ElevatedButton(
-            //   child: const Text("Send Code"),
-            //   onPressed: () {},
-            // ),
           ),
           const SizedBox(height: 15),
           SizedBox(

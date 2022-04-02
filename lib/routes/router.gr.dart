@@ -13,25 +13,25 @@
 import 'package:auto_route/auto_route.dart' as _i2;
 import 'package:flutter/material.dart' as _i16;
 
-import '../screens/admin/admin_main_screen.dart' as _i11;
+import '../screens/admin/admin_main_screen.dart' as _i12;
 import '../screens/admin/admin_order_detail_screen/admin_order_detail_screen.dart'
     as _i15;
 import '../screens/admin/authentication_admin_screen/authentification_admin_screen.dart'
-    as _i12;
+    as _i13;
 import '../screens/admin/product_detail_manage_screen/product_detail_manage_screen.dart'
     as _i14;
 import '../screens/client/authentication_client_screen/authentification_client_screen.dart'
     as _i5;
 import '../screens/client/cart_screen/cart_screen.dart' as _i4;
-import '../screens/client/checkout_screen/checkout_screen.dart' as _i9;
+import '../screens/client/checkout_screen/checkout_screen.dart' as _i10;
 import '../screens/client/client_main_screen.dart' as _i1;
-import '../screens/client/order_detail_screen/order_detail_screen.dart' as _i8;
-import '../screens/client/order_placed_screen/order_placed_screen.dart' as _i10;
-import '../screens/client/orders_screen/orders_screen.dart' as _i7;
+import '../screens/client/order_detail_screen/order_detail_screen.dart' as _i9;
+import '../screens/client/order_placed_screen/order_placed_screen.dart' as _i11;
+import '../screens/client/orders_screen/orders_screen.dart' as _i8;
 import '../screens/client/product_detail_screen/product_detail_screen.dart'
     as _i3;
-import '../screens/client/products_screen/products_screen.dart' as _i6;
-import '../screens/client/sign_up_screen/sign_up_screen.dart' as _i13;
+import '../screens/client/products_screen/products_screen.dart' as _i7;
+import '../screens/client/sign_up_screen/sign_up_screen.dart' as _i6;
 
 class AppRouter extends _i2.RootStackRouter {
   AppRouter([_i16.GlobalKey<_i16.NavigatorState>? navigatorKey])
@@ -66,13 +66,17 @@ class AppRouter extends _i2.RootStackRouter {
           routeData: routeData,
           child: const _i5.AuthentificationClientScreen());
     },
+    SignUpRoute.name: (routeData) {
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i6.SignUpScreen());
+    },
     AdminRouter.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i2.EmptyRouterPage());
     },
     ProductRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i6.ProductsScreen());
+          routeData: routeData, child: const _i7.ProductsScreen());
     },
     CartRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
@@ -84,7 +88,7 @@ class AppRouter extends _i2.RootStackRouter {
     },
     OrderScreen.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i7.OrderScreen());
+          routeData: routeData, child: const _i8.OrderScreen());
     },
     OrderDetailScreen.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
@@ -93,28 +97,24 @@ class AppRouter extends _i2.RootStackRouter {
               OrderDetailScreenArgs(orderId: pathParams.getString('orderId')));
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i8.OrderDetailScreen(key: args.key, orderId: args.orderId));
+          child: _i9.OrderDetailScreen(key: args.key, orderId: args.orderId));
     },
     CheckoutRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i9.CheckoutScreen());
+          routeData: routeData, child: const _i10.CheckoutScreen());
     },
     CheckoutSuccessScreen.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i10.OrderPlacedScreen());
+          routeData: routeData, child: const _i11.OrderPlacedScreen());
     },
     AdminMainRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i11.AdminMainScreen());
+          routeData: routeData, child: const _i12.AdminMainScreen());
     },
     AdminLoginRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: const _i12.AuthentificationAdminScreen());
-    },
-    SignUpRoute.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i13.SignUpScreen());
+          child: const _i13.AuthentificationAdminScreen());
     },
     AdminProductRouter.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
@@ -172,12 +172,12 @@ class AppRouter extends _i2.RootStackRouter {
         _i2.RouteConfig(ProductDetailRoute.name, path: '/item/:productId'),
         _i2.RouteConfig(StandAloneCartRoute.name, path: '/cart'),
         _i2.RouteConfig(LoginRoute.name, path: '/login'),
+        _i2.RouteConfig(SignUpRoute.name, path: '/signup'),
         _i2.RouteConfig(AdminRouter.name, path: '/admin', children: [
           _i2.RouteConfig(AdminMainRoute.name,
               path: '', parent: AdminRouter.name),
           _i2.RouteConfig(AdminLoginRoute.name,
               path: 'login', parent: AdminRouter.name),
-          _i2.RouteConfig(SignUpRoute.name, path: '', parent: AdminRouter.name),
           _i2.RouteConfig(AdminProductRouter.name,
               path: 'product',
               parent: AdminRouter.name,
@@ -257,6 +257,14 @@ class LoginRoute extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [_i6.SignUpScreen]
+class SignUpRoute extends _i2.PageRouteInfo<void> {
+  const SignUpRoute() : super(SignUpRoute.name, path: '/signup');
+
+  static const String name = 'SignUpRoute';
+}
+
+/// generated route for
 /// [_i2.EmptyRouterPage]
 class AdminRouter extends _i2.PageRouteInfo<void> {
   const AdminRouter({List<_i2.PageRouteInfo>? children})
@@ -266,7 +274,7 @@ class AdminRouter extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.ProductsScreen]
+/// [_i7.ProductsScreen]
 class ProductRoute extends _i2.PageRouteInfo<void> {
   const ProductRoute() : super(ProductRoute.name, path: '');
 
@@ -291,7 +299,7 @@ class OrderRouter extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.OrderScreen]
+/// [_i8.OrderScreen]
 class OrderScreen extends _i2.PageRouteInfo<void> {
   const OrderScreen() : super(OrderScreen.name, path: '');
 
@@ -299,7 +307,7 @@ class OrderScreen extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i8.OrderDetailScreen]
+/// [_i9.OrderDetailScreen]
 class OrderDetailScreen extends _i2.PageRouteInfo<OrderDetailScreenArgs> {
   OrderDetailScreen({_i16.Key? key, required String orderId})
       : super(OrderDetailScreen.name,
@@ -324,7 +332,7 @@ class OrderDetailScreenArgs {
 }
 
 /// generated route for
-/// [_i9.CheckoutScreen]
+/// [_i10.CheckoutScreen]
 class CheckoutRoute extends _i2.PageRouteInfo<void> {
   const CheckoutRoute() : super(CheckoutRoute.name, path: '');
 
@@ -332,7 +340,7 @@ class CheckoutRoute extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.OrderPlacedScreen]
+/// [_i11.OrderPlacedScreen]
 class CheckoutSuccessScreen extends _i2.PageRouteInfo<void> {
   const CheckoutSuccessScreen()
       : super(CheckoutSuccessScreen.name, path: 'success');
@@ -341,7 +349,7 @@ class CheckoutSuccessScreen extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.AdminMainScreen]
+/// [_i12.AdminMainScreen]
 class AdminMainRoute extends _i2.PageRouteInfo<void> {
   const AdminMainRoute() : super(AdminMainRoute.name, path: '');
 
@@ -349,19 +357,11 @@ class AdminMainRoute extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.AuthentificationAdminScreen]
+/// [_i13.AuthentificationAdminScreen]
 class AdminLoginRoute extends _i2.PageRouteInfo<void> {
   const AdminLoginRoute() : super(AdminLoginRoute.name, path: 'login');
 
   static const String name = 'AdminLoginRoute';
-}
-
-/// generated route for
-/// [_i13.SignUpScreen]
-class SignUpRoute extends _i2.PageRouteInfo<void> {
-  const SignUpRoute() : super(SignUpRoute.name, path: '');
-
-  static const String name = 'SignUpRoute';
 }
 
 /// generated route for

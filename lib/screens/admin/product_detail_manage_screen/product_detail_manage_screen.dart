@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import '../../../apis/request.dart';
+import '../../../constants.dart';
 import '../../../models/category.dart';
 import '../../../models/product.dart';
 import '../../../utils/base64.dart';
@@ -57,6 +58,16 @@ class _ProductDetailManageScreenState extends State<ProductDetailManageScreen> {
     }
   }
 
+  void deleteProduct() async {
+    var response = await Request.delete('/Product/${widget.productId}');
+    if (response.statusCode == 204) {
+      ScaffoldMessenger.of(context).showSnackBar(deleteSuccessSnackBar);
+      context.popRoute();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(operationFailedSnackBar);
+    }
+  }
+
   void updateProduct() async {
     // TODO: input validation
     Product originProduct = await fProduct;
@@ -81,7 +92,7 @@ class _ProductDetailManageScreenState extends State<ProductDetailManageScreen> {
       ScaffoldMessenger.of(context).showSnackBar(updateSuccessSnackBar);
       context.router.pop();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(updateFailedSnackBar);
+      ScaffoldMessenger.of(context).showSnackBar(operationFailedSnackBar);
     }
   }
 
@@ -313,8 +324,8 @@ class _ProductDetailManageScreenState extends State<ProductDetailManageScreen> {
                                   pickedImage!,
                                   height: 150,
                                 )
-                              : Image.memory(
-                                  base64ImageToUint8List(product.image),
+                              : Image.network(
+                                  '$s3BaseUrl${product.image}',
                                   height: 150,
                                 ),
                         ),
@@ -328,7 +339,39 @@ class _ProductDetailManageScreenState extends State<ProductDetailManageScreen> {
                           width: 200,
                           child: ElevatedButton(
                             onPressed: () => updateProduct(),
-                            child: const Text('Update product'),
+                            child: const Text('Update'),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        SizedBox(
+                          height: 50,
+                          width: 200,
+                          child: ElevatedButton(
+                            onPressed: () => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                content: const Text(
+                                    'You are deleting this product.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => {
+                                      deleteProduct(),
+                                      Navigator.pop(context)
+                                    },
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red, // set the background color
+                            ),
+                            child: const Text('Delete'),
                           ),
                         ),
                       ],
@@ -354,7 +397,13 @@ const updateSuccessSnackBar = SnackBar(
   textAlign: TextAlign.center,
 ));
 
-const updateFailedSnackBar = SnackBar(
+const deleteSuccessSnackBar = SnackBar(
+    content: Text(
+  'Product deleted.',
+  textAlign: TextAlign.center,
+));
+
+const operationFailedSnackBar = SnackBar(
     content: Text(
   'Service unavailable, please try again later.',
   textAlign: TextAlign.center,

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'config.dart';
+import '../storage/storage.dart';
 
 // To use this predefined Request
 // import the module
@@ -17,23 +18,27 @@ class Request {
     'put': http.put,
     'delete': http.delete
   };
-  static Future<http.Response> base(
-      String method, 
-      String path,
-      {Object? body}
-    ) async {
+  static Future<http.Response> base(String method, String path,
+      {Object? body}) async {
     var url = Uri.parse(path);
     late http.Response response;
+    var token = await storage.read(key: 'token');
     if (method == 'post' || method == 'put') {
       response = await METHODS_MAP[method]!(
         url,
         body: body,
         headers: {
+          if (token != null) HttpHeaders.authorizationHeader: token,
           HttpHeaders.contentTypeHeader: 'application/json',
         },
       );
     } else if (method == 'get' || method == 'delete') {
-      response = await METHODS_MAP[method]!(url);
+      response = await METHODS_MAP[method]!(
+        url,
+        headers: {
+          if (token != null) HttpHeaders.authorizationHeader: token,
+        },
+      );
     }
     if (SUCCESS_STATUS_CODE.contains(response.statusCode)) {
       return response;

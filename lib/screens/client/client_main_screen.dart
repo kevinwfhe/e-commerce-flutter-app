@@ -30,7 +30,7 @@ class ClientMainPage extends StatelessWidget {
                 backgroundColor: Colors.green,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.reorder),
+                icon: Icon(Icons.list_alt_rounded),
                 label: 'Order',
                 backgroundColor: Colors.purple,
               ),

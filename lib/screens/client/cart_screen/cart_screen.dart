@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:csi5112group1project/constants.dart';
 import 'package:csi5112group1project/utils/base64.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -124,7 +125,7 @@ class CartScreen extends StatelessWidget {
                         Text(
                             'Your cart is empty. Fill it with clothing, household supplies, electronics and more.',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 24,
                               color: Colors.grey,
                             )),
                       ],
@@ -188,8 +189,8 @@ class CartTable extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 color: Color(0xFFF5F6F9),
                               ),
-                              child: Image.memory(
-                                base64ImageToUint8List(item.product.image),
+                              child: Image.network(
+                                '$s3BaseUrl${item.product.image}',
                                 height: 100,
                               ),
                             ),

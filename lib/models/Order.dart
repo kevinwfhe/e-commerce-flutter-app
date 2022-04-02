@@ -27,8 +27,9 @@ class Order {
   final DateTime orderTimeStamp;
   final ORDER_STATUS orderStatus;
   final double totalPrice;
-  List<PurchasedItem>? purchasedItems; // <productId, quantity>
+  List<PurchasedItem>? purchasedItems;
   String? shippingAddressId;
+  String? userId;
   Order({
     required this.orderId,
     required this.orderTimeStamp,
@@ -36,6 +37,7 @@ class Order {
     required this.totalPrice,
     this.purchasedItems,
     this.shippingAddressId,
+    this.userId,
   });
 
   Order.fromJson(Map<dynamic, dynamic> json)
@@ -48,31 +50,29 @@ class Order {
 
   Map<String, dynamic> toJson() {
     var res = {
-      'id': orderId,
+      'id': '',
       'createTime': orderTimeStamp.millisecondsSinceEpoch,
       'status': ORDER_STATUS_TO_INT[orderStatus],
       'totalPrice': totalPrice,
       'shippingAddressId': shippingAddressId,
-      'purchasedItems': purchasedItems
+      'purchasedItems': purchasedItems,
+      'userId': ''
     };
     return res;
   }
 }
 
 class PurchasedProduct {
-  final String purchasedItemId;
   final Product product;
   final int quantity;
 
   PurchasedProduct({
-    required this.purchasedItemId,
     required this.product,
     required this.quantity,
   });
 
   factory PurchasedProduct.fromJson(Map<String, dynamic> json) {
     return PurchasedProduct(
-      purchasedItemId: json['purchasedItemId'],
       product: Product.fromJson(json['product']),
       quantity: json['quantity'],
     );
@@ -103,8 +103,7 @@ class DetailedOrder extends Order {
     return DetailedOrder(
       orderId: json['id'],
       totalPrice: json['totalPrice'],
-      orderTimeStamp:
-          DateTime.fromMillisecondsSinceEpoch(json['createTime']),
+      orderTimeStamp: DateTime.fromMillisecondsSinceEpoch(json['createTime']),
       orderStatus: INT_TO_ORDER_STATUS[json['status']] as ORDER_STATUS,
       purchasedProducts: productsList,
       shippingAddress: ShippingAddress.fromJson(json['shippingAddress']),

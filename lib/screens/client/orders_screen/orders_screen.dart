@@ -45,6 +45,31 @@ class _OrderScreenState extends State<OrderScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final orders = snapshot.data as PageData<Order>;
+                      if (orders.totalRows == 0) {
+                        return Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(64),
+                          child: Center(
+                            child: Column(
+                              children: const [
+                                Icon(
+                                  Icons.list_alt_rounded,
+                                  color: Colors.grey,
+                                  size: 128,
+                                ),
+                                SizedBox(height: 40),
+                                Text(
+                                  'You have not placed any orders yet.',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
                       return Card(
                         child: SizedBox(
                           width: double.maxFinite,

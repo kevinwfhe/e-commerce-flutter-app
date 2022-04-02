@@ -51,7 +51,7 @@ class OrderTableState extends State<AdminOrderBody> {
                     child: TextField(
                       controller: searchController,
                       decoration: const InputDecoration(
-                        labelText: 'Search by order number',
+                        labelText: 'Search by order number or user id',
                       ),
                       onSubmitted: (value) =>
                           source.filterServerSide(searchController.text),

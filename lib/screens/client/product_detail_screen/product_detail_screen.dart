@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:csi5112group1project/utils/base64.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
 import '../../../apis/request.dart';
@@ -68,9 +66,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * .5,
                       height: MediaQuery.of(context).size.height,
-                      child: Image.memory(
-                        base64ImageToUint8List(product.image),
-                      ),
+                      child: Image.network('$s3BaseUrl${product.image}'),
                     ),
                     SizedBox(
                       width: 440,

@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:csi5112group1project/models/authentication_body.dart';
+import 'package:csi5112group1project/models/authentication.dart';
+import 'package:csi5112group1project/storage/storage.dart';
 import 'package:flutter/material.dart';
 import '../../../../apis/request.dart';
 import '../../../../routes/router.gr.dart';
@@ -78,15 +79,15 @@ class _AuthentificationAdminBodyState extends State<AuthentificationAdminBody> {
                 backgroundColor: Colors.blue,
               ),
               onPressed: () {
-                final body = AuthenticationBody(
+                final body = AuthenticationRequestBody(
                   username: usernameController.text,
                   password: passwordController.text,
                 );
-                Request.post(
-                  '/Authentication/admin',
-                  jsonEncode(body)
-                ).then((response) {
+                Request.post('/login', jsonEncode(body)).then((response) async {
                   if (response.statusCode == 200) {
+                    var res = AuthenticationResponseBody.fromJson(
+                        jsonDecode(response.body));
+                    await storage.write(key: 'token', value: res.jwtToken);
                     context.navigateTo(
                       const AdminMainRoute(),
                     );

@@ -1,46 +1,35 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-
 import '../../../../constants.dart';
-import '../../../../apis/request.dart';
-import '../../../../models/category.dart' as cate;
+import '../../../../models/category.dart';
 
-class Category extends StatefulWidget {
+class CategorySelector extends StatefulWidget {
   final Function onCategoryChanged;
-  const Category({
+  Future<List<Category>> fCategory;
+  CategorySelector({
     Key? key,
+    required this.fCategory,
     required this.onCategoryChanged,
   }) : super(key: key);
 
   @override
-  _categoryState createState() => _categoryState();
+  CategorySelectorState createState() => CategorySelectorState();
 }
 
-class _categoryState extends State<Category> {
-  // Future<List<cate.Category>> getCategories() async {
-  //   var response = await Request.get('/Category');
-  //   final List list = jsonDecode(response.body);
-  //   return list.map((c) => cate.Category.fromJson(c)).toList();
-  // }
+class CategorySelectorState extends State<CategorySelector> {
+  late String selectedCategoryId;
 
-  // late List<cate.Category> list;
+  @override
+  void initState() {
+    super.initState();
+    selectedCategoryId = "-1";
+  }
 
-  // void getAllCate() async {
-  //   late Future<List<cate.Category>> fCategories = getCategories();
-  //   list = await fCategories;
-  // }
-
-  List<String> categories = [
-    "All",
-    "Shoes",
-    "Clothes",
-    "Electronics",
-    "Toys",
-    "Food"
-  ];
-
-  // The default category is All
-  int selectedCategory = 0;
+  void onTapCategory(String categoryId) {
+    setState(() {
+      selectedCategoryId = categoryId;
+    });
+    widget.onCategoryChanged(categoryId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,41 +38,54 @@ class _categoryState extends State<Category> {
       padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
       child: SizedBox(
         height: 50,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: categories.length,
-          itemBuilder: (context, index) => buildCategory(index),
+        child: FutureBuilder(
+          future: widget.fCategory,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var categories = snapshot.data as List<Category>;
+              categories = [Category(id: '', name: 'All'), ...categories];
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                itemBuilder: (context, index) =>
+                    buildCategory(index, categories),
+              );
+            } else if (snapshot.hasError) {
+              print(snapshot.error);
+              return const Text("Error");
+            }
+            return const Text('Loading...');
+          },
         ),
       ),
     );
   }
 
-  Widget buildCategory(int index) {
+  Widget buildCategory(int index, List<Category> categories) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedCategory = index;
-          widget.onCategoryChanged(selectedCategory.toString());
-        });
-      },
+      onTap: () => onTapCategory(categories[index].id),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              categories[index],
+              categories[index].name,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: selectedCategory == index ? kTextColor : kTextLightColor,
+                color: selectedCategoryId == categories[index].id
+                    ? kTextColor
+                    : kTextLightColor,
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: kDefaultPadding / 4), //top padding 5
+              margin: const EdgeInsets.only(
+                  top: kDefaultPadding / 4), //top padding 5
               height: 2,
               width: 30,
-              color:
-                  selectedCategory == index ? Colors.black : Colors.transparent,
+              color: selectedCategoryId == categories[index].id
+                  ? Colors.black
+                  : Colors.transparent,
             )
           ],
         ),
