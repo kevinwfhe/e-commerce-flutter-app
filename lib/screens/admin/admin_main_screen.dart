@@ -37,7 +37,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                     Column(
                       children: [
                         ListTile(
-                          leading: const Icon(Icons.inventory),
+                          leading: const Icon(Icons.inventory_2_outlined),
                           title: const Text('Products'),
                           selected: _selectedDestination == 0,
                           onTap: () => selectDestination(0),
@@ -45,7 +45,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                         ),
                         ListTile(
                           title: const Padding(
-                            padding: EdgeInsets.only(left: 48),
+                            padding: EdgeInsets.only(left: 52),
                             child: Text('Add Product'),
                           ),
                           selected: _selectedDestination == 1,
@@ -55,22 +55,22 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                       ],
                     ),
                     ListTile(
-                      leading: const Icon(Icons.receipt),
-                      title: const Text('Invoice'),
+                      leading: const Icon(Icons.category_outlined),
+                      title: const Text('Category'),
                       selected: _selectedDestination == 2,
                       onTap: () => selectDestination(2),
+                      hoverColor: Colors.blue.shade100,
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.receipt_outlined),
+                      title: const Text('Invoice'),
+                      selected: _selectedDestination == 3,
+                      onTap: () => selectDestination(3),
                       hoverColor: Colors.blue.shade100,
                     ),
                   ],
                 ),
               )
-
-              // ListTile(
-              //   leading: Icon(Icons.label),
-              //   title: Text('Item 3'),
-              //   selected: _selectedDestination == 2,
-              //   onTap: () => selectDestination(2),
-              // ),
             ],
           ),
         ),
@@ -88,6 +88,10 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                 return const AddProductScreen();
               }
               if (_selectedDestination == 2) {
+                // return const AdminCategoryScreen();
+                return Text('Category');
+              }
+              if (_selectedDestination == 3) {
                 return const AdminOrderScreen();
               }
               return const Text('');

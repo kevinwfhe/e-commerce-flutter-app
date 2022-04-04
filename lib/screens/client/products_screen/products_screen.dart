@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:csi5112group1project/context/user_context.dart';
 import 'package:csi5112group1project/models/category.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:provider/provider.dart';
 import '../../../models/page_data.dart';
 import '../../../routes/router.gr.dart';
 import '../../../apis/request.dart';
@@ -68,6 +70,20 @@ class _ProductsScreenState extends State<ProductsScreen> {
     });
   }
 
+  void signout() async {
+    Request.get('/logout').then((response) async {
+      if (response.statusCode == 200) {
+        var user = Provider.of<UserContext>(context, listen: false);
+        await user.clear();
+        ScaffoldMessenger.of(context).showSnackBar(printLogoutSnackBar);
+        context.navigateTo(const LoginRoute());
+      }
+    }).catchError((error) {
+      print(error);
+      ScaffoldMessenger.of(context).showSnackBar(logoutFailedSnackBar);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -93,25 +109,41 @@ class _ProductsScreenState extends State<ProductsScreen> {
               width: MediaQuery.of(context).size.width * 0.6,
             ),
           ),
-          PopupMenuButton(
-            child: const Icon(
-              Icons.account_circle_outlined,
-              size: 32,
-            ),
-            itemBuilder: ((context) => <PopupMenuEntry>[
-                  PopupMenuItem(
-                    child: const Text('Your Account'),
-                    onTap: () => {print('Go to account page.')},
+          UserConsumer(
+            builder: ((context, user, child) {
+              if (user.exist) {
+                return PopupMenuButton(
+                  key: ValueKey(user.id),
+                  child: const Icon(
+                    Icons.account_circle_outlined,
+                    size: 32,
                   ),
-                  PopupMenuItem(
-                    child: const Text('Sign Out'),
-                    onTap: () => {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(printLogoutSnackBar),
-                      context.navigateTo(const LoginRoute())
-                    },
+                  itemBuilder: ((context) => <PopupMenuEntry>[
+                        PopupMenuItem(
+                          child: Text(user.username as String),
+                        ),
+                        PopupMenuItem(
+                          child: const Text('Your Account'),
+                          onTap: () => print('Go to account page.'),
+                        ),
+                        PopupMenuItem(
+                          child: const Text('Sign Out'),
+                          onTap: () => signout(),
+                        ),
+                      ]),
+                );
+              } else {
+                return IconButton(
+                  icon: const Icon(
+                    Icons.account_circle_outlined,
+                    size: 32,
                   ),
-                ]),
+                  onPressed: () {
+                    context.navigateTo(const LoginRoute());
+                  },
+                );
+              }
+            }),
           ),
           const SizedBox(width: 15),
           IconButton(
@@ -138,5 +170,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
 const printLogoutSnackBar = SnackBar(
     content: Text(
   'You have sign out!',
+  textAlign: TextAlign.center,
+));
+
+const logoutFailedSnackBar = SnackBar(
+    content: Text(
+  'Sign out failed, please try again later.',
   textAlign: TextAlign.center,
 ));

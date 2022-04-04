@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:csi5112group1project/constants.dart';
-import 'package:csi5112group1project/utils/base64.dart';
+import 'package:csi5112group1project/screens/common/component/no_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../models/cart.dart';
@@ -47,10 +47,11 @@ class CartScreen extends StatelessWidget {
                             },
                             onItemRemove: (productId) => {
                               showDialog(
-                                  context: context,
-                                  builder: (context) => RemoveItemModal(
-                                      onConfirmRemove: () =>
-                                          cart.remove(productId)))
+                                context: context,
+                                builder: (context) => RemoveItemModal(
+                                  onConfirmRemove: () => cart.remove(productId),
+                                ),
+                              )
                             },
                           ),
                         ),
@@ -110,27 +111,10 @@ class CartScreen extends StatelessWidget {
                   ],
                 );
               } else {
-                return Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(64),
-                  child: Center(
-                    child: Column(
-                      children: const [
-                        Icon(
-                          Icons.shopping_cart,
-                          color: Colors.grey,
-                          size: 128,
-                        ),
-                        SizedBox(height: 40),
-                        Text(
-                            'Your cart is empty. Fill it with clothing, household supplies, electronics and more.',
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.grey,
-                            )),
-                      ],
-                    ),
-                  ),
+                return NoContent(
+                  icon: Icons.shopping_cart_outlined,
+                  message:
+                      'Your cart is empty. Fill it with clothing, household supplies, electronics and more.',
                 );
               }
             })),

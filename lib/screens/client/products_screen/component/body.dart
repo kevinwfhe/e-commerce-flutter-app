@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:csi5112group1project/models/page_data.dart';
+import 'package:csi5112group1project/screens/common/component/loading_indicator.dart';
+import 'package:csi5112group1project/screens/common/component/no_content.dart';
 import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 import '../../../../models/product.dart';
@@ -32,28 +34,10 @@ class ProductScreenBody extends StatelessWidget {
               if (snapshot.hasData) {
                 final products = snapshot.data as PageData<Product>;
                 if (products.totalRows == 0) {
-                  return Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(64),
-                    child: Center(
-                      child: Column(
-                        children: const [
-                          Icon(
-                            Icons.search_off_outlined,
-                            color: Colors.grey,
-                            size: 128,
-                          ),
-                          SizedBox(height: 40),
-                          Text(
-                            'Didn\'t find what you want? Search another keyword!',
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  return NoContent(
+                    icon: Icons.search_off_outlined,
+                    message:
+                        'Didn\'t find what you want? Search another keyword!',
                   );
                 }
                 return Expanded(
@@ -89,7 +73,7 @@ class ProductScreenBody extends StatelessWidget {
                 print(snapshot.error);
                 return const Text('error');
               }
-              return const Text('loading...');
+              return const LoadingIndicator();
             }),
       ],
     );

@@ -4,7 +4,7 @@ import 'package:csi5112group1project/utils/order_status_map.dart';
 import 'package:flutter/material.dart';
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:intl/intl.dart';
-import './order.dart';
+import '../../../../models/order.dart';
 
 class InvoiceTableSource extends AdvancedDataTableSource<Order> {
   List<String> selectedIds = [];

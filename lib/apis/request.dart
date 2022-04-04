@@ -40,11 +40,7 @@ class Request {
         },
       );
     }
-    if (SUCCESS_STATUS_CODE.contains(response.statusCode)) {
-      return response;
-    }
-    throw Exception(
-        '$method request on $url responses with status code:${response.statusCode}');
+    return response;
   }
 
   static Future<http.Response> get(String path) {

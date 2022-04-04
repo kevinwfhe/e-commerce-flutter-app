@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'package:csi5112group1project/apis/request.dart';
 import 'package:flutter/material.dart';
 import 'package:advanced_datatable/advanced_datatable_source.dart';
-import './product.dart';
-import 'category.dart';
+import '../../../../models/product.dart';
 
 class ProductTableSource extends AdvancedDataTableSource<Product> {
   final Map<String, String> categories;
@@ -16,7 +15,7 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
     required this.categories,
   });
 
-  String getCategory(categoryId) => categories[categoryId]!;
+  String? getCategory(categoryId) => categories[categoryId];
 
   showDetailPage(String productId) => onClickDetails(productId);
 
@@ -49,7 +48,15 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
         Text(currentRowData.title),
       ),
       DataCell(
-        Text(getCategory(currentRowData.category)),
+        Builder(builder: ((context) {
+          var categoryName = getCategory(currentRowData.category);
+          // category name null check
+          if (categoryName != null) {
+            return Text(categoryName);
+          } else {
+            return const Text('');
+          }
+        })),
       ),
       DataCell(
         Text(currentRowData.price.toString()),

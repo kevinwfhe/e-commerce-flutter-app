@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
+import 'package:csi5112group1project/context/user_context.dart';
 import 'package:csi5112group1project/models/page_data.dart';
 import 'package:csi5112group1project/routes/router.gr.dart';
+import 'package:csi5112group1project/screens/common/component/loading_indicator.dart';
+import 'package:csi5112group1project/screens/common/component/no_content.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../apis/request.dart';
 import '../../../utils/order_status_map.dart';
 import '../../../models/order.dart';
@@ -16,7 +20,7 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  late Future<PageData<Order>> fOrders;
+  Future<PageData<Order>>? fOrders;
   Future<PageData<Order>> getOrders() async {
     var response = await Request.get('/Order');
     final pagedOrder = jsonDecode(response.body);
@@ -26,7 +30,15 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   void initState() {
     super.initState();
-    fOrders = getOrders();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var user = Provider.of<UserContext>(context);
+    if (user.exist) {
+      fOrders = getOrders();
+    }
   }
 
   @override
@@ -38,50 +50,76 @@ class _OrderScreenState extends State<OrderScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              FutureBuilder(
-                  future: fOrders,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final orders = snapshot.data as PageData<Order>;
-                      if (orders.totalRows == 0) {
-                        return Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(64),
-                          child: Center(
-                            child: Column(
-                              children: const [
-                                Icon(
-                                  Icons.list_alt_rounded,
-                                  color: Colors.grey,
-                                  size: 128,
-                                ),
-                                SizedBox(height: 40),
-                                Text(
-                                  'You have not placed any orders yet.',
+          child: UserConsumer(
+            builder: (context, user, child) {
+              if (user.exist) {
+                return Column(
+                  children: [
+                    FutureBuilder(
+                      future: fOrders,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final orders = snapshot.data as PageData<Order>;
+                          if (orders.totalRows == 0) {
+                            return NoContent(
+                              icon: Icons.list_alt_outlined,
+                              message: 'You have not placed any orders yet.',
+                            );
+                          }
+                          return Card(
+                            child: SizedBox(
+                              width: double.maxFinite,
+                              child: OrderTable(orders: orders.rows),
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          print(snapshot.error);
+                        }
+                        return const LoadingIndicator();
+                      },
+                    ),
+                  ],
+                );
+              } else {
+                return Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(64),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        const Icon(
+                          Icons.list_alt_rounded,
+                          color: Colors.grey,
+                          size: 128,
+                        ),
+                        const SizedBox(height: 40),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                                child: const Text(
+                                  'Sign in',
                                   style: TextStyle(
                                     fontSize: 24,
-                                    color: Colors.grey,
                                   ),
                                 ),
-                              ],
+                                onPressed: () =>
+                                    context.navigateTo(const LoginRoute())),
+                            const Text(
+                              'to see your orders.',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
-                        );
-                      }
-                      return Card(
-                        child: SizedBox(
-                          width: double.maxFinite,
-                          child: OrderTable(orders: orders.rows),
+                          ],
                         ),
-                      );
-                    } else if (snapshot.hasError) {
-                      print(snapshot.error);
-                    }
-                    return const Text('Loading');
-                  }),
-            ],
+                      ],
+                    ),
+                  ),
+                );
+              }
+            },
           ),
         ),
       ),

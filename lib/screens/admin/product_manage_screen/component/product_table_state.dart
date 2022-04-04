@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:advanced_datatable/datatable.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:csi5112group1project/screens/common/component/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import '../../../../apis/request.dart';
 import '../../../../models/category.dart';
-import '../../../../models/product_table.dart';
+import 'product_table.dart';
 import '../../../../routes/router.gr.dart';
 import 'product_manage_body.dart';
 
@@ -46,12 +47,12 @@ class ProductTableState extends State<ProductManageBody> {
     searchController.text = '';
   }
 
-  void setSort(int i, bool asc) => setState(
-        () {
-          sortIndex = i;
-          sortAsc = asc;
-        },
-      );
+  void setSort(int i, bool asc) {
+    setState(() {
+      sortIndex = i;
+      sortAsc = asc;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,7 @@ class ProductTableState extends State<ProductManageBody> {
                     child: TextField(
                       controller: searchController,
                       decoration: const InputDecoration(
-                        labelText: 'Search by title or description',
+                        labelText: 'Search by product name or description',
                       ),
                       onSubmitted: (value) =>
                           _source.filterServerSide(searchController.text),
@@ -97,6 +98,9 @@ class ProductTableState extends State<ProductManageBody> {
                   if (snapshot.hasData) {
                     final _source = snapshot.data as ProductTableSource;
                     return AdvancedPaginatedDataTable(
+                      // to use loading indicator of the future builder
+                      // add a placeholder for the AdvancedTable component
+                      loadingWidget: () => const Text(''),
                       addEmptyRows: false,
                       source: _source,
                       sortAscending: sortAsc,
@@ -137,7 +141,7 @@ class ProductTableState extends State<ProductManageBody> {
                     print(snapshot.error);
                     return Text(snapshot.error.toString());
                   }
-                  return Text('Loading...');
+                  return const LoadingIndicator();
                 })
           ],
         ),

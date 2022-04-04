@@ -23,6 +23,14 @@ class _EditAddressModalState extends State<EditAddressModal> {
   final provinceController = TextEditingController();
   final postalCodeController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+  final _fullnameCtrlKey = GlobalKey<FormFieldState>();
+  final _phoneNumberCtrlKey = GlobalKey<FormFieldState>();
+  final _addressFirstLineCtrlKey = GlobalKey<FormFieldState>();
+  final _cityCtrlKey = GlobalKey<FormFieldState>();
+  final _provinceCtrlKey = GlobalKey<FormFieldState>();
+  final _postalCodeCtrlKey = GlobalKey<FormFieldState>();
+
   InputDecoration generateInputDecoration(
     String labelText, {
     Icon? icon,
@@ -52,90 +60,164 @@ class _EditAddressModalState extends State<EditAddressModal> {
     cityController.text = address.city;
     provinceController.text = address.province;
     postalCodeController.text = address.postalCode;
+
+    fullnameController.addListener(() {
+      if (fullnameController.text != '') {
+        _fullnameCtrlKey.currentState!.validate();
+      }
+    });
+    phoneNumberController.addListener(() {
+      if (phoneNumberController.text != '') {
+        _phoneNumberCtrlKey.currentState!.validate();
+      }
+    });
+    addressFirstLineController.addListener(() {
+      if (addressFirstLineController.text != '') {
+        _addressFirstLineCtrlKey.currentState!.validate();
+      }
+    });
+    cityController.addListener(() {
+      if (cityController.text != '') {
+        _cityCtrlKey.currentState!.validate();
+      }
+    });
+    provinceController.addListener(() {
+      if (provinceController.text != '') {
+        _provinceCtrlKey.currentState!.validate();
+      }
+    });
+    postalCodeController.addListener(() {
+      if (postalCodeController.text != '') {
+        _postalCodeCtrlKey.currentState!.validate();
+      }
+    });
   }
 
   void onClickSave() {
-    // TODO: input validation.
-    var savedAddress = ShippingAddress(
-      id: widget.addressToEdit.id,
-      fullname: fullnameController.text,
-      phoneNumber: phoneNumberController.text,
-      addressFirstLine: addressFirstLineController.text,
-      addressSecondLine: addressSecondLineController.text,
-      city: cityController.text,
-      province: provinceController.text,
-      postalCode: postalCodeController.text,
-    );
-    widget.onSaveEdit(savedAddress);
-    Navigator.pop(context);
+    if (_formKey.currentState!.validate()) {
+      var savedAddress = ShippingAddress(
+        id: widget.addressToEdit.id,
+        fullname: fullnameController.text,
+        phoneNumber: phoneNumberController.text,
+        addressFirstLine: addressFirstLineController.text,
+        addressSecondLine: addressSecondLineController.text,
+        city: cityController.text,
+        province: provinceController.text,
+        postalCode: postalCodeController.text,
+      );
+      widget.onSaveEdit(savedAddress);
+      Navigator.pop(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
-          width: 800,
-          height: 500,
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: fullnameController,
-                decoration: generateInputDecoration(
-                  'Fullname',
-                ),
-              ),
-              TextFormField(
-                controller: phoneNumberController,
-                decoration: generateInputDecoration(
-                  'Phone',
-                ),
-              ),
-              TextFormField(
-                controller: addressFirstLineController,
-                decoration: generateInputDecoration('Address',
-                    helperText: 'Street address or P.O. Box'),
-              ),
-              TextFormField(
-                controller: addressSecondLineController,
-                decoration: generateInputDecoration(
-                  '',
-                  helperText: 'Apt, Suite, Unit, Building',
-                ),
-              ),
-              TextFormField(
-                controller: cityController,
-                decoration: generateInputDecoration(
-                  'City',
-                ),
-              ),
-              TextFormField(
-                controller: provinceController,
-                decoration: generateInputDecoration('Province'),
-              ),
-              TextFormField(
-                controller: postalCodeController,
-                decoration: generateInputDecoration('Postal code'),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: onClickSave,
-                    child: const Text('Save'),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: 500,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  key: _fullnameCtrlKey,
+                  controller: fullnameController,
+                  decoration: generateInputDecoration(
+                    'Fullname',
                   ),
-                  const SizedBox(width: 20),
-                  ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style:
-                        ElevatedButton.styleFrom(primary: Colors.grey.shade400),
-                    child: const Text('Cancel'),
-                  )
-                ],
-              )
-            ],
-          )),
+                  validator: (value) {
+                    if (fullnameController.text.isEmpty) {
+                      return 'Please enter fullname.';
+                    }
+                  },
+                ),
+                TextFormField(
+                  key: _phoneNumberCtrlKey,
+                  controller: phoneNumberController,
+                  decoration: generateInputDecoration(
+                    'Phone',
+                  ),
+                  validator: (value) {
+                    if (fullnameController.text.isEmpty) {
+                      return 'Please enter phone numer.';
+                    }
+                    // TODO: valid phone number regex match
+                  },
+                ),
+                TextFormField(
+                  key: _addressFirstLineCtrlKey,
+                  controller: addressFirstLineController,
+                  decoration: generateInputDecoration('Address',
+                      helperText: 'Street address or P.O. Box'),
+                  validator: (value) {
+                    if (addressFirstLineController.text.isEmpty) {
+                      return 'Please enter address.';
+                    }
+                  },
+                ),
+                TextFormField(
+                  controller: addressSecondLineController,
+                  decoration: generateInputDecoration(
+                    '',
+                    helperText: 'Apt, Suite, Unit, Building',
+                  ),
+                ),
+                TextFormField(
+                  key: _cityCtrlKey,
+                  controller: cityController,
+                  decoration: generateInputDecoration(
+                    'City',
+                  ),
+                  validator: (value) {
+                    if (cityController.text.isEmpty) {
+                      return 'Please enter city.';
+                    }
+                  },
+                ),
+                TextFormField(
+                  key: _provinceCtrlKey,
+                  controller: provinceController,
+                  decoration: generateInputDecoration('Province'),
+                  validator: (value) {
+                    if (provinceController.text.isEmpty) {
+                      return 'Please enter province.';
+                    }
+                  },
+                ),
+                TextFormField(
+                  key: _postalCodeCtrlKey,
+                  controller: postalCodeController,
+                  decoration: generateInputDecoration('Postal code'),
+                  validator: (value) {
+                    if (postalCodeController.text.isEmpty) {
+                      return 'Please enter postal code.';
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: onClickSave,
+                      child: const Text('Save'),
+                    ),
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.grey.shade400),
+                      child: const Text('Cancel'),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
