@@ -1,3 +1,5 @@
+import 'package:csi5112group1project/context/user_context.dart';
+import 'package:csi5112group1project/screens/admin/category_manage_screen/category_manage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:csi5112group1project/screens/admin/add_product_screen/add_product_screen.dart';
 import './admin_order_screen/admin_order_screen.dart';
@@ -18,60 +20,62 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Row(
       children: [
         Drawer(
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              const AdminUserInfoSection(
-                username: 'Julina Ellum',
-                emailAddress: 'jellum0@netlog.com',
-              ),
-              const Divider(
-                height: 1,
-                thickness: 1.5,
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        ListTile(
-                          leading: const Icon(Icons.inventory_2_outlined),
-                          title: const Text('Products'),
-                          selected: _selectedDestination == 0,
-                          onTap: () => selectDestination(0),
-                          hoverColor: Colors.blue.shade100,
-                        ),
-                        ListTile(
-                          title: const Padding(
-                            padding: EdgeInsets.only(left: 52),
-                            child: Text('Add Product'),
+          child: UserConsumer(
+            builder: ((context, user, child) => ListView(
+                  // Important: Remove any padding from the ListView.
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    AdminUserInfoSection(
+                      username: user.exist ? user.username! : '-',
+                      emailAddress: user.exist ? user.emailAddress! : '-',
+                    ),
+                    const Divider(
+                      height: 1,
+                      thickness: 1.5,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          Column(
+                            children: [
+                              ListTile(
+                                leading: const Icon(Icons.inventory_2_outlined),
+                                title: const Text('Products'),
+                                selected: _selectedDestination == 0,
+                                onTap: () => selectDestination(0),
+                                hoverColor: Colors.blue.shade100,
+                              ),
+                              ListTile(
+                                title: const Padding(
+                                  padding: EdgeInsets.only(left: 52),
+                                  child: Text('Add Product'),
+                                ),
+                                selected: _selectedDestination == 1,
+                                onTap: () => selectDestination(1),
+                                hoverColor: Colors.blue.shade100,
+                              ),
+                            ],
                           ),
-                          selected: _selectedDestination == 1,
-                          onTap: () => selectDestination(1),
-                          hoverColor: Colors.blue.shade100,
-                        ),
-                      ],
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.category_outlined),
-                      title: const Text('Category'),
-                      selected: _selectedDestination == 2,
-                      onTap: () => selectDestination(2),
-                      hoverColor: Colors.blue.shade100,
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.receipt_outlined),
-                      title: const Text('Invoice'),
-                      selected: _selectedDestination == 3,
-                      onTap: () => selectDestination(3),
-                      hoverColor: Colors.blue.shade100,
-                    ),
+                          ListTile(
+                            leading: const Icon(Icons.category_outlined),
+                            title: const Text('Category'),
+                            selected: _selectedDestination == 2,
+                            onTap: () => selectDestination(2),
+                            hoverColor: Colors.blue.shade100,
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.receipt_outlined),
+                            title: const Text('Invoice'),
+                            selected: _selectedDestination == 3,
+                            onTap: () => selectDestination(3),
+                            hoverColor: Colors.blue.shade100,
+                          ),
+                        ],
+                      ),
+                    )
                   ],
-                ),
-              )
-            ],
+                )),
           ),
         ),
         const VerticalDivider(
@@ -89,7 +93,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               }
               if (_selectedDestination == 2) {
                 // return const AdminCategoryScreen();
-                return Text('Category');
+                return const CategoryManageScreen();
               }
               if (_selectedDestination == 3) {
                 return const AdminOrderScreen();

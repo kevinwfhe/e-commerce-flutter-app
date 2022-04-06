@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:csi5112group1project/models/product.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +30,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _descCtrlKey = GlobalKey<FormFieldState>();
   final _priceCtrlKey = GlobalKey<FormFieldState>();
 
-  String? seletedCategoryId;
+  String seletedCategoryId = '';
   Uint8List? pickedImage;
+  bool creatingProduct = false;
 
   Future<List<Category>> getCategories() async {
     var response = await Request.get('/Category');
     final List list = jsonDecode(response.body);
-    return list.map((c) => Category.fromJson(c)).toList();
+    var res = list.map((c) => Category.fromJson(c)).toList();
+    res.insert(0, Category(id: '', name: 'Choose a category'));
+    return res;
   }
 
   void addNewCategory(categoryName) async {
@@ -48,54 +52,58 @@ class _AddProductScreenState extends State<AddProductScreen> {
         // select the newly created category
         fCategories.then((categories) => seletedCategoryId = newCategoryId);
       });
+    } else {
+      if (response.body == 'category exist') {
+        ScaffoldMessenger.of(context).showSnackBar(categoryExistSnackBar);
+      }
     }
   }
 
   void addProduct() async {
-    // TODO: input validation
-    var newProduct = Product(
-      id: '',
-      image: pickedImage != null ? uint8ListToBase64Image(pickedImage!) : '',
-      title: titleController.text,
-      price: double.parse(priceController.text),
-      description: descriptionController.text,
-      category: seletedCategoryId!,
-    );
-    // since Product.size is not a required property
-    // we should set it conditionally
-    if (sizeController.text != '') {
-      newProduct.size = double.parse(sizeController.text);
-    }
-    var response = await Request.post(
-      '/Product',
-      jsonEncode(newProduct),
-    );
-    if (response.statusCode == 201) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Product created',
-            textAlign: TextAlign.center,
-          ),
-        ),
+    if (creatingProduct) return;
+    if (_formKey.currentState!.validate()) {
+      if (pickedImage == null) {
+        ScaffoldMessenger.of(context).showSnackBar(imageRequiredSnackBar);
+        return;
+      }
+      var newProduct = Product(
+        id: '',
+        image: pickedImage != null ? uint8ListToBase64Image(pickedImage!) : '',
+        title: titleController.text,
+        price: double.parse(priceController.text),
+        description: descriptionController.text,
+        category: seletedCategoryId,
       );
+      // set it conditionally since Product.size is not a required property
+      if (sizeController.text != '') {
+        newProduct.size = double.parse(sizeController.text);
+      }
+      setState(() {
+        creatingProduct = true;
+      });
+      var response = await Request.post(
+        '/Product',
+        jsonEncode(newProduct),
+      );
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(productCreatedSnackBar);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(operationFailedSnackBar);
+      }
+      setState(() {
+        creatingProduct = false;
+      });
     }
   }
 
   void reset() {
-    titleController.text = '';
-    descriptionController.text = '';
-    priceController.text = '';
-    sizeController.text = '';
-    newCategoryController.text = '';
-    fCategories.then((categories) {
-      if (categories.isNotEmpty) {
-        seletedCategoryId = categories[0].id;
-      } else {
-        seletedCategoryId = '';
-      }
-    });
     setState(() {
+      titleController.text = '';
+      descriptionController.text = '';
+      priceController.text = '';
+      sizeController.text = '';
+      newCategoryController.text = '';
+      seletedCategoryId = '';
       pickedImage = null;
     });
   }
@@ -104,13 +112,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
   void initState() {
     super.initState();
     fCategories = getCategories();
-    fCategories.then((categories) {
-      if (categories.isNotEmpty) {
-        seletedCategoryId = categories[0].id;
-      } else {
-        seletedCategoryId = '';
-      }
-    });
     titleController.text = '';
     descriptionController.text = '';
     priceController.text = '';
@@ -175,7 +176,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             border: OutlineInputBorder(),
                             hintText: 'Enter product description',
                           ),
-                          maxLines: null,
+                          minLines: 3,
+                          maxLines: 3,
                           keyboardType: TextInputType.multiline,
                           validator: (value) {
                             if (descriptionController.text.isEmpty) {
@@ -197,6 +199,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         width: 300,
                         child: TextFormField(
                           key: _priceCtrlKey,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
+                          ],
                           keyboardType: TextInputType.number,
                           controller: priceController,
                           decoration: const InputDecoration(
@@ -207,7 +213,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             if (priceController.text.isEmpty) {
                               return 'Please enter product price.';
                             }
-                            // TODO: number only regex match
                           },
                         ),
                       ),
@@ -223,6 +228,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9].')),
+                          ],
                           keyboardType: TextInputType.number,
                           controller: sizeController,
                           decoration: const InputDecoration(
@@ -251,6 +260,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             child: SizedBox(
                               width: 300,
                               child: DropdownButton<String>(
+                                hint: const Text('No category to select'),
                                 value: seletedCategoryId,
                                 icon: const Icon(Icons.arrow_downward),
                                 elevation: 16,
@@ -371,9 +381,22 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       height: 50,
                       width: 200,
                       child: ElevatedButton(
-                        onPressed: () => addProduct(),
-                        child: const Text('Add product'),
-                      ),
+                          onPressed: () =>
+                              creatingProduct ? null : addProduct(),
+                          child: Row(
+                            children: [
+                              const Text('Add product'),
+                              if (creatingProduct) const SizedBox(width: 10),
+                              if (creatingProduct)
+                                const SizedBox(
+                                  height: 16,
+                                  width: 16,
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                            ],
+                          )),
                     ),
                     const SizedBox(width: 50),
                     SizedBox(
@@ -394,3 +417,29 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
   }
 }
+
+const imageRequiredSnackBar = SnackBar(
+    content: Text(
+  'Product image is required.',
+  textAlign: TextAlign.center,
+));
+
+const operationFailedSnackBar = SnackBar(
+    content: Text(
+  'Service unavailable, please try again later.',
+  textAlign: TextAlign.center,
+));
+
+const productCreatedSnackBar = SnackBar(
+  content: Text(
+    'Product created!',
+    textAlign: TextAlign.center,
+  ),
+);
+
+const categoryExistSnackBar = SnackBar(
+  content: Text(
+    'Category already exist!',
+    textAlign: TextAlign.center,
+  ),
+);

@@ -18,6 +18,7 @@ class ProductTableState extends State<ProductManageBody> {
   final searchController = TextEditingController();
   var customFooter = true;
   late ProductTableSource _source;
+  bool canDelete = false;
 
   Future<List<Category>> getCategories() async {
     var response = await Request.get('/Category');
@@ -36,7 +37,22 @@ class ProductTableState extends State<ProductManageBody> {
           ],
         ),
       ),
+      updateSource: () => setState(() {}),
     );
+  }
+
+  void deleteAll() async {
+    var productIdToDelete = _source.selectedIds;
+    var response = await Request.post(
+      '/Product/BatchDelete',
+      jsonEncode(productIdToDelete),
+    );
+    if (response.statusCode == 204) {
+      _source.clearSelectedRow();
+      _source.setNextView();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(requestFailedSnackbar);
+    }
   }
 
   @override
@@ -60,45 +76,12 @@ class ProductTableState extends State<ProductManageBody> {
       return SingleChildScrollView(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: TextField(
-                      controller: searchController,
-                      decoration: const InputDecoration(
-                        labelText: 'Search by product name or description',
-                      ),
-                      onSubmitted: (value) =>
-                          _source.filterServerSide(searchController.text),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    searchController.text = '';
-                    sortIndex = 1;
-                    sortAsc = true;
-                    _source.filterServerSide(searchController.text);
-                  },
-                  icon: const Icon(Icons.clear),
-                ),
-                IconButton(
-                  onPressed: () =>
-                      _source.filterServerSide(searchController.text),
-                  icon: const Icon(Icons.search),
-                ),
-              ],
-            ),
             FutureBuilder(
                 future: fTableSource,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    final _source = snapshot.data as ProductTableSource;
                     return AdvancedPaginatedDataTable(
-                      // to use loading indicator of the future builder
+                      // To use loading indicator of the future builder
                       // add a placeholder for the AdvancedTable component
                       loadingWidget: () => const Text(''),
                       addEmptyRows: false,
@@ -106,6 +89,7 @@ class ProductTableState extends State<ProductManageBody> {
                       sortAscending: sortAsc,
                       sortColumnIndex: sortIndex,
                       showFirstLastButtons: true,
+                      showCheckboxColumn: true,
                       rowsPerPage: 10,
                       availableRowsPerPage: const [10, 20, 30, 50],
                       onRowsPerPageChanged: (newRowsPerPage) {
@@ -115,6 +99,45 @@ class ProductTableState extends State<ProductManageBody> {
                           });
                         }
                       },
+                      header: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: TextField(
+                                controller: searchController,
+                                decoration: const InputDecoration(
+                                  labelText:
+                                      'Search by product name or description',
+                                ),
+                                onSubmitted: (value) => _source
+                                    .filterServerSide(searchController.text),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              searchController.text = '';
+                              sortIndex = 1;
+                              sortAsc = true;
+                              _source.filterServerSide(searchController.text);
+                            },
+                            icon: const Icon(Icons.clear),
+                          ),
+                          IconButton(
+                            onPressed: () =>
+                                _source.filterServerSide(searchController.text),
+                            icon: const Icon(Icons.search),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        ElevatedButton(
+                          onPressed:
+                              _source.selectedRowCount == 0 ? null : deleteAll,
+                          child: Text('Delete'),
+                        )
+                      ],
                       columns: [
                         const DataColumn(
                           label: Text('No.'),
@@ -149,3 +172,10 @@ class ProductTableState extends State<ProductManageBody> {
     }
   }
 }
+
+const requestFailedSnackbar = SnackBar(
+  content: Text(
+    'Service unavailable, please try again later.',
+    textAlign: TextAlign.center,
+  ),
+);

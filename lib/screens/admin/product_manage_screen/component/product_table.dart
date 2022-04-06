@@ -6,13 +6,15 @@ import '../../../../models/product.dart';
 
 class ProductTableSource extends AdvancedDataTableSource<Product> {
   final Map<String, String> categories;
-  List<String> selectedIds = [];
+  final List<String> selectedIds = [];
   String lastSearchTerm = '';
   final Function onClickDetails;
+  final Function updateSource;
   ProductTableSource({
     Key? key,
     required this.onClickDetails,
     required this.categories,
+    required this.updateSource,
   });
 
   String? getCategory(categoryId) => categories[categoryId];
@@ -24,56 +26,64 @@ class ProductTableSource extends AdvancedDataTableSource<Product> {
     setNextView();
   }
 
+  void clearSelectedRow() => selectedIds.clear();
+
   @override
   int get selectedRowCount => selectedIds.length;
 
-  // ignore: avoid_positional_boolean_parameters
   void selectedRow(String id, bool newSelectState) {
     if (selectedIds.contains(id)) {
       selectedIds.remove(id);
     } else {
       selectedIds.add(id);
     }
+    updateSource();
     notifyListeners();
   }
 
   @override
   DataRow? getRow(int index) {
     final currentRowData = lastDetails!.rows[index];
-    return DataRow(cells: [
-      DataCell(
-        Text(currentRowData.id.toString()),
-      ),
-      DataCell(
-        Text(currentRowData.title),
-      ),
-      DataCell(
-        Builder(builder: ((context) {
-          var categoryName = getCategory(currentRowData.category);
-          // category name null check
-          if (categoryName != null) {
-            return Text(categoryName);
-          } else {
-            return const Text('');
-          }
-        })),
-      ),
-      DataCell(
-        Text(currentRowData.price.toString()),
-      ),
-      DataCell(
-        TextButton(
-          onPressed: () {
-            final productId = currentRowData.id;
-            showDetailPage(productId);
-          },
-          child: const Text(
-            'Details',
-            style: TextStyle(color: Colors.blue, fontSize: 15),
+    return DataRow(
+      selected: selectedIds.contains(currentRowData.id),
+      onSelectChanged: (selected) => selectedRow(currentRowData.id, selected!),
+      cells: [
+        DataCell(
+          Text(currentRowData.id.toString()),
+        ),
+        DataCell(
+          Text(currentRowData.title),
+        ),
+        DataCell(
+          Builder(
+            builder: ((context) {
+              var categoryName = getCategory(currentRowData.category);
+              // category name null check
+              if (categoryName != null) {
+                return Text(categoryName);
+              } else {
+                return const Text('');
+              }
+            }),
           ),
         ),
-      ),
-    ]);
+        DataCell(
+          Text(currentRowData.price.toString()),
+        ),
+        DataCell(
+          TextButton(
+            onPressed: () {
+              final productId = currentRowData.id;
+              showDetailPage(productId);
+            },
+            child: const Text(
+              'Details',
+              style: TextStyle(color: Colors.blue, fontSize: 15),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
