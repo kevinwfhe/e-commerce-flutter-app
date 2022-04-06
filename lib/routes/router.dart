@@ -2,6 +2,9 @@ import "package:auto_route/auto_route.dart";
 import 'package:csi5112group1project/screens/admin/admin_main_screen.dart';
 import 'package:csi5112group1project/screens/admin/admin_order_detail_screen/admin_order_detail_screen.dart';
 import 'package:csi5112group1project/screens/admin/product_detail_manage_screen/product_detail_manage_screen.dart';
+import 'package:csi5112group1project/screens/client/discussion_detail_screen/discussion_detail_screen.dart';
+import 'package:csi5112group1project/screens/client/discussion_question_screen/discussion_question_screen.dart';
+import 'package:csi5112group1project/screens/client/discussion_screen/discussion_screen.dart';
 import 'package:csi5112group1project/screens/client/sign_up_screen/sign_up_screen.dart';
 import '../screens/admin/authentication_admin_screen/authentification_admin_screen.dart';
 import '../screens/client/checkout_screen/checkout_screen.dart';
@@ -35,20 +38,41 @@ import '../screens/client/client_main_screen.dart';
           page: CartScreen,
         ),
         AutoRoute(
-            path: 'order',
-            name: 'OrderRouter',
-            page: EmptyRouterPage,
-            children: [
-              AutoRoute(
-                path: '',
-                page: OrderScreen,
-              ),
-              AutoRoute(
-                path: ':orderId',
-                page: OrderDetailScreen,
-              ),
-            ]),
+          path: 'order',
+          name: 'OrderRouter',
+          page: EmptyRouterPage,
+          children: [
+            AutoRoute(
+              path: '',
+              page: OrderScreen,
+            ),
+            AutoRoute(
+              path: ':orderId',
+              page: OrderDetailScreen,
+            ),
+          ],
+        ),
+        AutoRoute(
+          path: 'discuss',
+          name: 'DiscussRouter',
+          page: EmptyRouterPage,
+          children: [
+            AutoRoute(
+              path: '',
+              page: DiscussionScreen,
+            ),
+            AutoRoute(
+              path: ':questionId',
+              page: DiscussionDetailScreen,
+            ),
+          ],
+        ),
       ],
+    ),
+    AutoRoute(
+      path: '/ask',
+      name: 'DiscussionQuestionScreen',
+      page: DiscussionQuestionScreen,
     ),
     AutoRoute(
       path: '/checkout',

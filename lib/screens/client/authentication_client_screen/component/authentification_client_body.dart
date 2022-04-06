@@ -24,10 +24,10 @@ class _AuthentificationBuyerBodyState extends State<AuthentificationBuyerBody> {
   @override
   void initState() {
     super.initState();
-    // usernameController.text = 'dilchenko1@jiathis.com';
-    // passwordController.text = 'doI6vF';
-    usernameController.text = '';
-    passwordController.text = '';
+    usernameController.text = 'dilchenko1@jiathis.com';
+    passwordController.text = 'doI6vF';
+    // usernameController.text = '';
+    // passwordController.text = '';
     usernameController.addListener(() {
       if (usernameController.text != '') {
         _usernameCtrlKey.currentState!.validate();

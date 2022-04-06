@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:csi5112group1project/models/order.dart';
-import 'package:csi5112group1project/utils/base64.dart';
 import 'package:csi5112group1project/utils/shared_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +12,7 @@ import '../../../context/cart_context.dart';
 import '../../../models/cart.dart';
 import '../../../models/shipping_address.dart';
 import './component/shipping_address_selector.dart';
-import './component/shipping_address_edit_model.dart';
+import 'component/shipping_address_edit_modal.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key}) : super(key: key);

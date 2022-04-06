@@ -13,6 +13,7 @@ class ClientMainPage extends StatelessWidget {
         ProductRoute(),
         CartRoute(),
         OrderRouter(),
+        DiscussRouter(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return SizedBox(
@@ -33,6 +34,11 @@ class ClientMainPage extends StatelessWidget {
                 icon: Icon(Icons.list_alt_rounded),
                 label: 'Order',
                 backgroundColor: Colors.purple,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.question_answer_outlined),
+                label: 'Discuss',
+                backgroundColor: Colors.blue,
               ),
             ],
             currentIndex: tabsRouter.activeIndex,
