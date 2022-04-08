@@ -46,6 +46,11 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Orders'),
+        backgroundColor: Color(0xFF0F1111),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => context.popRoute(),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -153,8 +158,8 @@ class OrderTable extends StatelessWidget {
                   DataCell(Text('CAD\$ ${item.totalPrice.toString()}')),
                   DataCell(
                     TextButton(
-                      onPressed: () => context.router
-                          .navigate(OrderDetailScreen(orderId: item.orderId)),
+                      onPressed: () => context
+                          .navigateTo(OrderDetailScreen(orderId: item.orderId)),
                       child: const Text('Details'),
                     ),
                   ),

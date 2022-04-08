@@ -10,10 +10,10 @@ class ClientMainPage extends StatelessWidget {
     return AutoTabsScaffold(
       backgroundColor: Colors.indigo,
       routes: const [
-        ProductRoute(),
-        CartRoute(),
-        OrderRouter(),
-        DiscussRouter(),
+        // ProductRoute(),
+        // CartRoute(),
+        // OrderRouter(),
+        // DiscussRouter(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return SizedBox(

@@ -5,12 +5,6 @@ class ProductManageScreen extends StatelessWidget {
   const ProductManageScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text("Product list"),
-      ),
-      body: const ProductManageBody(),
-    );
+    return const ProductManageBody();
   }
 }

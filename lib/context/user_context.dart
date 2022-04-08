@@ -39,7 +39,6 @@ class UserContext extends ChangeNotifier {
           } else {
             _user = null;
           }
-          print('getting user details');
           // notify the listners to rerender no matter the validation success or not
           notifyListeners();
         });

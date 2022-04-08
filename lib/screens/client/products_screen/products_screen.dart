@@ -96,13 +96,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF0F1111),
         elevation: 0,
-        leading: null,
+        leading: Container(),
         actions: <Widget>[
           Container(
             margin: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width * 0.12),
+                right: MediaQuery.of(context).size.width * 0.03),
             child: SearchBar(
               onSearchKeywordChange: (keyword) => onKeywordChange(keyword),
               onSearchConfirm: (keyword) => onKeywordChange(keyword),
@@ -113,6 +113,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
             builder: ((context, user, child) {
               if (user.exist) {
                 return PopupMenuButton(
+                  tooltip: 'Account',
                   key: ValueKey(user.id),
                   child: const Icon(
                     Icons.account_circle_outlined,
@@ -123,37 +124,77 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           child: Text(user.username as String),
                         ),
                         PopupMenuItem(
-                          child: const Text('Your Account'),
-                          onTap: () => print('Go to account page.'),
-                        ),
-                        PopupMenuItem(
                           child: const Text('Sign Out'),
                           onTap: () => signout(),
                         ),
                       ]),
                 );
               } else {
-                return IconButton(
-                  icon: const Icon(
-                    Icons.account_circle_outlined,
-                    size: 32,
+                return Tooltip(
+                  message: 'Sign In',
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.account_circle_outlined,
+                      size: 32,
+                    ),
+                    onPressed: () {
+                      context.navigateTo(const LoginRoute());
+                    },
                   ),
-                  onPressed: () {
-                    context.navigateTo(const LoginRoute());
-                  },
                 );
               }
             }),
           ),
           const SizedBox(width: 15),
-          IconButton(
-            icon: const Icon(
-              Icons.shopping_cart_outlined,
-              size: 32,
+          Tooltip(
+            message: 'Discussions',
+            child: IconButton(
+              icon: const Icon(
+                Icons.question_answer_outlined,
+                size: 32,
+              ),
+              onPressed: () {
+                context.router.navigate(
+                  const StandAloneDiscussRouter(
+                    children: [
+                      DiscussionScreen(),
+                    ],
+                  ),
+                );
+              },
             ),
-            onPressed: () {
-              context.router.navigate(const StandAloneCartRoute());
-            },
+          ),
+          const SizedBox(width: 15),
+          Tooltip(
+            message: "Orders",
+            child: IconButton(
+              icon: const Icon(
+                Icons.list_alt_rounded,
+                size: 32,
+              ),
+              onPressed: () {
+                context.router.navigate(
+                  const StandAloneOrderRouter(
+                    children: [
+                      OrderScreen(),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(width: 15),
+          Tooltip(
+            message: "Cart",
+            child: IconButton(
+              icon: const Icon(
+                Icons.shopping_cart_outlined,
+                size: 32,
+              ),
+              onPressed: () {
+                context.router.navigate(const StandAloneCartRoute());
+              },
+            ),
           ),
           const SizedBox(width: kDefaultPadding / 2)
         ],

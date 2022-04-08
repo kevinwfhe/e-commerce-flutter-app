@@ -37,158 +37,145 @@ class _AdminOrderDetailScreenState extends State<AdminOrderDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Order Details'),
-          leading: IconButton(
-              onPressed: () => context.popRoute(),
-              icon: const Icon(Icons.arrow_back)),
+      backgroundColor: kAdminBackgroundColor,
+      appBar: AppBar(
+        title: const Text(
+          'Order Details',
+          style: TextStyle(color: Colors.black),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-              padding: const EdgeInsets.all(64),
-              child: FutureBuilder(
-                future: fOrder,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final order = snapshot.data as DetailedOrder;
-                    return Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(
-                                bottom: 16,
-                                top: 16,
-                              ),
-                              child: const Text(
-                                '1  Order Details',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            )
-                          ],
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () => context.popRoute(),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: kAdminPrimaryColor,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(64),
+        child: FutureBuilder(
+          future: fOrder,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final order = snapshot.data as DetailedOrder;
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(
+                          bottom: 16,
+                          top: 16,
                         ),
-                        Card(
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                              top: 16,
-                              bottom: 16,
-                              left: 16,
-                              right: 256,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text('Order Number:  ${order.orderId}'),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(
-                                      children: [
-                                        Text(
-                                            'Placed on:  ${DateFormat('yyyy-dd-MM HH:mm:ss').format(order.orderTimeStamp)}')
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                            'Status:  ${ORDER_STATUS_TO_STRING[order.orderStatus]}'),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(
-                                      children: [
-                                        Text('Total: CAD\$ ${order.totalPrice}')
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                        child: const Text(
+                          '1  Order Information',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Row(
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: 16, top: 16),
-                              child: const Text(
-                                '2  Shipping Address',
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  Card(
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        top: 16,
+                        bottom: 16,
+                        left: 16,
+                        right: 256,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Order Number:  ${order.orderId}'),
+                                ],
                               ),
-                            )
-                          ],
-                        ),
-                        Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: ShippingAddressSection(
-                                shippingAddress: order.shippingAddress,
-                                readOnly: true),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: 16, top: 16),
-                              child: const Text(
-                                '3  Purchased Items',
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Text(
+                                      'Placed on:  ${DateFormat('yyyy-dd-MM HH:mm:ss').format(order.orderTimeStamp)}')
+                                ],
                               ),
-                            )
-                          ],
-                        ),
-                        Card(
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: OrderDetailTable(
-                                purchasedProducts: order.purchasedProducts),
+                            ],
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: 16, top: 16),
-                              child: const Text(
-                                '4  Ask any question',
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                      'Status:  ${ORDER_STATUS_TO_STRING[order.orderStatus]}'),
+                                ],
                               ),
-                            )
-                          ],
-                        ),
-                        Card(
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: QuestionDetailTable(
-                                purchasedProducts: order.purchasedProducts),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Text('Total: CAD\$ ${order.totalPrice}')
+                                ],
+                              ),
+                            ],
                           ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 16, top: 16),
+                        child: const Text(
+                          '2  Shipping Address',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
                         ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    print(snapshot.error);
-                  }
-                  return const Text('');
-                },
-              )),
-        ));
+                      )
+                    ],
+                  ),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ShippingAddressSection(
+                          shippingAddress: order.shippingAddress,
+                          readOnly: true),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 16, top: 16),
+                        child: const Text(
+                          '3  Purchased Items',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                  Card(
+                    child: SizedBox(
+                      width: double.maxFinite,
+                      child: OrderDetailTable(
+                          purchasedProducts: order.purchasedProducts),
+                    ),
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              print(snapshot.error);
+            }
+            return const Text('');
+          },
+        ),
+      ),
+    );
   }
 }
 

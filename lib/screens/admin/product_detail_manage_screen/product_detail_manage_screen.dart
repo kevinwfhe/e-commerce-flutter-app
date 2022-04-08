@@ -132,307 +132,345 @@ class _ProductDetailManageScreenState extends State<ProductDetailManageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kAdminBackgroundColor,
       appBar: AppBar(
-        title: const Text("Product manage"),
+        title: const Text(
+          'Product Details',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
           onPressed: () => context.popRoute(),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: kAdminPrimaryColor,
+          ),
         ),
       ),
-      body: FutureBuilder(
-        future: fProduct,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final product = snapshot.data as Product;
-            return Padding(
-              padding: const EdgeInsets.all(32),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        children: [
-                          const SizedBox(
-                              width: 130, child: Text('Product name')),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: 300,
-                              child: TextFormField(
-                                key: _titelCtrlKey,
-                                controller: titleController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Enter product name',
-                                ),
-                                validator: (value) {
-                                  if (titleController.text.isEmpty) {
-                                    return 'Please enter product name.';
-                                  }
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 130,
-                            child: Text('Product description'),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: 600,
-                              child: TextFormField(
-                                key: _descCtrlKey,
-                                minLines: 3,
-                                maxLines: 3,
-                                controller: descriptionController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Enter product description',
-                                ),
-                                validator: (value) {
-                                  if (descriptionController.text.isEmpty) {
-                                    return 'Please enter product description.';
-                                  }
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          const SizedBox(
-                              width: 130, child: Text('Product price')),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: 300,
-                              child: TextFormField(
-                                key: _priceCtrlKey,
-                                keyboardType: TextInputType.number,
-                                controller: priceController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Enter product price (per unit)',
-                                ),
-                                validator: (value) {
-                                  if (priceController.text.isEmpty) {
-                                    return 'Please enter product price.';
-                                  }
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          const SizedBox(
-                              width: 130, child: Text('Product size')),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                                width: 300,
-                                child: TextField(
-                                  keyboardType: TextInputType.number,
-                                  controller: sizeController,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: 'Enter product size',
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(const Radius.circular(5)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade500,
+                spreadRadius: .3,
+                blurRadius: .3,
+                blurStyle: BlurStyle.outer,
+              )
+            ],
+          ),
+          padding: const EdgeInsets.all(32),
+          child: FutureBuilder(
+            future: fProduct,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final product = snapshot.data as Product;
+                return Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: [
+                              const SizedBox(
+                                  width: 130, child: Text('Product name')),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: SizedBox(
+                                  width: 300,
+                                  child: TextFormField(
+                                    key: _titelCtrlKey,
+                                    controller: titleController,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'Enter product name',
+                                    ),
+                                    validator: (value) {
+                                      if (titleController.text.isEmpty) {
+                                        return 'Please enter product name.';
+                                      }
+                                    },
                                   ),
-                                )),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 130,
-                            child: Text('Product category'),
+                                ),
+                              )
+                            ],
                           ),
-                          FutureBuilder(
-                            future: fCategories,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                var categories =
-                                    snapshot.data as List<Category>;
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: SizedBox(
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                width: 130,
+                                child: Text('Product description'),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: SizedBox(
+                                  width: 600,
+                                  child: TextFormField(
+                                    key: _descCtrlKey,
+                                    minLines: 3,
+                                    maxLines: 3,
+                                    controller: descriptionController,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'Enter product description',
+                                    ),
+                                    validator: (value) {
+                                      if (descriptionController.text.isEmpty) {
+                                        return 'Please enter product description.';
+                                      }
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                  width: 130, child: Text('Product price')),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: SizedBox(
+                                  width: 300,
+                                  child: TextFormField(
+                                    key: _priceCtrlKey,
+                                    keyboardType: TextInputType.number,
+                                    controller: priceController,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText:
+                                          'Enter product price (per unit)',
+                                    ),
+                                    validator: (value) {
+                                      if (priceController.text.isEmpty) {
+                                        return 'Please enter product price.';
+                                      }
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                  width: 130, child: Text('Product size')),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: SizedBox(
                                     width: 300,
-                                    child: DropdownButton<String>(
-                                      hint: const Text('No category to select'),
-                                      value: seletedCategoryId,
-                                      icon: const Icon(Icons.arrow_downward),
-                                      elevation: 16,
-                                      style: const TextStyle(
-                                        color: Colors.deepPurple,
+                                    child: TextField(
+                                      keyboardType: TextInputType.number,
+                                      controller: sizeController,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        hintText: 'Enter product size',
                                       ),
-                                      underline: Container(
-                                        height: 2,
-                                        color: Colors.deepPurpleAccent,
-                                      ),
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          seletedCategoryId =
-                                              newValue as String;
-                                        });
-                                      },
-                                      items: categories
-                                          .map((Category category) =>
-                                              DropdownMenuItem<String>(
-                                                value: category.id,
-                                                child: SizedBox(
-                                                  width: 270,
-                                                  child: Text(category.name),
-                                                ),
-                                              ))
-                                          .toList(),
-                                    ),
-                                  ),
-                                );
-                              } else if (snapshot.hasError) {
-                                print(snapshot.error);
-                                return const Text('Error');
-                              }
-                              return const Text('Loading');
-                            },
+                                    )),
+                              )
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 0),
-                            child: TextButton(
-                              onPressed: () => showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Category Name'),
-                                  content: TextField(
-                                    controller: newCategoryController,
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                width: 130,
+                                child: Text('Product category'),
+                              ),
+                              FutureBuilder(
+                                future: fCategories,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    var categories =
+                                        snapshot.data as List<Category>;
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: SizedBox(
+                                        width: 300,
+                                        child: DropdownButton<String>(
+                                          hint: const Text(
+                                              'No category to select'),
+                                          value: seletedCategoryId,
+                                          icon:
+                                              const Icon(Icons.arrow_downward),
+                                          elevation: 16,
+                                          style: const TextStyle(
+                                            color: Colors.blue,
+                                          ),
+                                          underline: Container(
+                                            height: 2,
+                                            color: Colors.blue,
+                                          ),
+                                          onChanged: (newValue) {
+                                            setState(() {
+                                              seletedCategoryId =
+                                                  newValue as String;
+                                            });
+                                          },
+                                          items: categories
+                                              .map((Category category) =>
+                                                  DropdownMenuItem<String>(
+                                                    value: category.id,
+                                                    child: SizedBox(
+                                                      width: 270,
+                                                      child:
+                                                          Text(category.name),
+                                                    ),
+                                                  ))
+                                              .toList(),
+                                        ),
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    print(snapshot.error);
+                                    return const Text('Error');
+                                  }
+                                  return const Text('Loading');
+                                },
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 0),
+                                child: TextButton(
+                                  onPressed: () => showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      title: const Text('Category Name'),
+                                      content: TextField(
+                                        controller: newCategoryController,
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Cancel'),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () => {
+                                            addNewCategory(
+                                                newCategoryController.text),
+                                            Navigator.pop(context)
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Cancel'),
-                                      child: const Text('Cancel'),
+                                  child: const Text(
+                                    'Add new category',
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 15,
                                     ),
-                                    TextButton(
-                                      onPressed: () => {
-                                        addNewCategory(
-                                            newCategoryController.text),
-                                        Navigator.pop(context)
-                                      },
-                                      child: const Text('OK'),
-                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 130,
+                                height: 150,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    Text('Product picture'),
                                   ],
                                 ),
                               ),
-                              child: const Text(
-                                'Add new category',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 15,
+                              Container(
+                                height: 150,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: pickedImage != null
+                                    ? Image.memory(
+                                        pickedImage!,
+                                        height: 150,
+                                      )
+                                    : Image.network(
+                                        '$s3BaseUrl${product.image}',
+                                        height: 150,
+                                      ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              SizedBox(
+                                height: 50,
+                                width: 200,
+                                child: ElevatedButton(
+                                  onPressed: () => updateProduct(),
+                                  child: const Text('Update'),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 130,
-                            height: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text('Product picture'),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 150,
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: pickedImage != null
-                                ? Image.memory(
-                                    pickedImage!,
-                                    height: 150,
-                                  )
-                                : Image.network(
-                                    '$s3BaseUrl${product.image}',
-                                    height: 150,
+                              const SizedBox(width: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 200,
+                                child: ElevatedButton(
+                                  onPressed: () => showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      content: const Text(
+                                          'You are deleting this product.'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Cancel'),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () => {
+                                            deleteProduct(),
+                                            Navigator.pop(context)
+                                          },
+                                          child: const Text('Confirm'),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          SizedBox(
-                            height: 50,
-                            width: 200,
-                            child: ElevatedButton(
-                              onPressed: () => updateProduct(),
-                              child: const Text('Update'),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          SizedBox(
-                            height: 50,
-                            width: 200,
-                            child: ElevatedButton(
-                              onPressed: () => showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  content: const Text(
-                                      'You are deleting this product.'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Cancel'),
-                                      child: const Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () => {
-                                        deleteProduct(),
-                                        Navigator.pop(context)
-                                      },
-                                      child: const Text('Confirm'),
-                                    ),
-                                  ],
+                                  style: ElevatedButton.styleFrom(
+                                    primary:
+                                        Colors.red, // set the background color
+                                  ),
+                                  child: const Text('Delete'),
                                 ),
                               ),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.red, // set the background color
-                              ),
-                              child: const Text('Delete'),
-                            ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            );
-          } else if (snapshot.hasError) {
-            print(snapshot.error);
-            return const Text('error');
-          }
-          return const Text('Loading...');
-        },
+                );
+              } else if (snapshot.hasError) {
+                print(snapshot.error);
+                return const Text('error');
+              }
+              return const Text('Loading...');
+            },
+          ),
+        ),
       ),
     );
   }

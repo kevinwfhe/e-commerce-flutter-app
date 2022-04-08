@@ -1,3 +1,4 @@
+import 'package:csi5112group1project/screens/common/component/on_hover.dart';
 import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 import '../../../../models/category.dart';
@@ -33,22 +34,26 @@ class CategorySelectorState extends State<CategorySelector> {
 
   @override
   Widget build(BuildContext context) {
-    // getAllCate();
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-      child: SizedBox(
-        height: 50,
+    return Container(
+      height: 50,
+      width: 600,
+      padding: const EdgeInsets.symmetric(horizontal: 128),
+      decoration: const BoxDecoration(color: Color(0xFF232f3e)),
+      child: Center(
         child: FutureBuilder(
           future: widget.fCategory,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var categories = snapshot.data as List<Category>;
               categories = [Category(id: '', name: 'All'), ...categories];
-              return ListView.builder(
+              return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                itemBuilder: (context, index) =>
-                    buildCategory(index, categories),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:
+                      categories.map<Widget>((c) => buildCategory(c)).toList(),
+                ),
               );
             } else if (snapshot.hasError) {
               print(snapshot.error);
@@ -61,35 +66,27 @@ class CategorySelectorState extends State<CategorySelector> {
     );
   }
 
-  Widget buildCategory(int index, List<Category> categories) {
-    return GestureDetector(
-      onTap: () => onTapCategory(categories[index].id),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              categories[index].name,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: selectedCategoryId == categories[index].id
-                    ? kTextColor
-                    : kTextLightColor,
-              ),
+  Widget buildCategory(Category c) {
+    return OnHover(
+      builder: ((isHovered) => GestureDetector(
+            onTap: () => onTapCategory(c.id),
+            child: Row(
+              children: [
+                Text(
+                  c.name,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: isHovered || (selectedCategoryId == c.id)
+                        ? Colors.white
+                        : kTextLightColor,
+                  ),
+                ),
+                const SizedBox(
+                  width: 30,
+                )
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.only(
-                  top: kDefaultPadding / 4), //top padding 5
-              height: 2,
-              width: 30,
-              color: selectedCategoryId == categories[index].id
-                  ? Colors.black
-                  : Colors.transparent,
-            )
-          ],
-        ),
-      ),
+          )),
     );
   }
 }

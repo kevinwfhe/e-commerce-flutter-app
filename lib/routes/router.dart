@@ -5,6 +5,7 @@ import 'package:csi5112group1project/screens/admin/product_detail_manage_screen/
 import 'package:csi5112group1project/screens/client/discussion_detail_screen/discussion_detail_screen.dart';
 import 'package:csi5112group1project/screens/client/discussion_question_screen/discussion_question_screen.dart';
 import 'package:csi5112group1project/screens/client/discussion_screen/discussion_screen.dart';
+import 'package:csi5112group1project/screens/client/main_page.dart';
 import 'package:csi5112group1project/screens/client/sign_up_screen/sign_up_screen.dart';
 import '../screens/admin/authentication_admin_screen/authentification_admin_screen.dart';
 import '../screens/client/checkout_screen/checkout_screen.dart';
@@ -24,48 +25,38 @@ import '../screens/client/client_main_screen.dart';
   routes: <AutoRoute>[
     AutoRoute(
       path: '/',
-      page: ClientMainPage,
+      page: MainPage,
+      initial: true,
+    ),
+    AutoRoute(
+      path: 'order',
+      name: 'StandAloneOrderRouter',
+      page: EmptyRouterPage,
       initial: true,
       children: [
         AutoRoute(
           path: '',
-          name: 'ProductRoute',
-          page: ProductsScreen,
+          page: OrderScreen,
         ),
         AutoRoute(
-          path: 'cart',
-          name: 'CartRoute',
-          page: CartScreen,
+          path: ':orderId',
+          page: OrderDetailScreen,
+        ),
+      ],
+    ),
+    AutoRoute(
+      path: 'discuss',
+      name: 'StandAloneDiscussRouter',
+      initial: true,
+      page: EmptyRouterPage,
+      children: [
+        AutoRoute(
+          path: '',
+          page: DiscussionScreen,
         ),
         AutoRoute(
-          path: 'order',
-          name: 'OrderRouter',
-          page: EmptyRouterPage,
-          children: [
-            AutoRoute(
-              path: '',
-              page: OrderScreen,
-            ),
-            AutoRoute(
-              path: ':orderId',
-              page: OrderDetailScreen,
-            ),
-          ],
-        ),
-        AutoRoute(
-          path: 'discuss',
-          name: 'DiscussRouter',
-          page: EmptyRouterPage,
-          children: [
-            AutoRoute(
-              path: '',
-              page: DiscussionScreen,
-            ),
-            AutoRoute(
-              path: ':questionId',
-              page: DiscussionDetailScreen,
-            ),
-          ],
+          path: ':questionId',
+          page: DiscussionDetailScreen,
         ),
       ],
     ),
@@ -78,6 +69,7 @@ import '../screens/client/client_main_screen.dart';
       path: '/checkout',
       name: 'CheckoutRouter',
       page: EmptyRouterPage,
+      initial: true,
       children: [
         AutoRoute(
           path: '',

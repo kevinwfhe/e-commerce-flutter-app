@@ -223,159 +223,158 @@ class _CategoryManageScreenState extends State<CategoryManageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Category'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 100,
-            right: 100,
-            top: 30,
-          ),
-          child: FutureBuilder(
-              future: fCategory,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  var categories = snapshot.data as List<Category>;
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // const Text(
-                            //   'All Category',
-                            //   style: TextStyle(
-                            //     fontSize: 28,
-                            //     fontWeight: FontWeight.w600,
-                            //   ),
-                            // ),
-                            SizedBox(
-                              width: 300,
-                              child: DropdownButton<String>(
-                                hint: const Text('No category to select'),
-                                value: selectedCategoryId,
-                                icon: const Icon(Icons.arrow_downward),
-                                elevation: 16,
-                                style: const TextStyle(
-                                  color: Colors.deepPurple,
-                                ),
-                                underline: Container(
-                                  height: 2,
-                                  color: Colors.deepPurpleAccent,
-                                ),
-                                onChanged: (newValue) =>
-                                    selectCategory(newValue!),
-                                items: categories
-                                    .map((Category category) =>
-                                        DropdownMenuItem<String>(
-                                          value: category.id,
-                                          child: SizedBox(
-                                            width: 270,
-                                            child: Text(category.name),
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(const Radius.circular(5)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade500,
+              spreadRadius: .3,
+              blurRadius: .3,
+              blurStyle: BlurStyle.outer,
+            )
+          ],
+        ),
+        padding: const EdgeInsets.all(32),
+        child: FutureBuilder(
+          future: fCategory,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var categories = snapshot.data as List<Category>;
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 300,
+                          child: DropdownButton<String>(
+                            hint: const SizedBox(
+                              width: 270,
+                              child: Text('No category to select'),
                             ),
-                            SizedBox(
-                              height: 40,
-                              width: 120,
-                              child: ElevatedButton(
-                                onPressed: addCategory,
-                                child: const Text('Add category'),
-                              ),
+                            value: selectedCategoryId,
+                            icon: const Icon(Icons.arrow_downward),
+                            elevation: 16,
+                            style: const TextStyle(
+                              color: Colors.blue,
                             ),
-                            SizedBox(
-                              height: 40,
-                              width: 150,
-                              child: ElevatedButton(
-                                onPressed: selectedCategoryId.isEmpty
-                                    ? null
-                                    : updateCategory,
-                                child: const Text('Update category'),
-                              ),
+                            underline: Container(
+                              height: 2,
+                              color: Colors.blue,
                             ),
-                            SizedBox(
-                              height: 40,
-                              width: 150,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.red,
-                                ),
-                                onPressed: selectedCategoryId.isEmpty
-                                    ? null
-                                    : removeCategory,
-                                child: const Text('Delete category'),
-                              ),
-                            ),
-                          ],
+                            onChanged: (newValue) => selectCategory(newValue!),
+                            items: categories
+                                .map((Category category) =>
+                                    DropdownMenuItem<String>(
+                                      value: category.id,
+                                      child: SizedBox(
+                                        width: 270,
+                                        child: Text(category.name),
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 50),
-                      FutureBuilder(
-                        future: fProducts,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            final products = snapshot.data as PageData<Product>;
-                            if (categories.isEmpty) {
-                              return NoContent(
-                                icon: Icons.category_outlined,
-                                message: 'Create a category first.',
-                              );
-                            }
-                            if (products.rows.isEmpty &&
-                                selectedCategoryId == '') {
-                              return NoContent(
-                                icon: Icons.category_outlined,
-                                message: 'No category selected.',
-                              );
-                            }
-                            if (products.rows.isEmpty) {
-                              return NoContent(
-                                icon: Icons.category_outlined,
-                                message: 'No products under current category.',
-                              );
-                            }
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Products under the selected category:',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                        SizedBox(
+                          height: 40,
+                          width: 120,
+                          child: ElevatedButton(
+                            onPressed: addCategory,
+                            child: const Text('Add category'),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                          width: 150,
+                          child: ElevatedButton(
+                            onPressed: selectedCategoryId.isEmpty
+                                ? null
+                                : updateCategory,
+                            child: const Text('Update category'),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                          width: 150,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                            ),
+                            onPressed: selectedCategoryId.isEmpty
+                                ? null
+                                : removeCategory,
+                            child: const Text('Delete category'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 50),
+                  FutureBuilder(
+                    future: fProducts,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final products = snapshot.data as PageData<Product>;
+                        if (categories.isEmpty) {
+                          return NoContent(
+                            icon: Icons.category_outlined,
+                            message: 'Create a category first.',
+                          );
+                        }
+                        if (products.rows.isEmpty && selectedCategoryId == '') {
+                          return NoContent(
+                            icon: Icons.category_outlined,
+                            message: 'No category selected.',
+                          );
+                        }
+                        if (products.rows.isEmpty) {
+                          return NoContent(
+                            icon: Icons.category_outlined,
+                            message: 'No products under current category.',
+                          );
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Products under the selected category:',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 400,
+                              child: SingleChildScrollView(
+                                child: ProductTable(
+                                  products: products.rows,
                                 ),
-                                const SizedBox(height: 30),
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 400,
-                                  child: SingleChildScrollView(
-                                    child: ProductTable(
-                                      products: products.rows,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            );
-                          } else if (snapshot.hasError) {
-                            print(snapshot.error);
-                          }
-                          return const LoadingIndicator();
-                        },
-                      )
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return const Text('Error');
-                }
-                return const LoadingIndicator();
-              }),
+                              ),
+                            )
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        print(snapshot.error);
+                      }
+                      return const LoadingIndicator();
+                    },
+                  )
+                ],
+              );
+            } else if (snapshot.hasError) {
+              print(snapshot.error);
+              return const Text('Error');
+            }
+            return const LoadingIndicator();
+          },
         ),
       ),
     );

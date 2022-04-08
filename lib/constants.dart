@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
-const kTextColor = Color(0xFF535353);
+const kTextColor = Color(0xFF000000);
 const kTextLightColor = Color(0xFFACACAC);
+const kAdminPrimaryColor = Color(0xFF001529);
+const kAdminSecondaryColor = Color(0xFF1890FF);
+const kAdminTextPrimaryColor = Color(0XFFFFFFFF);
+const kAdminTextSecondaryColor = Color.fromRGBO(255, 255, 255, 0.706);
+const kAdminBackgroundColor = Color(0xFFF0F2F5);
 
 const kDefaultPadding = 40.0;
 

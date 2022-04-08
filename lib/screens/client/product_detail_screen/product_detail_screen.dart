@@ -45,6 +45,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               Product product = snapshot.data as Product;
               return Scaffold(
                 appBar: AppBar(
+                  backgroundColor: Color(0xFF0F1111),
                   title: Text(product.title),
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back),

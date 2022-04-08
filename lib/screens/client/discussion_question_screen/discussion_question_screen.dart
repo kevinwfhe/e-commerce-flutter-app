@@ -48,25 +48,30 @@ class _DiscussionQuestionScreenState extends State<DiscussionQuestionScreen> {
           await Request.post('/Question', jsonEncode(questionToPost));
       if (response.statusCode == 201) {
         var postedQuestion = Question.fromJson(jsonDecode(response.body));
-        context.router.replace(
-          ClientMainRoute(children: [
-            DiscussRouter(children: [
-              DiscussionScreen(),
-              DiscussionDetailScreen(questionId: postedQuestion.id),
-            ])
+        context.router.popAndPush(
+          StandAloneDiscussRouter(children: [
+            const DiscussionScreen(),
+            DiscussionDetailScreen(questionId: postedQuestion.id),
           ]),
         );
       }
     }
   }
 
-  void discard() {
-    context.router.pop();
-  }
+  void goBack() => context.router
+      .replace(const StandAloneDiscussRouter(children: [DiscussionScreen()]));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('New Question'),
+        backgroundColor: const Color(0xFF0F1111),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: goBack,
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
             padding: const EdgeInsets.only(
@@ -202,7 +207,7 @@ class _DiscussionQuestionScreenState extends State<DiscussionQuestionScreen> {
                         padding: EdgeInsets.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      onPressed: discard,
+                      onPressed: goBack,
                       child: const Text(
                         'Go back',
                         style: TextStyle(

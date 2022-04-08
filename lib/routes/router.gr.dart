@@ -10,155 +10,146 @@
 //
 // ignore_for_file: type=lint
 
-import 'package:auto_route/auto_route.dart' as _i3;
-import 'package:flutter/material.dart' as _i19;
+import 'package:auto_route/auto_route.dart' as _i2;
+import 'package:flutter/material.dart' as _i18;
 
-import '../screens/admin/admin_main_screen.dart' as _i15;
+import '../screens/admin/admin_main_screen.dart' as _i14;
 import '../screens/admin/admin_order_detail_screen/admin_order_detail_screen.dart'
-    as _i18;
-import '../screens/admin/authentication_admin_screen/authentification_admin_screen.dart'
-    as _i16;
-import '../screens/admin/product_detail_manage_screen/product_detail_manage_screen.dart'
     as _i17;
+import '../screens/admin/authentication_admin_screen/authentification_admin_screen.dart'
+    as _i15;
+import '../screens/admin/product_detail_manage_screen/product_detail_manage_screen.dart'
+    as _i16;
 import '../screens/client/authentication_client_screen/authentification_client_screen.dart'
     as _i6;
 import '../screens/client/cart_screen/cart_screen.dart' as _i5;
-import '../screens/client/checkout_screen/checkout_screen.dart' as _i13;
-import '../screens/client/client_main_screen.dart' as _i1;
+import '../screens/client/checkout_screen/checkout_screen.dart' as _i12;
 import '../screens/client/discussion_detail_screen/discussion_detail_screen.dart'
-    as _i12;
+    as _i11;
 import '../screens/client/discussion_question_screen/discussion_question_screen.dart'
-    as _i2;
-import '../screens/client/discussion_screen/discussion_screen.dart' as _i11;
-import '../screens/client/order_detail_screen/order_detail_screen.dart' as _i10;
-import '../screens/client/order_placed_screen/order_placed_screen.dart' as _i14;
-import '../screens/client/orders_screen/orders_screen.dart' as _i9;
+    as _i3;
+import '../screens/client/discussion_screen/discussion_screen.dart' as _i10;
+import '../screens/client/main_page.dart' as _i1;
+import '../screens/client/order_detail_screen/order_detail_screen.dart' as _i9;
+import '../screens/client/order_placed_screen/order_placed_screen.dart' as _i13;
+import '../screens/client/orders_screen/orders_screen.dart' as _i8;
 import '../screens/client/product_detail_screen/product_detail_screen.dart'
     as _i4;
-import '../screens/client/products_screen/products_screen.dart' as _i8;
 import '../screens/client/sign_up_screen/sign_up_screen.dart' as _i7;
 
-class AppRouter extends _i3.RootStackRouter {
-  AppRouter([_i19.GlobalKey<_i19.NavigatorState>? navigatorKey])
+class AppRouter extends _i2.RootStackRouter {
+  AppRouter([_i18.GlobalKey<_i18.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i3.PageFactory> pagesMap = {
-    ClientMainRoute.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i1.ClientMainPage());
+  final Map<String, _i2.PageFactory> pagesMap = {
+    MainRoute.name: (routeData) {
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i1.MainPage());
+    },
+    StandAloneOrderRouter.name: (routeData) {
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.EmptyRouterPage());
+    },
+    StandAloneDiscussRouter.name: (routeData) {
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.EmptyRouterPage());
     },
     DiscussionQuestionScreen.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.DiscussionQuestionScreen());
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i3.DiscussionQuestionScreen());
     },
     CheckoutRouter.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.EmptyRouterPage());
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.EmptyRouterPage());
     },
     ProductDetailRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ProductDetailRouteArgs>(
           orElse: () => ProductDetailRouteArgs(
               productId: pathParams.getString('productId')));
-      return _i3.MaterialPageX<dynamic>(
+      return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i4.ProductDetailScreen(
               key: args.key, productId: args.productId));
     },
     StandAloneCartRoute.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
+      return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i5.CartScreen());
     },
     LoginRoute.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
+      return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
           child: const _i6.AuthentificationClientScreen());
     },
     SignUpRoute.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
+      return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i7.SignUpScreen());
     },
     AdminRouter.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.EmptyRouterPage());
-    },
-    ProductRoute.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i8.ProductsScreen());
-    },
-    CartRoute.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i5.CartScreen());
-    },
-    OrderRouter.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.EmptyRouterPage());
-    },
-    DiscussRouter.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.EmptyRouterPage());
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.EmptyRouterPage());
     },
     OrderScreen.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i9.OrderScreen());
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i8.OrderScreen());
     },
     OrderDetailScreen.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<OrderDetailScreenArgs>(
           orElse: () =>
               OrderDetailScreenArgs(orderId: pathParams.getString('orderId')));
-      return _i3.MaterialPageX<dynamic>(
+      return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i10.OrderDetailScreen(key: args.key, orderId: args.orderId));
+          child: _i9.OrderDetailScreen(key: args.key, orderId: args.orderId));
     },
     DiscussionScreen.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i11.DiscussionScreen());
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i10.DiscussionScreen());
     },
     DiscussionDetailScreen.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<DiscussionDetailScreenArgs>(
           orElse: () => DiscussionDetailScreenArgs(
               questionId: pathParams.getString('questionId')));
-      return _i3.MaterialPageX<dynamic>(
+      return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i12.DiscussionDetailScreen(
+          child: _i11.DiscussionDetailScreen(
               key: args.key, questionId: args.questionId));
     },
     CheckoutRoute.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i13.CheckoutScreen());
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i12.CheckoutScreen());
     },
     CheckoutSuccessScreen.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i14.OrderPlacedScreen());
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i13.OrderPlacedScreen());
     },
     AdminMainRoute.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i15.AdminMainScreen());
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i14.AdminMainScreen());
     },
     AdminLoginRoute.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
+      return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: const _i16.AuthentificationAdminScreen());
+          child: const _i15.AuthentificationAdminScreen());
     },
     AdminProductRouter.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.EmptyRouterPage());
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.EmptyRouterPage());
     },
     AdminOrderRouter.name: (routeData) {
-      return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.EmptyRouterPage());
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.EmptyRouterPage());
     },
     AdminProductDetail.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<AdminProductDetailArgs>(
           orElse: () => AdminProductDetailArgs(
               productId: pathParams.getString('productId')));
-      return _i3.MaterialPageX<dynamic>(
+      return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i17.ProductDetailManageScreen(
+          child: _i16.ProductDetailManageScreen(
               key: args.key, productId: args.productId));
     },
     AdminOrderDetail.name: (routeData) {
@@ -166,67 +157,58 @@ class AppRouter extends _i3.RootStackRouter {
       final args = routeData.argsAs<AdminOrderDetailArgs>(
           orElse: () =>
               AdminOrderDetailArgs(orderId: pathParams.getString('orderId')));
-      return _i3.MaterialPageX<dynamic>(
+      return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i18.AdminOrderDetailScreen(
+          child: _i17.AdminOrderDetailScreen(
               key: args.key, orderId: args.orderId));
     }
   };
 
   @override
-  List<_i3.RouteConfig> get routes => [
-        _i3.RouteConfig(ClientMainRoute.name, path: '/', children: [
-          _i3.RouteConfig(ProductRoute.name,
-              path: '', parent: ClientMainRoute.name),
-          _i3.RouteConfig(CartRoute.name,
-              path: 'cart', parent: ClientMainRoute.name),
-          _i3.RouteConfig(OrderRouter.name,
-              path: 'order',
-              parent: ClientMainRoute.name,
-              children: [
-                _i3.RouteConfig(OrderScreen.name,
-                    path: '', parent: OrderRouter.name),
-                _i3.RouteConfig(OrderDetailScreen.name,
-                    path: ':orderId', parent: OrderRouter.name)
-              ]),
-          _i3.RouteConfig(DiscussRouter.name,
-              path: 'discuss',
-              parent: ClientMainRoute.name,
-              children: [
-                _i3.RouteConfig(DiscussionScreen.name,
-                    path: '', parent: DiscussRouter.name),
-                _i3.RouteConfig(DiscussionDetailScreen.name,
-                    path: ':questionId', parent: DiscussRouter.name)
-              ])
+  List<_i2.RouteConfig> get routes => [
+        _i2.RouteConfig(MainRoute.name, path: '/'),
+        _i2.RouteConfig(StandAloneOrderRouter.name, path: 'order', children: [
+          _i2.RouteConfig(OrderScreen.name,
+              path: '', parent: StandAloneOrderRouter.name),
+          _i2.RouteConfig(OrderDetailScreen.name,
+              path: ':orderId', parent: StandAloneOrderRouter.name)
         ]),
-        _i3.RouteConfig(DiscussionQuestionScreen.name, path: '/ask'),
-        _i3.RouteConfig(CheckoutRouter.name, path: '/checkout', children: [
-          _i3.RouteConfig(CheckoutRoute.name,
+        _i2.RouteConfig(StandAloneDiscussRouter.name,
+            path: 'discuss',
+            children: [
+              _i2.RouteConfig(DiscussionScreen.name,
+                  path: '', parent: StandAloneDiscussRouter.name),
+              _i2.RouteConfig(DiscussionDetailScreen.name,
+                  path: ':questionId', parent: StandAloneDiscussRouter.name)
+            ]),
+        _i2.RouteConfig(DiscussionQuestionScreen.name, path: '/ask'),
+        _i2.RouteConfig(CheckoutRouter.name, path: '/checkout', children: [
+          _i2.RouteConfig(CheckoutRoute.name,
               path: '', parent: CheckoutRouter.name),
-          _i3.RouteConfig(CheckoutSuccessScreen.name,
+          _i2.RouteConfig(CheckoutSuccessScreen.name,
               path: 'success', parent: CheckoutRouter.name)
         ]),
-        _i3.RouteConfig(ProductDetailRoute.name, path: '/item/:productId'),
-        _i3.RouteConfig(StandAloneCartRoute.name, path: '/cart'),
-        _i3.RouteConfig(LoginRoute.name, path: '/login'),
-        _i3.RouteConfig(SignUpRoute.name, path: '/signup'),
-        _i3.RouteConfig(AdminRouter.name, path: '/admin', children: [
-          _i3.RouteConfig(AdminMainRoute.name,
+        _i2.RouteConfig(ProductDetailRoute.name, path: '/item/:productId'),
+        _i2.RouteConfig(StandAloneCartRoute.name, path: '/cart'),
+        _i2.RouteConfig(LoginRoute.name, path: '/login'),
+        _i2.RouteConfig(SignUpRoute.name, path: '/signup'),
+        _i2.RouteConfig(AdminRouter.name, path: '/admin', children: [
+          _i2.RouteConfig(AdminMainRoute.name,
               path: '', parent: AdminRouter.name),
-          _i3.RouteConfig(AdminLoginRoute.name,
+          _i2.RouteConfig(AdminLoginRoute.name,
               path: 'login', parent: AdminRouter.name),
-          _i3.RouteConfig(AdminProductRouter.name,
+          _i2.RouteConfig(AdminProductRouter.name,
               path: 'product',
               parent: AdminRouter.name,
               children: [
-                _i3.RouteConfig(AdminProductDetail.name,
+                _i2.RouteConfig(AdminProductDetail.name,
                     path: ':productId', parent: AdminProductRouter.name)
               ]),
-          _i3.RouteConfig(AdminOrderRouter.name,
+          _i2.RouteConfig(AdminOrderRouter.name,
               path: 'order',
               parent: AdminRouter.name,
               children: [
-                _i3.RouteConfig(AdminOrderDetail.name,
+                _i2.RouteConfig(AdminOrderDetail.name,
                     path: ':orderId', parent: AdminOrderRouter.name)
               ])
         ])
@@ -234,17 +216,36 @@ class AppRouter extends _i3.RootStackRouter {
 }
 
 /// generated route for
-/// [_i1.ClientMainPage]
-class ClientMainRoute extends _i3.PageRouteInfo<void> {
-  const ClientMainRoute({List<_i3.PageRouteInfo>? children})
-      : super(ClientMainRoute.name, path: '/', initialChildren: children);
+/// [_i1.MainPage]
+class MainRoute extends _i2.PageRouteInfo<void> {
+  const MainRoute() : super(MainRoute.name, path: '/');
 
-  static const String name = 'ClientMainRoute';
+  static const String name = 'MainRoute';
 }
 
 /// generated route for
-/// [_i2.DiscussionQuestionScreen]
-class DiscussionQuestionScreen extends _i3.PageRouteInfo<void> {
+/// [_i2.EmptyRouterPage]
+class StandAloneOrderRouter extends _i2.PageRouteInfo<void> {
+  const StandAloneOrderRouter({List<_i2.PageRouteInfo>? children})
+      : super(StandAloneOrderRouter.name,
+            path: 'order', initialChildren: children);
+
+  static const String name = 'StandAloneOrderRouter';
+}
+
+/// generated route for
+/// [_i2.EmptyRouterPage]
+class StandAloneDiscussRouter extends _i2.PageRouteInfo<void> {
+  const StandAloneDiscussRouter({List<_i2.PageRouteInfo>? children})
+      : super(StandAloneDiscussRouter.name,
+            path: 'discuss', initialChildren: children);
+
+  static const String name = 'StandAloneDiscussRouter';
+}
+
+/// generated route for
+/// [_i3.DiscussionQuestionScreen]
+class DiscussionQuestionScreen extends _i2.PageRouteInfo<void> {
   const DiscussionQuestionScreen()
       : super(DiscussionQuestionScreen.name, path: '/ask');
 
@@ -252,9 +253,9 @@ class DiscussionQuestionScreen extends _i3.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.EmptyRouterPage]
-class CheckoutRouter extends _i3.PageRouteInfo<void> {
-  const CheckoutRouter({List<_i3.PageRouteInfo>? children})
+/// [_i2.EmptyRouterPage]
+class CheckoutRouter extends _i2.PageRouteInfo<void> {
+  const CheckoutRouter({List<_i2.PageRouteInfo>? children})
       : super(CheckoutRouter.name,
             path: '/checkout', initialChildren: children);
 
@@ -263,8 +264,8 @@ class CheckoutRouter extends _i3.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.ProductDetailScreen]
-class ProductDetailRoute extends _i3.PageRouteInfo<ProductDetailRouteArgs> {
-  ProductDetailRoute({_i19.Key? key, required String productId})
+class ProductDetailRoute extends _i2.PageRouteInfo<ProductDetailRouteArgs> {
+  ProductDetailRoute({_i18.Key? key, required String productId})
       : super(ProductDetailRoute.name,
             path: '/item/:productId',
             args: ProductDetailRouteArgs(key: key, productId: productId),
@@ -276,7 +277,7 @@ class ProductDetailRoute extends _i3.PageRouteInfo<ProductDetailRouteArgs> {
 class ProductDetailRouteArgs {
   const ProductDetailRouteArgs({this.key, required this.productId});
 
-  final _i19.Key? key;
+  final _i18.Key? key;
 
   final String productId;
 
@@ -288,7 +289,7 @@ class ProductDetailRouteArgs {
 
 /// generated route for
 /// [_i5.CartScreen]
-class StandAloneCartRoute extends _i3.PageRouteInfo<void> {
+class StandAloneCartRoute extends _i2.PageRouteInfo<void> {
   const StandAloneCartRoute() : super(StandAloneCartRoute.name, path: '/cart');
 
   static const String name = 'StandAloneCartRoute';
@@ -296,7 +297,7 @@ class StandAloneCartRoute extends _i3.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i6.AuthentificationClientScreen]
-class LoginRoute extends _i3.PageRouteInfo<void> {
+class LoginRoute extends _i2.PageRouteInfo<void> {
   const LoginRoute() : super(LoginRoute.name, path: '/login');
 
   static const String name = 'LoginRoute';
@@ -304,67 +305,33 @@ class LoginRoute extends _i3.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.SignUpScreen]
-class SignUpRoute extends _i3.PageRouteInfo<void> {
+class SignUpRoute extends _i2.PageRouteInfo<void> {
   const SignUpRoute() : super(SignUpRoute.name, path: '/signup');
 
   static const String name = 'SignUpRoute';
 }
 
 /// generated route for
-/// [_i3.EmptyRouterPage]
-class AdminRouter extends _i3.PageRouteInfo<void> {
-  const AdminRouter({List<_i3.PageRouteInfo>? children})
+/// [_i2.EmptyRouterPage]
+class AdminRouter extends _i2.PageRouteInfo<void> {
+  const AdminRouter({List<_i2.PageRouteInfo>? children})
       : super(AdminRouter.name, path: '/admin', initialChildren: children);
 
   static const String name = 'AdminRouter';
 }
 
 /// generated route for
-/// [_i8.ProductsScreen]
-class ProductRoute extends _i3.PageRouteInfo<void> {
-  const ProductRoute() : super(ProductRoute.name, path: '');
-
-  static const String name = 'ProductRoute';
-}
-
-/// generated route for
-/// [_i5.CartScreen]
-class CartRoute extends _i3.PageRouteInfo<void> {
-  const CartRoute() : super(CartRoute.name, path: 'cart');
-
-  static const String name = 'CartRoute';
-}
-
-/// generated route for
-/// [_i3.EmptyRouterPage]
-class OrderRouter extends _i3.PageRouteInfo<void> {
-  const OrderRouter({List<_i3.PageRouteInfo>? children})
-      : super(OrderRouter.name, path: 'order', initialChildren: children);
-
-  static const String name = 'OrderRouter';
-}
-
-/// generated route for
-/// [_i3.EmptyRouterPage]
-class DiscussRouter extends _i3.PageRouteInfo<void> {
-  const DiscussRouter({List<_i3.PageRouteInfo>? children})
-      : super(DiscussRouter.name, path: 'discuss', initialChildren: children);
-
-  static const String name = 'DiscussRouter';
-}
-
-/// generated route for
-/// [_i9.OrderScreen]
-class OrderScreen extends _i3.PageRouteInfo<void> {
+/// [_i8.OrderScreen]
+class OrderScreen extends _i2.PageRouteInfo<void> {
   const OrderScreen() : super(OrderScreen.name, path: '');
 
   static const String name = 'OrderScreen';
 }
 
 /// generated route for
-/// [_i10.OrderDetailScreen]
-class OrderDetailScreen extends _i3.PageRouteInfo<OrderDetailScreenArgs> {
-  OrderDetailScreen({_i19.Key? key, required String orderId})
+/// [_i9.OrderDetailScreen]
+class OrderDetailScreen extends _i2.PageRouteInfo<OrderDetailScreenArgs> {
+  OrderDetailScreen({_i18.Key? key, required String orderId})
       : super(OrderDetailScreen.name,
             path: ':orderId',
             args: OrderDetailScreenArgs(key: key, orderId: orderId),
@@ -376,7 +343,7 @@ class OrderDetailScreen extends _i3.PageRouteInfo<OrderDetailScreenArgs> {
 class OrderDetailScreenArgs {
   const OrderDetailScreenArgs({this.key, required this.orderId});
 
-  final _i19.Key? key;
+  final _i18.Key? key;
 
   final String orderId;
 
@@ -387,18 +354,18 @@ class OrderDetailScreenArgs {
 }
 
 /// generated route for
-/// [_i11.DiscussionScreen]
-class DiscussionScreen extends _i3.PageRouteInfo<void> {
+/// [_i10.DiscussionScreen]
+class DiscussionScreen extends _i2.PageRouteInfo<void> {
   const DiscussionScreen() : super(DiscussionScreen.name, path: '');
 
   static const String name = 'DiscussionScreen';
 }
 
 /// generated route for
-/// [_i12.DiscussionDetailScreen]
+/// [_i11.DiscussionDetailScreen]
 class DiscussionDetailScreen
-    extends _i3.PageRouteInfo<DiscussionDetailScreenArgs> {
-  DiscussionDetailScreen({_i19.Key? key, required String questionId})
+    extends _i2.PageRouteInfo<DiscussionDetailScreenArgs> {
+  DiscussionDetailScreen({_i18.Key? key, required String questionId})
       : super(DiscussionDetailScreen.name,
             path: ':questionId',
             args: DiscussionDetailScreenArgs(key: key, questionId: questionId),
@@ -410,7 +377,7 @@ class DiscussionDetailScreen
 class DiscussionDetailScreenArgs {
   const DiscussionDetailScreenArgs({this.key, required this.questionId});
 
-  final _i19.Key? key;
+  final _i18.Key? key;
 
   final String questionId;
 
@@ -421,16 +388,16 @@ class DiscussionDetailScreenArgs {
 }
 
 /// generated route for
-/// [_i13.CheckoutScreen]
-class CheckoutRoute extends _i3.PageRouteInfo<void> {
+/// [_i12.CheckoutScreen]
+class CheckoutRoute extends _i2.PageRouteInfo<void> {
   const CheckoutRoute() : super(CheckoutRoute.name, path: '');
 
   static const String name = 'CheckoutRoute';
 }
 
 /// generated route for
-/// [_i14.OrderPlacedScreen]
-class CheckoutSuccessScreen extends _i3.PageRouteInfo<void> {
+/// [_i13.OrderPlacedScreen]
+class CheckoutSuccessScreen extends _i2.PageRouteInfo<void> {
   const CheckoutSuccessScreen()
       : super(CheckoutSuccessScreen.name, path: 'success');
 
@@ -438,25 +405,25 @@ class CheckoutSuccessScreen extends _i3.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i15.AdminMainScreen]
-class AdminMainRoute extends _i3.PageRouteInfo<void> {
+/// [_i14.AdminMainScreen]
+class AdminMainRoute extends _i2.PageRouteInfo<void> {
   const AdminMainRoute() : super(AdminMainRoute.name, path: '');
 
   static const String name = 'AdminMainRoute';
 }
 
 /// generated route for
-/// [_i16.AuthentificationAdminScreen]
-class AdminLoginRoute extends _i3.PageRouteInfo<void> {
+/// [_i15.AuthentificationAdminScreen]
+class AdminLoginRoute extends _i2.PageRouteInfo<void> {
   const AdminLoginRoute() : super(AdminLoginRoute.name, path: 'login');
 
   static const String name = 'AdminLoginRoute';
 }
 
 /// generated route for
-/// [_i3.EmptyRouterPage]
-class AdminProductRouter extends _i3.PageRouteInfo<void> {
-  const AdminProductRouter({List<_i3.PageRouteInfo>? children})
+/// [_i2.EmptyRouterPage]
+class AdminProductRouter extends _i2.PageRouteInfo<void> {
+  const AdminProductRouter({List<_i2.PageRouteInfo>? children})
       : super(AdminProductRouter.name,
             path: 'product', initialChildren: children);
 
@@ -464,18 +431,18 @@ class AdminProductRouter extends _i3.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.EmptyRouterPage]
-class AdminOrderRouter extends _i3.PageRouteInfo<void> {
-  const AdminOrderRouter({List<_i3.PageRouteInfo>? children})
+/// [_i2.EmptyRouterPage]
+class AdminOrderRouter extends _i2.PageRouteInfo<void> {
+  const AdminOrderRouter({List<_i2.PageRouteInfo>? children})
       : super(AdminOrderRouter.name, path: 'order', initialChildren: children);
 
   static const String name = 'AdminOrderRouter';
 }
 
 /// generated route for
-/// [_i17.ProductDetailManageScreen]
-class AdminProductDetail extends _i3.PageRouteInfo<AdminProductDetailArgs> {
-  AdminProductDetail({_i19.Key? key, required String productId})
+/// [_i16.ProductDetailManageScreen]
+class AdminProductDetail extends _i2.PageRouteInfo<AdminProductDetailArgs> {
+  AdminProductDetail({_i18.Key? key, required String productId})
       : super(AdminProductDetail.name,
             path: ':productId',
             args: AdminProductDetailArgs(key: key, productId: productId),
@@ -487,7 +454,7 @@ class AdminProductDetail extends _i3.PageRouteInfo<AdminProductDetailArgs> {
 class AdminProductDetailArgs {
   const AdminProductDetailArgs({this.key, required this.productId});
 
-  final _i19.Key? key;
+  final _i18.Key? key;
 
   final String productId;
 
@@ -498,9 +465,9 @@ class AdminProductDetailArgs {
 }
 
 /// generated route for
-/// [_i18.AdminOrderDetailScreen]
-class AdminOrderDetail extends _i3.PageRouteInfo<AdminOrderDetailArgs> {
-  AdminOrderDetail({_i19.Key? key, required String orderId})
+/// [_i17.AdminOrderDetailScreen]
+class AdminOrderDetail extends _i2.PageRouteInfo<AdminOrderDetailArgs> {
+  AdminOrderDetail({_i18.Key? key, required String orderId})
       : super(AdminOrderDetail.name,
             path: ':orderId',
             args: AdminOrderDetailArgs(key: key, orderId: orderId),
@@ -512,7 +479,7 @@ class AdminOrderDetail extends _i3.PageRouteInfo<AdminOrderDetailArgs> {
 class AdminOrderDetailArgs {
   const AdminOrderDetailArgs({this.key, required this.orderId});
 
-  final _i19.Key? key;
+  final _i18.Key? key;
 
   final String orderId;
 

@@ -6,6 +6,7 @@ import 'package:csi5112group1project/models/authentication.dart';
 import 'package:provider/provider.dart';
 import '../../../../apis/request.dart';
 import '../../../../routes/router.gr.dart';
+import 'dart:html';
 
 class AuthentificationBuyerBody extends StatefulWidget {
   const AuthentificationBuyerBody({Key? key}) : super(key: key);
@@ -52,7 +53,7 @@ class _AuthentificationBuyerBodyState extends State<AuthentificationBuyerBody> {
             AuthenticationResponseBody.fromJson(jsonDecode(response.body));
         var user = Provider.of<UserContext>(context, listen: false);
         await user.setUser(res.jwtToken, res.user);
-        context.navigateTo(const ClientMainRoute());
+        context.navigateTo(const MainRoute());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(loginFailedSnackBar);
       }

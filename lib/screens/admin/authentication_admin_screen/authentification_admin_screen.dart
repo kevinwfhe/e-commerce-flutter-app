@@ -10,12 +10,7 @@ class AuthentificationAdminScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        elevation: 0,
-        leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => context.router.pop()), // icon - - back
-        actions: const <Widget>[SizedBox(width: kDefaultPadding / 2)],
+        backgroundColor: Color(0xFF0F1111),
       ),
       body: const AuthentificationAdminBody(),
     );

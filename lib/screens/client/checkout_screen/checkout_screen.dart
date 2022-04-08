@@ -100,7 +100,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       orderId: '',
       orderTimeStamp: DateTime.now(),
       orderStatus: ORDER_STATUS.placed,
-      totalPrice: CartContext().totalPrice,
+      totalPrice: double.parse(CartContext().totalPrice.toStringAsFixed(2)),
       shippingAddressId: selectedAddressId,
       // convert Map<String(productId), int(quantity)>
       // to List<PurchasedItem> to comply with api services
@@ -148,14 +148,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         builder: (context, cart, child) => Scaffold(
           appBar: AppBar(
             title: const Text('Place Your Order'),
+            backgroundColor: Color(0xFF0F1111),
             leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                context.router.pop();
-              },
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => context.popRoute(),
             ),
           ),
           body: SingleChildScrollView(
@@ -217,6 +213,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       onDeleteAddress: (id) {
                                         deleteAddress(id);
                                       },
+                                    ),
+                                    const Divider(
+                                      height: 1,
+                                      thickness: 1.5,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8),
@@ -288,7 +288,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       Row(
                         children: [
                           Text(
-                            'Order Total:  \$${cart.totalPrice}',
+                            'Order Total:  \$${cart.totalPrice.toStringAsFixed(2)}',
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -373,7 +373,10 @@ class CheckoutTable extends StatelessWidget {
                   ),
                   DataCell(Text(prod.product.price.toString())),
                   DataCell(Text(prod.numOfItem.toString())),
-                  DataCell(Text('${prod.numOfItem * prod.product.price}'))
+                  DataCell(
+                    Text(
+                        '${(prod.numOfItem * prod.product.price).toStringAsFixed(2)}'),
+                  )
                 ],
               ))
           .toList(),

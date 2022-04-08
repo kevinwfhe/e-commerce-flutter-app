@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:csi5112group1project/constants.dart';
+import 'package:csi5112group1project/context/user_context.dart';
 import 'package:csi5112group1project/screens/common/component/no_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,23 @@ import '../../../context/cart_context.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
+
+  void checkout(BuildContext context) {
+    var user = Provider.of<UserContext>(context, listen: false);
+    if (user.exist) {
+      context.router.push(
+        const CheckoutRouter(
+          children: [
+            CheckoutRoute(),
+          ],
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(signinFirstSnackbar);
+      context.router.push(const LoginRoute());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -16,10 +34,15 @@ class CartScreen extends StatelessWidget {
         child: CartConsumer(
           builder: (context, cart, child) => Scaffold(
             appBar: AppBar(
+              backgroundColor: const Color(0xFF0F1111),
               title: Column(
                 children: const [
                   Text("Shopping Cart"),
                 ],
+              ),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => context.popRoute(),
               ),
             ),
             body: Builder(builder: ((context) {
@@ -28,7 +51,7 @@ class CartScreen extends StatelessWidget {
                   children: [
                     SingleChildScrollView(
                       padding: const EdgeInsets.only(
-                          bottom: 96, left: 64, right: 64),
+                          bottom: 96, left: 64, right: 64, top: 20),
                       child: Card(
                         child: SizedBox(
                           width: double.infinity,
@@ -64,8 +87,15 @@ class CartScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 64, right: 64),
                         width: double.maxFinite,
                         decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 5,
+                                spreadRadius: 2,
+                                offset: Offset(0, 5),
+                                blurStyle: BlurStyle.outer,
+                              )
+                            ]),
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           child: Row(
@@ -87,21 +117,32 @@ class CartScreen extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      const Text('Total:'),
-                                      Text('\$${cart.totalPrice}'),
+                                      const Text(
+                                        'Total:  ',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        '\$${cart.totalPrice.toStringAsFixed(2)}',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () => context.router.push(
-                                  const CheckoutRouter(
-                                    children: [
-                                      CheckoutRoute(),
-                                    ],
-                                  ),
+                              SizedBox(width: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 200,
+                                child: ElevatedButton(
+                                  onPressed: () => checkout(context),
+                                  child: const Text('Proceed to checkout'),
                                 ),
-                                child: const Text('Checkout'),
                               ),
                             ],
                           ),
@@ -223,7 +264,8 @@ class CartTable extends StatelessWidget {
                       ],
                     ),
                   ),
-                  DataCell(Text('${item.numOfItem * item.product.price}')),
+                  DataCell(Text((item.numOfItem * item.product.price)
+                      .toStringAsFixed(2))),
                   DataCell(
                     Row(
                       children: [
@@ -266,3 +308,10 @@ class RemoveItemModal extends StatelessWidget {
     );
   }
 }
+
+const signinFirstSnackbar = SnackBar(
+  content: Text(
+    'Please sign in first.',
+    textAlign: TextAlign.center,
+  ),
+);

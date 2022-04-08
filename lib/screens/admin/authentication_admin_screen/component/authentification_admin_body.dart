@@ -4,7 +4,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:csi5112group1project/models/authentication.dart';
 import 'package:csi5112group1project/storage/storage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../apis/request.dart';
+import '../../../../context/user_context.dart';
 import '../../../../routes/router.gr.dart';
 
 class AuthentificationAdminBody extends StatefulWidget {
@@ -48,7 +50,8 @@ class _AuthentificationAdminBodyState extends State<AuthentificationAdminBody> {
       if (response.statusCode == 200) {
         var jsonBody = jsonDecode(response.body);
         var res = AuthenticationResponseBody.fromJson(jsonBody);
-        await storage.write(key: 'token', value: res.jwtToken);
+        var user = Provider.of<UserContext>(context, listen: false);
+        await user.setUser(res.jwtToken, res.user);
         context.navigateTo(const AdminMainRoute());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(loginFailedSnackBar);

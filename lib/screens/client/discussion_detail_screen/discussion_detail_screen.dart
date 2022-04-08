@@ -65,7 +65,13 @@ class _DiscussionDetailScreenState extends State<DiscussionDetailScreen> {
     if (response.statusCode == 204) {
       ScaffoldMessenger.of(context).showSnackBar(deleteSuccessSnackbar);
       if (postType == POST_TYPE.question) {
-        context.navigateTo(const ClientMainRoute(children: [DiscussRouter()]));
+        context.navigateTo(
+          const StandAloneDiscussRouter(
+            children: [
+              DiscussionScreen(),
+            ],
+          ),
+        );
       }
       if (postType == POST_TYPE.answer) {
         setState(() {
@@ -101,6 +107,14 @@ class _DiscussionDetailScreenState extends State<DiscussionDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('New Question'),
+        backgroundColor: const Color(0xFF0F1111),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.popRoute(),
+        ),
+      ),
       body: SingleChildScrollView(
         child: FutureBuilder(
           future: fQuestion,

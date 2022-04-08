@@ -54,10 +54,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Order Details'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => context.popRoute(),
-          ),
+          backgroundColor: Color(0xFF0F1111),
+          leading: null,
         ),
         body: SingleChildScrollView(
           child: Padding(

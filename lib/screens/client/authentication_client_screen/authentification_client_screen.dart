@@ -11,11 +11,11 @@ class AuthentificationClientScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF0F1111),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.navigateTo(const ClientMainRoute()),
+          onPressed: () => context.navigateTo(const MainRoute()),
         ),
         actions: const <Widget>[SizedBox(width: kDefaultPadding / 2)],
       ),

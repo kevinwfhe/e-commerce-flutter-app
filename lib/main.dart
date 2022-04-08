@@ -1,11 +1,12 @@
 import 'package:csi5112group1project/context/user_context.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../routes/router.gr.dart';
 
 void main() {
-  // setUrlStrategy(PathUrlStrategy());
+  setUrlStrategy(PathUrlStrategy());
   runApp(MyApp());
 }
 

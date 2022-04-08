@@ -23,33 +23,48 @@ class ProductScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        CategorySelector(
-            fCategory: fCategory, onCategoryChanged: onCategoryChange),
-        FutureBuilder(
-            future: fProducts,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final products = snapshot.data as PageData<Product>;
-                if (products.totalRows == 0) {
-                  return NoContent(
-                    icon: Icons.search_off_outlined,
-                    message:
-                        'Didn\'t find what you want? Search another keyword!',
-                  );
-                }
-                return Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding,
-                    ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Row(
+            children: [
+              Expanded(
+                child: CategorySelector(
+                  fCategory: fCategory,
+                  onCategoryChanged: onCategoryChange,
+                ),
+              )
+            ],
+          ),
+        ),
+        const SizedBox(height: 100),
+        Padding(
+          padding: const EdgeInsets.only(top: 80),
+          child: FutureBuilder(
+              future: fProducts,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final products = snapshot.data as PageData<Product>;
+                  if (products.totalRows == 0) {
+                    return NoContent(
+                      icon: Icons.search_off_outlined,
+                      message:
+                          'Didn\'t find what you want? Search another keyword!',
+                    );
+                  }
+                  return Container(
                     child: GridView.builder(
+                      padding: const EdgeInsets.only(
+                        bottom: 100,
+                        left: 256,
+                        right: 256,
+                      ),
                       itemCount: products.rows.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
+                        crossAxisCount: 3,
                         mainAxisSpacing: kDefaultPadding,
                         crossAxisSpacing: kDefaultPadding,
                         childAspectRatio: 0.75,
@@ -67,14 +82,14 @@ class ProductScreenBody extends StatelessWidget {
                         );
                       },
                     ),
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                print(snapshot.error);
-                return const Text('error');
-              }
-              return const LoadingIndicator();
-            }),
+                  );
+                } else if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return const Text('error');
+                }
+                return const LoadingIndicator();
+              }),
+        ),
       ],
     );
   }

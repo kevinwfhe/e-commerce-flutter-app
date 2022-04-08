@@ -29,18 +29,15 @@ class OrderPlacedScreen extends StatelessWidget {
                   // navigate to order screen while poping the underlying routes back to CartRoute,
                   // to prevent another CartRoute stacking on top of the original one
                   onPressed: () => context.router.pushAndPopUntil(
-                    const ClientMainRoute(
+                    const StandAloneOrderRouter(
                       children: [
-                        OrderRouter(
-                          children: [
-                            OrderScreen(),
-                          ],
-                        ),
+                        OrderScreen(),
                       ],
                     ),
                     predicate: (route) => route.settings.name == 'CartRoute',
                   ),
-                  child: const Text('Check your orders', style: TextStyle(fontSize: 20)),
+                  child: const Text('Check your orders',
+                      style: TextStyle(fontSize: 20)),
                 ),
               )
             ],

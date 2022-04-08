@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class Product {
-  final String id, image, title, description, category;
+  final String id, image, title, description;
   final double price;
   double? size;
+  final String? category;
   Product({
     required this.id,
     required this.image,
     required this.title,
     required this.price,
     required this.description,
-    required this.category,
+    this.category,
     this.size,
   });
 
@@ -30,10 +31,12 @@ class Product {
       'title': title,
       'price': price,
       'description': description,
-      'category': category,
     };
     if (size != null) {
       res['size'] = size!;
+    }
+    if (category != null) {
+      res['category'] = category!;
     }
     return res;
   }
