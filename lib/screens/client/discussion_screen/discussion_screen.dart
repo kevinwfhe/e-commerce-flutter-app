@@ -12,7 +12,13 @@ import '../../common/component/loading_indicator.dart';
 import '../../common/component/no_content.dart';
 
 class DiscussionScreen extends StatefulWidget {
-  const DiscussionScreen({Key? key}) : super(key: key);
+  final bool showAppBar;
+  final double? horizontalPadding;
+  DiscussionScreen({
+    Key? key,
+    this.showAppBar = true,
+    this.horizontalPadding,
+  }) : super(key: key);
 
   @override
   _DiscussionScreenState createState() => _DiscussionScreenState();
@@ -63,19 +69,25 @@ class _DiscussionScreenState extends State<DiscussionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Discussions'),
-        backgroundColor: const Color(0xFF0F1111),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.popRoute(),
-        ),
-      ),
+      appBar: widget.showAppBar
+          ? AppBar(
+              title: const Text('Discussions'),
+              backgroundColor: const Color(0xFF0F1111),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => context.popRoute(),
+              ),
+            )
+          : null,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(
-            left: MediaQuery.of(context).size.width * 0.2,
-            right: MediaQuery.of(context).size.width * 0.2,
+            left: widget.horizontalPadding != null
+                ? widget.horizontalPadding!
+                : MediaQuery.of(context).size.width * 0.2,
+            right: widget.horizontalPadding != null
+                ? widget.horizontalPadding!
+                : MediaQuery.of(context).size.width * 0.2,
             top: 30,
             bottom: 200,
           ),
@@ -94,12 +106,15 @@ class _DiscussionScreenState extends State<DiscussionScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      SearchBar(
-                        onSearchKeywordChange: (keyword) => search(keyword),
-                        onSearchConfirm: (keyword) => search(keyword),
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        border: true,
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: SearchBar(
+                          onSearchKeywordChange: (keyword) => search(keyword),
+                          onSearchConfirm: (keyword) => search(keyword),
+                          border: true,
+                        ),
                       ),
+                      const SizedBox(width: 20),
                       Row(
                         children: [
                           SizedBox(

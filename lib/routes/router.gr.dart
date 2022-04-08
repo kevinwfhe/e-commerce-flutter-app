@@ -104,8 +104,12 @@ class AppRouter extends _i2.RootStackRouter {
           child: _i9.OrderDetailScreen(key: args.key, orderId: args.orderId));
     },
     DiscussionScreen.name: (routeData) {
+      final args = routeData.argsAs<DiscussionScreenArgs>(
+          orElse: () => const DiscussionScreenArgs());
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i10.DiscussionScreen());
+          routeData: routeData,
+          child: _i10.DiscussionScreen(
+              key: args.key, showAppBar: args.showAppBar));
     },
     DiscussionDetailScreen.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
@@ -139,6 +143,10 @@ class AppRouter extends _i2.RootStackRouter {
           routeData: routeData, child: const _i2.EmptyRouterPage());
     },
     AdminOrderRouter.name: (routeData) {
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.EmptyRouterPage());
+    },
+    AdminDiscussRouter.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i2.EmptyRouterPage());
     },
@@ -210,6 +218,15 @@ class AppRouter extends _i2.RootStackRouter {
               children: [
                 _i2.RouteConfig(AdminOrderDetail.name,
                     path: ':orderId', parent: AdminOrderRouter.name)
+              ]),
+          _i2.RouteConfig(AdminDiscussRouter.name,
+              path: 'discuss',
+              parent: AdminRouter.name,
+              children: [
+                _i2.RouteConfig(DiscussionScreen.name,
+                    path: '', parent: AdminDiscussRouter.name),
+                _i2.RouteConfig(DiscussionDetailScreen.name,
+                    path: ':questionId', parent: AdminDiscussRouter.name)
               ])
         ])
       ];
@@ -355,10 +372,26 @@ class OrderDetailScreenArgs {
 
 /// generated route for
 /// [_i10.DiscussionScreen]
-class DiscussionScreen extends _i2.PageRouteInfo<void> {
-  const DiscussionScreen() : super(DiscussionScreen.name, path: '');
+class DiscussionScreen extends _i2.PageRouteInfo<DiscussionScreenArgs> {
+  DiscussionScreen({_i18.Key? key, bool showAppBar = true})
+      : super(DiscussionScreen.name,
+            path: '',
+            args: DiscussionScreenArgs(key: key, showAppBar: showAppBar));
 
   static const String name = 'DiscussionScreen';
+}
+
+class DiscussionScreenArgs {
+  const DiscussionScreenArgs({this.key, this.showAppBar = true});
+
+  final _i18.Key? key;
+
+  final bool showAppBar;
+
+  @override
+  String toString() {
+    return 'DiscussionScreenArgs{key: $key, showAppBar: $showAppBar}';
+  }
 }
 
 /// generated route for
@@ -437,6 +470,16 @@ class AdminOrderRouter extends _i2.PageRouteInfo<void> {
       : super(AdminOrderRouter.name, path: 'order', initialChildren: children);
 
   static const String name = 'AdminOrderRouter';
+}
+
+/// generated route for
+/// [_i2.EmptyRouterPage]
+class AdminDiscussRouter extends _i2.PageRouteInfo<void> {
+  const AdminDiscussRouter({List<_i2.PageRouteInfo>? children})
+      : super(AdminDiscussRouter.name,
+            path: 'discuss', initialChildren: children);
+
+  static const String name = 'AdminDiscussRouter';
 }
 
 /// generated route for

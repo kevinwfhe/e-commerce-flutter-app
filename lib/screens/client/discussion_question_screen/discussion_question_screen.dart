@@ -50,7 +50,7 @@ class _DiscussionQuestionScreenState extends State<DiscussionQuestionScreen> {
         var postedQuestion = Question.fromJson(jsonDecode(response.body));
         context.router.popAndPush(
           StandAloneDiscussRouter(children: [
-            const DiscussionScreen(),
+            DiscussionScreen(),
             DiscussionDetailScreen(questionId: postedQuestion.id),
           ]),
         );
@@ -58,8 +58,7 @@ class _DiscussionQuestionScreenState extends State<DiscussionQuestionScreen> {
     }
   }
 
-  void goBack() => context.router
-      .replace(const StandAloneDiscussRouter(children: [DiscussionScreen()]));
+  void goBack() => context.popRoute();
 
   @override
   Widget build(BuildContext context) {

@@ -37,34 +37,36 @@ class _SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     return Container(
       height: 40,
+      width: widget.width,
       child: Row(
         children: [
-          SizedBox(
-            height: 40,
-            width: widget.width,
-            child: TextFormField(
-              controller: searchkeyController,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                enabledBorder: widget.border
-                    ? const OutlineInputBorder()
-                    : const OutlineInputBorder(
-                        borderSide: BorderSide(style: BorderStyle.none),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
+          Expanded(
+            child: SizedBox(
+              height: 40,
+              child: TextFormField(
+                controller: searchkeyController,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  enabledBorder: widget.border
+                      ? const OutlineInputBorder()
+                      : const OutlineInputBorder(
+                          borderSide: BorderSide(style: BorderStyle.none),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                          ),
                         ),
-                      ),
-                focusedBorder: widget.border
-                    ? const OutlineInputBorder()
-                    : const OutlineInputBorder(
-                        borderSide: const BorderSide(style: BorderStyle.none),
-                        borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
+                  focusedBorder: widget.border
+                      ? const OutlineInputBorder()
+                      : const OutlineInputBorder(
+                          borderSide: const BorderSide(style: BorderStyle.none),
+                          borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                          ),
                         ),
-                      ),
+                ),
               ),
             ),
           ),

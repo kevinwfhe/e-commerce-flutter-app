@@ -10,13 +10,11 @@ import 'package:csi5112group1project/screens/client/sign_up_screen/sign_up_scree
 import '../screens/admin/authentication_admin_screen/authentification_admin_screen.dart';
 import '../screens/client/checkout_screen/checkout_screen.dart';
 import '../screens/client/product_detail_screen/product_detail_screen.dart';
-import '../screens/client/products_screen/products_screen.dart';
 import '../screens/client/order_placed_screen/order_placed_screen.dart';
 import '../screens/client/order_detail_screen/order_detail_screen.dart';
 import '../screens/client/orders_screen/orders_screen.dart';
 import '../screens/client/cart_screen/cart_screen.dart';
 import '../screens/client/authentication_client_screen/authentification_client_screen.dart';
-import '../screens/client/client_main_screen.dart';
 
 // auto_route documentation -> https://pub.dev/packages/auto_route
 
@@ -131,16 +129,33 @@ import '../screens/client/client_main_screen.dart';
           ],
         ),
         AutoRoute(
-            path: 'order',
-            name: 'AdminOrderRouter',
-            page: EmptyRouterPage,
-            children: [
-              AutoRoute(
-                path: ':orderId',
-                name: 'AdminOrderDetail',
-                page: AdminOrderDetailScreen,
-              )
-            ]),
+          path: 'order',
+          name: 'AdminOrderRouter',
+          page: EmptyRouterPage,
+          children: [
+            AutoRoute(
+              path: ':orderId',
+              name: 'AdminOrderDetail',
+              page: AdminOrderDetailScreen,
+            )
+          ],
+        ),
+        AutoRoute(
+          path: 'discuss',
+          name: 'AdminDiscussRouter',
+          initial: true,
+          page: EmptyRouterPage,
+          children: [
+            AutoRoute(
+              path: '',
+              page: DiscussionScreen,
+            ),
+            AutoRoute(
+              path: ':questionId',
+              page: DiscussionDetailScreen,
+            ),
+          ],
+        ),
       ],
     )
   ],

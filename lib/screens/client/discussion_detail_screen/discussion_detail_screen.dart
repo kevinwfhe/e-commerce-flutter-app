@@ -66,7 +66,7 @@ class _DiscussionDetailScreenState extends State<DiscussionDetailScreen> {
       ScaffoldMessenger.of(context).showSnackBar(deleteSuccessSnackbar);
       if (postType == POST_TYPE.question) {
         context.navigateTo(
-          const StandAloneDiscussRouter(
+          StandAloneDiscussRouter(
             children: [
               DiscussionScreen(),
             ],
@@ -108,7 +108,7 @@ class _DiscussionDetailScreenState extends State<DiscussionDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Question'),
+        title: const Text('Question Details'),
         backgroundColor: const Color(0xFF0F1111),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -122,10 +122,10 @@ class _DiscussionDetailScreenState extends State<DiscussionDetailScreen> {
             if (snapshot.hasData) {
               final question = snapshot.data as DetailedQuestion;
               return Padding(
-                padding: const EdgeInsets.only(
-                  left: 300,
-                  right: 300,
-                  top: 16,
+                padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.25,
+                  right: MediaQuery.of(context).size.width * 0.25,
+                  top: 40,
                   bottom: 200,
                 ),
                 child: Column(

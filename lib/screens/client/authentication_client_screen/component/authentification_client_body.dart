@@ -6,7 +6,6 @@ import 'package:csi5112group1project/models/authentication.dart';
 import 'package:provider/provider.dart';
 import '../../../../apis/request.dart';
 import '../../../../routes/router.gr.dart';
-import 'dart:html';
 
 class AuthentificationBuyerBody extends StatefulWidget {
   const AuthentificationBuyerBody({Key? key}) : super(key: key);
@@ -27,8 +26,6 @@ class _AuthentificationBuyerBodyState extends State<AuthentificationBuyerBody> {
     super.initState();
     usernameController.text = 'dilchenko1@jiathis.com';
     passwordController.text = 'doI6vF';
-    // usernameController.text = '';
-    // passwordController.text = '';
     usernameController.addListener(() {
       if (usernameController.text != '') {
         _usernameCtrlKey.currentState!.validate();

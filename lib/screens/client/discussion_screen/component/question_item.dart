@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:csi5112group1project/context/user_context.dart';
 import 'package:csi5112group1project/models/discussion.dart';
 import 'package:csi5112group1project/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../../models/discussion.dart';
 
 class QuestionItem extends StatelessWidget {
@@ -11,6 +13,27 @@ class QuestionItem extends StatelessWidget {
     Key? key,
     required this.question,
   }) : super(key: key);
+
+  void navigateToDetail(BuildContext context) {
+    var user = Provider.of<UserContext>(context, listen: false);
+    if (user.role == 'admin') {
+      context.navigateTo(
+        AdminDiscussRouter(
+          children: [
+            DiscussionDetailScreen(
+              questionId: question.id,
+            )
+          ],
+        ),
+      );
+    } else {
+      context.navigateTo(
+        DiscussionDetailScreen(
+          questionId: question.id,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +68,7 @@ class QuestionItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextButton(
-                    onPressed: () => context.navigateTo(DiscussionDetailScreen(
-                      questionId: question.id,
-                    )),
+                    onPressed: () => navigateToDetail(context),
                     child: Text(
                       question.title,
                       style: const TextStyle(

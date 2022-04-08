@@ -101,8 +101,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
         leading: Container(),
         actions: <Widget>[
           Container(
-            margin: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width * 0.1),
+            margin:
+                EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.1),
             child: SearchBar(
               onSearchKeywordChange: (keyword) => onKeywordChange(keyword),
               onSearchConfirm: (keyword) => onKeywordChange(keyword),
@@ -155,7 +155,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               ),
               onPressed: () {
                 context.router.navigate(
-                  const StandAloneDiscussRouter(
+                  StandAloneDiscussRouter(
                     children: [
                       DiscussionScreen(),
                     ],

@@ -9,6 +9,7 @@ import 'package:csi5112group1project/screens/admin/add_product_screen/add_produc
 import 'package:provider/provider.dart';
 import '../../apis/request.dart';
 import '../../routes/router.gr.dart';
+import '../client/discussion_screen/discussion_screen.dart' as DiscussionScreen;
 import './admin_order_screen/admin_order_screen.dart';
 import 'package:csi5112group1project/screens/admin/product_manage_screen/product_manage_screen.dart';
 
@@ -93,6 +94,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     if (_selectedDestination == 3) {
       return const Text(
         'Order',
+        style: TextStyle(color: Colors.black),
+      );
+    }
+    if (_selectedDestination == 4) {
+      return const Text(
+        'Discussion',
         style: TextStyle(color: Colors.black),
       );
     }
@@ -199,6 +206,27 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                               width: 80,
                               child: const Icon(
                                 Icons.receipt_outlined,
+                                color: Colors.white,
+                              ),
+                            ),
+                            label: const Text(''),
+                          ),
+                          NavigationRailDestination(
+                            icon: const Tooltip(
+                              message: "Discussion",
+                              child: Icon(
+                                Icons.question_answer,
+                                color: kAdminTextPrimaryColor,
+                              ),
+                            ),
+                            selectedIcon: Container(
+                              decoration: const BoxDecoration(
+                                color: kAdminSecondaryColor,
+                              ),
+                              height: 50,
+                              width: 80,
+                              child: const Icon(
+                                Icons.question_answer_outlined,
                                 color: Colors.white,
                               ),
                             ),
@@ -319,6 +347,30 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                                             selectedTileColor:
                                                 kAdminSecondaryColor,
                                           ),
+                                          ListTile(
+                                            leading: Icon(
+                                              _selectedDestination == 4
+                                                  ? Icons
+                                                      .question_answer_outlined
+                                                  : Icons.question_answer,
+                                              color: _selectedDestination == 4
+                                                  ? kAdminTextPrimaryColor
+                                                  : kAdminTextSecondaryColor,
+                                            ),
+                                            title: Text(
+                                              'Discussion',
+                                              style: TextStyle(
+                                                color: _selectedDestination == 4
+                                                    ? kAdminTextPrimaryColor
+                                                    : kAdminTextSecondaryColor,
+                                              ),
+                                            ),
+                                            iconColor: kAdminTextSecondaryColor,
+                                            selected: _selectedDestination == 4,
+                                            onTap: () => selectDestination(4),
+                                            selectedTileColor:
+                                                kAdminSecondaryColor,
+                                          ),
                                         ],
                                       ),
                                     )
@@ -382,6 +434,13 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                       }
                       if (_selectedDestination == 3) {
                         return const AdminOrderScreen();
+                      }
+                      if (_selectedDestination == 4) {
+                        return DiscussionScreen.DiscussionScreen(
+                          showAppBar: false,
+                          horizontalPadding:
+                              MediaQuery.of(context).size.width * .05,
+                        );
                       }
                       return const Text('');
                     }),
