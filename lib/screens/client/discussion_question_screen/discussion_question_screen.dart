@@ -185,7 +185,7 @@ class _DiscussionQuestionScreenState extends State<DiscussionQuestionScreen> {
                   children: [
                     SizedBox(
                       height: 40,
-                      width: 150,
+                      width: 250,
                       child: TextButton(
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.blue,
