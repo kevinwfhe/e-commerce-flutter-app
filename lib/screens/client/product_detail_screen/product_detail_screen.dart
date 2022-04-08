@@ -21,10 +21,25 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   late Future<Product> fProduct;
+  int _numberToAdd = 1;
   Future<Product> getProduct() async {
     var response = await Request.get('/Product/${widget.productId}');
     var res = Product.fromJson(jsonDecode(response.body));
     return res;
+  }
+
+  void addToCart(BuildContext context) async {
+    var cart = Provider.of<CartContext>(context, listen: false);
+    var productToAdd = await fProduct;
+    cart.add(productToAdd, number: _numberToAdd);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '${productToAdd.title} has been added to your cart.',
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
   }
 
   @override
@@ -44,8 +59,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             if (snapshot.hasData) {
               Product product = snapshot.data as Product;
               return Scaffold(
+                backgroundColor: Colors.white,
                 appBar: AppBar(
-                  backgroundColor: Color(0xFF0F1111),
+                  backgroundColor: const Color(0xFF0F1111),
                   title: Text(product.title),
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back),
@@ -61,105 +77,273 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ],
                 ),
 
-                body: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * .5,
-                      height: MediaQuery.of(context).size.height,
-                      child: Image.network('$s3BaseUrl${product.image}'),
-                    ),
-                    SizedBox(
-                      width: 440,
-                      child: Container(
-                        padding: const EdgeInsets.all(kDefaultPadding),
+                body: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * .2,
+                    vertical: MediaQuery.of(context).size.height * .05,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * .35,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                '$s3BaseUrl${product.image}',
+                                fit: BoxFit.fitWidth,
+                              ),
+                              const SizedBox(height: 30),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    'Product Details',
+                                    style: TextStyle(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                product.description,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  height: 1.8,
+                                ),
+                              )
+                            ],
+                          )),
+                      const SizedBox(width: 50),
+                      Container(
+                        width: MediaQuery.of(context).size.width * .2,
+                        padding: const EdgeInsets.symmetric(vertical: 50),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              product.title,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w800,
-                                fontFamily: 'Roboto',
-                                letterSpacing: 0.5,
-                                fontSize: 30,
-                              ),
-                            ),
+                            Chip(label: Text(product.category!)),
+                            const SizedBox(height: 30),
                             Row(
                               children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.star, color: Colors.yellow[500]),
-                                    Icon(Icons.star, color: Colors.yellow[500]),
-                                    Icon(Icons.star, color: Colors.yellow[500]),
-                                    Icon(Icons.star, color: Colors.yellow[500]),
-                                    const Icon(Icons.star, color: Colors.grey),
-                                  ],
-                                ),
+                                Expanded(
+                                  child: Text(
+                                    product.title,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w800,
+                                      fontFamily: 'Roboto',
+                                      letterSpacing: 0.5,
+                                      fontSize: 32,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 30),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 const Text(
-                                  '4.1 (170 Reviews)',
+                                  'Product Number:',
                                   style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                    letterSpacing: 0.5,
-                                    fontSize: 15,
+                                    color: Colors.grey,
                                   ),
                                 ),
-                              ], // end reviews
+                                const SizedBox(height: 5),
+                                Text(
+                                  product.id,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
                             ),
+                            const SizedBox(height: 30),
                             Row(
                               children: [
                                 const Text(
-                                  "\n\nPrice: \n\n",
+                                  "Price: ",
                                   style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.bold,
                                     fontFamily: 'Roboto',
-                                    letterSpacing: 0.5,
-                                    fontSize: 15,
+                                    fontSize: 36,
                                   ),
                                 ),
                                 Text(
                                   "\$${product.price}",
                                   style: const TextStyle(
-                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
                                     fontFamily: 'Roboto',
-                                    letterSpacing: 0.5,
-                                    fontSize: 16,
+                                    fontSize: 36,
                                   ),
                                 ),
                               ], // end reviews
                             ),
-                            const Text(
-                              "Product Description",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w800,
-                                fontFamily: 'Roboto',
-                                letterSpacing: 0.5,
-                                fontSize: 15,
+                            const SizedBox(height: 15),
+                            const Divider(
+                              height: 1,
+                              thickness: 1.5,
+                            ),
+                            const SizedBox(height: 80),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size.zero,
+                                      padding: EdgeInsets.zero,
+                                      primary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        side: const BorderSide(),
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                    ),
+                                    onPressed: () => setState(() {
+                                      if (_numberToAdd == 1) return;
+                                      _numberToAdd = _numberToAdd - 1;
+                                    }),
+                                    child: const Icon(
+                                      Icons.remove,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 20, right: 20),
+                                  child: Text(
+                                    _numberToAdd.toString(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size.zero,
+                                      padding: EdgeInsets.zero,
+                                      primary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        side: const BorderSide(),
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                    ),
+                                    onPressed: () => setState(() {
+                                      _numberToAdd = _numberToAdd + 1;
+                                    }),
+                                    child: const Icon(
+                                      Icons.add,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 30),
+                            SizedBox(
+                              height: 50,
+                              width: double.maxFinite,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF222222),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                  ),
+                                ),
+                                onPressed: () => addToCart(context),
+                                child: const Text(
+                                  'Add to Cart',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ),
                             ),
-                            Text(
-                              product.description,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Roboto',
-                                letterSpacing: 0.5,
-                                fontSize: 13,
+                            const SizedBox(height: 100),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 24,
+                                horizontal: 24,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    spreadRadius: 1,
+                                    blurRadius: 1,
+                                    blurStyle: BlurStyle.outer,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: const [
+                                      Icon(Icons.store),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        'Free In-Store Pickup',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 35),
+                                    child: const Text(
+                                        'Available for Same-Day Pickup. Order now and pickup as early as today.'),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  const Divider(
+                                    height: 1,
+                                    thickness: 1.5,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    children: const [
+                                      Icon(Icons.delivery_dining),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        'Home Delivery',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 35),
+                                    child: const Text(
+                                        'Order now and get it delivered in 3-5 business days.'),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 // add to shopping cart -button-
                 floatingActionButton: FloatingActionButton(
-                  onPressed: () => cart.add(product),
+                  onPressed: () => addToCart(context),
                   tooltip: 'Add to shopping cart',
                   child: const Icon(Icons.add),
                 ),

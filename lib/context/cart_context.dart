@@ -28,13 +28,13 @@ class CartContext extends ChangeNotifier {
     return {for (var item in selectedItems) item.product.id: item.numOfItem};
   }
 
-  void add(Product product) {
+  void add(Product product, {int number = 1}) {
     var itemAdded = _cart.items.where((i) => i.product.id == product.id);
     if (itemAdded.isNotEmpty) {
-      itemAdded.first.numOfItem += 1;
+      itemAdded.first.numOfItem += number;
     } else {
       var itemToBeAdded = CartItem(
-        numOfItem: 1,
+        numOfItem: number,
         product: product,
         selected: true,
       );

@@ -22,7 +22,7 @@ class CategorySelectorState extends State<CategorySelector> {
   @override
   void initState() {
     super.initState();
-    selectedCategoryId = "-1";
+    selectedCategoryId = "";
   }
 
   void onTapCategory(String categoryId) {

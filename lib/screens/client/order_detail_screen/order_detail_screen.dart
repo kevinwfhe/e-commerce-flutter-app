@@ -13,16 +13,16 @@ const printQuestionSnackBar = SnackBar(
   'Question submitted!',
   textAlign: TextAlign.center,
 ));
-const printInvoiceSnackBar = SnackBar(
+const requestFailedSnackBar = SnackBar(
     content: Text(
-  'Invoice Printed!',
+  'Service unavailable, please try again later.',
   textAlign: TextAlign.center,
 ));
-const emailInvoiceSnackBar = SnackBar(
-    content: Text(
-  'Invoice Emailed!',
-  textAlign: TextAlign.center,
-));
+Function emailInvoiceSnackBar = (String email) => SnackBar(
+        content: Text(
+      'Invoice emailed to $email!',
+      textAlign: TextAlign.center,
+    ));
 
 class OrderDetailScreen extends StatefulWidget {
   final String orderId;
@@ -49,12 +49,22 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     fOrder = getOrder();
   }
 
+  void emailInvoice() async {
+    var response = await Request.get('/SendOrder/${widget.orderId}');
+    if (response.statusCode == 200) {
+      var email = response.body;
+      ScaffoldMessenger.of(context).showSnackBar(emailInvoiceSnackBar(email));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(requestFailedSnackBar);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Order Details'),
-          backgroundColor: Color(0xFF0F1111),
+          backgroundColor: const Color(0xFF0F1111),
           leading: null,
         ),
         body: SingleChildScrollView(
@@ -175,26 +185,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ),
                         ),
                         Row(
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: 16, top: 16),
-                              child: const Text(
-                                '4  Ask any question',
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
-                              ),
-                            )
-                          ],
-                        ),
-                        Card(
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: QuestionDetailTable(
-                                purchasedProducts: order.purchasedProducts),
-                          ),
-                        ),
-                        Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Container(
@@ -202,40 +192,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               width: 192,
                               margin: const EdgeInsets.all(20),
                               child: ElevatedButton(
-                                onPressed: () => ScaffoldMessenger.of(context)
-                                    .showSnackBar(printQuestionSnackBar),
-                                child: const Text(
-                                  'Submit a request',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 64,
-                              width: 192,
-                              margin: const EdgeInsets.all(20),
-                              child: ElevatedButton(
-                                onPressed: () => ScaffoldMessenger.of(context)
-                                    .showSnackBar(printInvoiceSnackBar),
-                                child: const Text(
-                                  'Print Invoice',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 64,
-                              width: 192,
-                              margin: const EdgeInsets.all(20),
-                              child: ElevatedButton(
-                                onPressed: () => ScaffoldMessenger.of(context)
-                                    .showSnackBar(emailInvoiceSnackBar),
+                                onPressed: emailInvoice,
                                 child: const Text(
                                   'Email Invoice',
                                   style: TextStyle(

@@ -167,14 +167,14 @@ class AppRouter extends _i2.RootStackRouter {
   @override
   List<_i2.RouteConfig> get routes => [
         _i2.RouteConfig(MainRoute.name, path: '/'),
-        _i2.RouteConfig(StandAloneOrderRouter.name, path: 'order', children: [
+        _i2.RouteConfig(StandAloneOrderRouter.name, path: '/order', children: [
           _i2.RouteConfig(OrderScreen.name,
               path: '', parent: StandAloneOrderRouter.name),
           _i2.RouteConfig(OrderDetailScreen.name,
               path: ':orderId', parent: StandAloneOrderRouter.name)
         ]),
         _i2.RouteConfig(StandAloneDiscussRouter.name,
-            path: 'discuss',
+            path: '/discuss',
             children: [
               _i2.RouteConfig(DiscussionScreen.name,
                   path: '', parent: StandAloneDiscussRouter.name),
@@ -228,7 +228,7 @@ class MainRoute extends _i2.PageRouteInfo<void> {
 class StandAloneOrderRouter extends _i2.PageRouteInfo<void> {
   const StandAloneOrderRouter({List<_i2.PageRouteInfo>? children})
       : super(StandAloneOrderRouter.name,
-            path: 'order', initialChildren: children);
+            path: '/order', initialChildren: children);
 
   static const String name = 'StandAloneOrderRouter';
 }
@@ -238,7 +238,7 @@ class StandAloneOrderRouter extends _i2.PageRouteInfo<void> {
 class StandAloneDiscussRouter extends _i2.PageRouteInfo<void> {
   const StandAloneDiscussRouter({List<_i2.PageRouteInfo>? children})
       : super(StandAloneDiscussRouter.name,
-            path: 'discuss', initialChildren: children);
+            path: '/discuss', initialChildren: children);
 
   static const String name = 'StandAloneDiscussRouter';
 }

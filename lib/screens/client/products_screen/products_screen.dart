@@ -102,7 +102,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
         actions: <Widget>[
           Container(
             margin: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width * 0.03),
+                right: MediaQuery.of(context).size.width * 0.1),
             child: SearchBar(
               onSearchKeywordChange: (keyword) => onKeywordChange(keyword),
               onSearchConfirm: (keyword) => onKeywordChange(keyword),

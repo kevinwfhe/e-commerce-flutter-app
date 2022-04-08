@@ -73,9 +73,9 @@ class _DiscussionScreenState extends State<DiscussionScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(
-            left: 300,
-            right: 300,
+          padding: EdgeInsets.only(
+            left: MediaQuery.of(context).size.width * 0.2,
+            right: MediaQuery.of(context).size.width * 0.2,
             top: 30,
             bottom: 200,
           ),
@@ -97,26 +97,32 @@ class _DiscussionScreenState extends State<DiscussionScreen> {
                       SearchBar(
                         onSearchKeywordChange: (keyword) => search(keyword),
                         onSearchConfirm: (keyword) => search(keyword),
+                        width: MediaQuery.of(context).size.width * 0.2,
                         border: true,
                       ),
-                      SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(0),
+                      Row(
+                        children: [
+                          SizedBox(
+                            height: 40,
+                            width: 40,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(0),
+                              ),
+                              onPressed: refresh,
+                              child: const Icon(Icons.refresh),
+                            ),
                           ),
-                          onPressed: refresh,
-                          child: const Icon(Icons.refresh),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: 120,
-                        child: ElevatedButton(
-                          onPressed: askQuestion,
-                          child: const Text('Ask question'),
-                        ),
+                          const SizedBox(width: 20),
+                          SizedBox(
+                            height: 40,
+                            width: 120,
+                            child: ElevatedButton(
+                              onPressed: askQuestion,
+                              child: const Text('Ask question'),
+                            ),
+                          )
+                        ],
                       ),
                     ],
                   ),

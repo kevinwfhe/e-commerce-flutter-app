@@ -228,19 +228,6 @@ class _PostSectionState extends State<PostSection> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 30,
-                  child: Column(
-                    children: [
-                      const Icon(Icons.arrow_upward),
-                      const SizedBox(height: 5),
-                      Text(widget.helpfulCount.toString()),
-                      const SizedBox(height: 5),
-                      const Icon(Icons.arrow_downward),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 10),
                 Expanded(
                   child: SizedBox(
                     child: Column(

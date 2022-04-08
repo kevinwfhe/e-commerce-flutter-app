@@ -56,10 +56,10 @@ class ProductScreenBody extends StatelessWidget {
                   }
                   return Container(
                     child: GridView.builder(
-                      padding: const EdgeInsets.only(
+                      padding: EdgeInsets.only(
                         bottom: 100,
-                        left: 256,
-                        right: 256,
+                        left: MediaQuery.of(context).size.width * 0.2,
+                        right: MediaQuery.of(context).size.width * 0.2,
                       ),
                       itemCount: products.rows.length,
                       gridDelegate:

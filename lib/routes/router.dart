@@ -29,7 +29,7 @@ import '../screens/client/client_main_screen.dart';
       initial: true,
     ),
     AutoRoute(
-      path: 'order',
+      path: '/order',
       name: 'StandAloneOrderRouter',
       page: EmptyRouterPage,
       initial: true,
@@ -45,7 +45,7 @@ import '../screens/client/client_main_screen.dart';
       ],
     ),
     AutoRoute(
-      path: 'discuss',
+      path: '/discuss',
       name: 'StandAloneDiscussRouter',
       initial: true,
       page: EmptyRouterPage,
