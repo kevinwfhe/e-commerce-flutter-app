@@ -281,36 +281,42 @@ class _CategoryManageScreenState extends State<CategoryManageScreen> {
                                 .toList(),
                           ),
                         ),
-                        SizedBox(
-                          height: 40,
-                          width: 120,
-                          child: ElevatedButton(
-                            onPressed: addCategory,
-                            child: const Text('Add category'),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                          width: 150,
-                          child: ElevatedButton(
-                            onPressed: selectedCategoryId.isEmpty
-                                ? null
-                                : updateCategory,
-                            child: const Text('Update category'),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                          width: 150,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 40,
+                              width: 200,
+                              child: ElevatedButton(
+                                onPressed: addCategory,
+                                child: const Text('Add category'),
+                              ),
                             ),
-                            onPressed: selectedCategoryId.isEmpty
-                                ? null
-                                : removeCategory,
-                            child: const Text('Delete category'),
-                          ),
+                            const SizedBox(width: 20),
+                            SizedBox(
+                              height: 40,
+                              width: 200,
+                              child: ElevatedButton(
+                                onPressed: selectedCategoryId.isEmpty
+                                    ? null
+                                    : updateCategory,
+                                child: const Text('Update category'),
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            SizedBox(
+                              height: 40,
+                              width: 200,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.red,
+                                ),
+                                onPressed: selectedCategoryId.isEmpty
+                                    ? null
+                                    : removeCategory,
+                                child: const Text('Delete category'),
+                              ),
+                            )
+                          ],
                         ),
                       ],
                     ),

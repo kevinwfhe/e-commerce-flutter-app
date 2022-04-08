@@ -131,7 +131,7 @@ class _DiscussionScreenState extends State<DiscussionScreen> {
                           const SizedBox(width: 20),
                           SizedBox(
                             height: 40,
-                            width: 120,
+                            width: 200,
                             child: ElevatedButton(
                               onPressed: askQuestion,
                               child: const Text('Ask question'),
